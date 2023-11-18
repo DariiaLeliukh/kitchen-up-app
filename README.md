@@ -1,12 +1,35 @@
+## Install yarn
+Run `npm install yarn -g` to install yarn globally
 
 
-npm install yarn -g
+## Database
+Run psql and create database final with `CREATE DATABASE final`. Connect to the database `\c final`
 
-go into front end, install packages by running "yarn"
-go into back end, install packages by running "yarn"
 
-create databse in psql - default is "final"
+## Note 
+You will need two tabs in your terminal running front-end and back-end
 
-yarn db:reset
 
-and finally "yarn go" from the backend.
+## Project Setup
+### Back-end
+enter the back-end folder 
+`cd express-back-end` 
+and install yarn 
+`yarn`
+
+### Reset db
+While in back-end folder, reset database
+`yarn db:reset`
+
+### Launch back-end
+`yarn go` from the back-end folder
+
+### Front-end
+(In a separate tab)
+enter the front-end folder 
+`cd react-front-end` 
+and install yarn 
+`yarn`
+
+### Launch front-end
+`npm run dev` from the front-end folder
