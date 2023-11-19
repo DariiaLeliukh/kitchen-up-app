@@ -24,11 +24,9 @@ class Login extends Component {
     const { email, password } = this.state;
 
     try {
-      this.setState({ success: true });
       const response = await axios.post("/api/login", { email, password });
       console.log(response);
-
-
+      this.setState({ success: true });
     } catch (error) {
       // Handle login error
       this.setState({

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-
-
+import { Link } from "react-router-dom";
 
 class Register extends Component {
   constructor(props) {
@@ -13,7 +12,8 @@ class Register extends Component {
       email: "",
       password: "",
       confirmPassword: "",
-      errorMessage: ""
+      errorMessage: "",
+      success: false
     };
   }
 
@@ -23,7 +23,8 @@ class Register extends Component {
     });
   };
 
-  handleRegister = async () => {
+  handleRegister = async (e) => {
+    e.preventDefault();
     const { username, first_name, last_name, email, password, confirmPassword } =
       this.state;
 
@@ -45,11 +46,8 @@ class Register extends Component {
         password
       });
 
-      // Handle successful registration (e.g., redirect to login page)
-      console.log("Registration successful:", response.data);
-      // Redirect to the login page or update the UI accordingly
-      this.props.history.push("/login");
-    
+      this.setState({ success: true });
+
     } catch (error) {
       // Handle registration error
       console.error("Registration failed:", error.response.data);
@@ -60,58 +58,69 @@ class Register extends Component {
   };
 
   render() {
-    
+
     return (
       <div>
-        <h2>Register</h2>
-      
-
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={this.state.username}
-          onChange={this.handleInputChange}
-        />
-        <input
-          type="text"
-          name="first_name"
-          placeholder="First Name"
-          value={this.state.first_name}
-          onChange={this.handleInputChange}
-        />
-        <input
-          type="text"
-          name="last_name"
-          placeholder="Last Name"
-          value={this.state.last_name}
-          onChange={this.handleInputChange}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={this.state.email}
-          onChange={this.handleInputChange}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={this.state.password}
-          onChange={this.handleInputChange}
-        />
-        <input
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirm Password"
-          value={this.state.confirmPassword}
-          onChange={this.handleInputChange}
-        />
-        <button onClick={this.handleRegister}>Register</button>
-        {this.state.errorMessage && (
-          <p style={{ color: "red" }}>{this.state.errorMessage}</p>
-        )}
+        <div>
+          {this.state.success ? (
+            <section>
+              <div>Registration successful</div>
+              <p>Go <Link to="/">home</Link></p>
+            </section>
+          ) : (
+            <section>
+              <h2>Register</h2>
+              <form onSubmit={this.handleRegister}>
+                <input
+                  type="text"
+                  name="username"
+                  placeholder="Username"
+                  value={this.state.username}
+                  onChange={this.handleInputChange}
+                />
+                <input
+                  type="text"
+                  name="first_name"
+                  placeholder="First Name"
+                  value={this.state.first_name}
+                  onChange={this.handleInputChange}
+                />
+                <input
+                  type="text"
+                  name="last_name"
+                  placeholder="Last Name"
+                  value={this.state.last_name}
+                  onChange={this.handleInputChange}
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  value={this.state.email}
+                  onChange={this.handleInputChange}
+                />
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={this.state.password}
+                  onChange={this.handleInputChange}
+                />
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                  value={this.state.confirmPassword}
+                  onChange={this.handleInputChange}
+                />
+                <button>Register</button>
+              </form>
+              {this.state.errorMessage && (
+                <p style={{ color: "red" }}>{this.state.errorMessage}</p>
+              )}
+            </section>
+          )}
+        </div>
       </div>
     );
   }
