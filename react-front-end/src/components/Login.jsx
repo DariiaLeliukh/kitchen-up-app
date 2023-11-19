@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 class Login extends Component {
   constructor(props) {
@@ -7,7 +8,8 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      errorMessage: ""
+      errorMessage: "",
+      success: false
     };
   }
 
@@ -17,12 +19,16 @@ class Login extends Component {
     });
   };
 
-  handleLogin = async () => {
+  handleLogin = async (e) => {
+    e.preventDefault();
     const { email, password } = this.state;
 
     try {
+      this.setState({ success: true });
       const response = await axios.post("/api/login", { email, password });
-  
+      console.log(response);
+
+
     } catch (error) {
       // Handle login error
       this.setState({
@@ -34,24 +40,45 @@ class Login extends Component {
   render() {
     return (
       <div>
-        <h2>Login</h2>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={this.state.email}
-          onChange={this.handleInputChange}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={this.state.password}
-          onChange={this.handleInputChange}
-        />
-        <button onClick={this.handleLogin}>Login</button>
-        {this.state.errorMessage && (
-          <p style={{ color: "red" }}>{this.state.errorMessage}</p>
+        {this.state.success ? (
+          <section>
+            <div>You are logged In</div>
+            <p>Go <Link to="/">home</Link></p>
+          </section>
+        ) : (
+          <section>
+            <h2>Login</h2>
+            <form onSubmit={this.handleLogin}>
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Email"
+                value={this.state.email}
+                onChange={this.handleInputChange}
+                required
+              />
+
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Password"
+                value={this.state.password}
+                onChange={this.handleInputChange}
+              />
+              <button>Login</button>
+            </form>
+            <p>Not registered? Register <Link to="/register">here</Link></p>
+
+
+
+            {this.state.errorMessage && (
+              <p style={{ color: "red" }}>{this.state.errorMessage}</p>
+            )}
+          </section>
         )}
       </div>
     );
