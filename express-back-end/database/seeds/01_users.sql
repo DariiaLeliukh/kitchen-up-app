@@ -1,3 +1,3 @@
-INSERT INTO users ( id, username, first_name, last_name, email, password, avatar)
+INSERT INTO users ( username, first_name, last_name, email, password)
 VALUES 
-  (1, 'John Doe', 'John', 'Doe', 'john.doe@email.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', 'JD');
+  ('John Doe', 'John', 'Doe', 'john.doe@email.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.');
