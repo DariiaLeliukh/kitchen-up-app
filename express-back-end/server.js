@@ -5,6 +5,7 @@ const app = express();
 const PORT = 8080;
 const usersQuery = require('./database/queries/users');
 const sessionsQuery = require('./database/queries/cooking-sessions')
+const invitationsQuery = require("./database/queries/invitations");
 
 
 app.use(express.static(__dirname + '/public'));
@@ -32,6 +33,12 @@ app.get("/cooking-sessions", (req, res) => {
   });
 });
 
+app.get("/invitations", (req, res) => {
+  invitationsQuery.getAllInvitations().then((invitations) => {
+    console.log(invitations);
+    res.json({ data: invitations });
+  });
+});
 
 // Registration endpoint
 app.post('/register', async (req, res) => {
