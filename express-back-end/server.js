@@ -4,8 +4,9 @@ const morgan = require('morgan')
 const app = express();
 const PORT = 8080;
 const usersQuery = require('./database/queries/users');
-const sessionsQuery = require('./database/queries/cooking-sessions')
+const sessionsQuery = require('./database/queries/cooking-sessions');
 const invitationsQuery = require("./database/queries/invitations");
+const recipeListQuery = require("./database/queries/recipe_lists");
 
 
 app.use(express.static(__dirname + '/public'));
@@ -37,6 +38,13 @@ app.get("/invitations", (req, res) => {
   invitationsQuery.getAllInvitations().then((invitations) => {
     console.log(invitations);
     res.json({ data: invitations });
+  });
+});
+
+app.get("/recipe-lists", (req, res) => {
+  recipeListQuery.getAllRecipeLists().then((recipe_lists) => {
+    console.log(recipe_lists);
+    res.json({ data: recipe_lists });
   });
 });
 
