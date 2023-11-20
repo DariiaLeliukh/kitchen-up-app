@@ -3,7 +3,9 @@ const express = require('express');
 const morgan = require('morgan')
 const app = express();
 const PORT = 8080;
-const usersQuery = require('./database/queries/users')
+const usersQuery = require('./database/queries/users');
+const sessionsQuery = require('./database/queries/cooking-sessions')
+
 
 app.use(express.static(__dirname + '/public'));
 app.use(express.json());
@@ -22,6 +24,15 @@ app.get('/users', (req, res) => {
     res.json({data: users})
   })
 })
+
+app.get("/cooking-sessions", (req, res) => {
+  sessionsQuery.getCookingSessions().then((cooking_sessions) => {
+    console.log(cooking_sessions);
+    res.json({ data: cooking_sessions });
+  });
+});
+
+
 // Registration endpoint
 app.post('/register', async (req, res) => {
   const { username, first_name, last_name, email, password } = req.body;
