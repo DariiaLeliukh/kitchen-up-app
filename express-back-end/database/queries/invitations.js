@@ -1,9 +1,9 @@
 const db = require("../connection");
 
-const getAllInvitations = () => {
+const getInvitations = () => {
   return db.query("SELECT * FROM invitations;").then((data) => {
     return data.rows;
   });
 };
 
-module.exports = { getAllInvitations };
+module.exports = { getInvitations };
