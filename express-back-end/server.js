@@ -7,6 +7,7 @@ const usersQuery = require('./database/queries/users');
 const sessionsQuery = require('./database/queries/cooking-sessions');
 const invitationsQuery = require("./database/queries/invitations");
 const recipeListQuery = require("./database/queries/recipe_lists");
+const groceryListQuery = require("./database/queries/grocery_list_items")
 
 
 app.use(express.static(__dirname + '/public'));
@@ -45,6 +46,13 @@ app.get("/recipe-lists", (req, res) => {
   recipeListQuery.getAllRecipeLists().then((recipe_lists) => {
     console.log(recipe_lists);
     res.json({ data: recipe_lists });
+  });
+});
+
+app.get("/grocery-list", (req, res) => {
+  groceryListQuery.getGroceryListItems().then((grocery_list_items) => {
+    console.log(grocery_list_items);
+    res.json({ data: grocery_list_items });
   });
 });
 
