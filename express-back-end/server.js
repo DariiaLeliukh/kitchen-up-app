@@ -36,14 +36,14 @@ app.get("/cooking-sessions", (req, res) => {
 });
 
 app.get("/invitations", (req, res) => {
-  invitationsQuery.getAllInvitations().then((invitations) => {
+  invitationsQuery.getInvitations().then((invitations) => {
     console.log(invitations);
     res.json({ data: invitations });
   });
 });
 
 app.get("/recipe-lists", (req, res) => {
-  recipeListQuery.getAllRecipeLists().then((recipe_lists) => {
+  recipeListQuery.getRecipeLists().then((recipe_lists) => {
     console.log(recipe_lists);
     res.json({ data: recipe_lists });
   });
