@@ -6,7 +6,7 @@ import TopNavigation from "./components/TopNavigation";
 import HomeRoute from "./routes/HomeRoute";
 import Register from "./components/Register";
 import Login from "./components/Login";
-import SearchResults from "./components/SearchResult";
+import SearchResults from "./routes/Search";
 
 class App extends Component {
 
