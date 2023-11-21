@@ -6,6 +6,7 @@ import TopNavigation from "./components/TopNavigation";
 import HomeRoute from "./routes/HomeRoute";
 import Register from "./components/Register";
 import Login from "./components/Login";
+import SearchResults from "./components/SearchResult";
 
 class App extends Component {
 
@@ -17,6 +18,7 @@ class App extends Component {
           <Route path="/" element={<HomeRoute />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/search" element={<SearchResults/>}/>
         </Routes>
       </div>
     );
