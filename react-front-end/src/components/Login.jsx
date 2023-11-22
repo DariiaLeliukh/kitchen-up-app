@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import "../styles/css/login.css"
 
 class Login extends Component {
   constructor(props) {
@@ -44,7 +45,7 @@ class Login extends Component {
             <p>Go <Link to="/">home</Link></p>
           </section>
         ) : (
-          <section>
+          <section className="login-form">
             <h2>Login</h2>
             <form onSubmit={this.handleLogin}>
               <label htmlFor="email">Email</label>
