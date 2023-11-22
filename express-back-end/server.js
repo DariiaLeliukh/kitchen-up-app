@@ -9,6 +9,10 @@ const invitationsQuery = require("./database/queries/invitations");
 const recipeListQuery = require("./database/queries/recipe_lists");
 const groceryListQuery = require("./database/queries/grocery_list_items")
 
+const apiUrl = require('./routes/helper/api-routes');
+const axios = require('axios');
+
+
 app.use(express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -28,10 +32,19 @@ app.get('/users', (req, res) => {
 });
 
 app.get("/cooking-sessions", (req, res) => {
-  sessionsQuery.getCookingSessions().then((cooking_sessions) => {
-    console.log(cooking_sessions);
-    res.json({ data: cooking_sessions });
-  });
+  const url = apiUrl.getRecipeInformationBulk([715538,716429]);
+  console.log(url);
+
+  // Make a GET request using axios
+  axios.get(url).then(apiData => {
+    // Send the JSON response back to the client
+    res.json(apiData.data);
+  });  
+
+  // sessionsQuery.getCookingSessions().then((cooking_sessions) => {
+  //   console.log(cooking_sessions);
+  //   res.json({ data: cooking_sessions });
+  // });
 });
 
 app.get("/invitations", (req, res) => {
