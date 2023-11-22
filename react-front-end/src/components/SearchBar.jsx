@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({ onSearch, placeholder }) => {
   const [search, setSearch] = useState("");
 
   const handleSearchChange = (event) => {
@@ -10,17 +10,19 @@ const SearchBar = ({ onSearch }) => {
   const handleSearchSubmit = (event) => {
     event.preventDefault();
     onSearch(search);
+    
+    // Clear the search bar
+    setSearch("");
   };
 
   return (
     <form onSubmit={handleSearchSubmit}>
       <input
         type="text"
-        placeholder="Search for a recipe..."
+        placeholder={placeholder}
         value={search}
         onChange={handleSearchChange}
       />
-      <button type="submit">Search</button>
     </form>
   );
 };
