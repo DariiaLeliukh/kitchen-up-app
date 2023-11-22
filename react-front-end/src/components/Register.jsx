@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import { useRef, useState, useEffect } from 'react';
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -6,7 +5,7 @@ import { Link } from "react-router-dom";
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
-const Register = (props) => {
+const Register = () => {
   const userRef = useRef();
   const errRef = useRef();
 
@@ -102,7 +101,6 @@ const Register = (props) => {
           <section>
             <p ref={errRef} className={errorMessage ? "errmsg" : "offscreen"} aria-live="assertive">{errorMessage}</p>
             <h1>Register</h1>
-            <h2>Register</h2>
             <form onSubmit={handleRegister}>
               <label htmlFor="username">
                 Username:
@@ -203,6 +201,7 @@ const Register = (props) => {
               </p>
               <button>Register</button>
             </form>
+            <p>Registered? Login <Link to="/login">here</Link></p>
             {errorMessage && (
               <p style={{ color: "red" }}>{errorMessage}</p>
             )}

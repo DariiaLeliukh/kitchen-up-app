@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
-
+const jwt = require('jsonwebtoken');
 
 app.get('/data', (req, res) => {
   res.json({ message: "Seems to work" });
@@ -56,20 +56,66 @@ app.post('/register', async (req, res) => {
 
 // Login endpoint
 app.post('/login', async (req, res) => {
+  const cookies = req.cookies;
+
   const { email, password } = req.body;
 
   try {
     // Retrieve the user from the database based on the email
-    const user = await usersQuery.getUserByEmail(email);
+    const foundUser = await usersQuery.getUserByEmail(email);
 
     // Check if the user exists and the password matches
-    if (!user) {
+    if (!foundUser) {
       // If the user doesn't exist or the password is incorrect
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // Respond with a success message or any other desired response
-    res.json({ message: 'Login successful' });
+    const accessToken = jwt.sign(
+      { "username": foundUser.username },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: '30s' } //TODO: change later for something longer
+    );
+
+    const newRefreshToken = jwt.sign(
+      { "username": foundUser.username },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: '1d' }
+    );
+
+    let newRefreshTokenArray =
+      !cookies?.jwt
+        ? foundUser.refresh_token
+        : foundUser.refresh_token.filter(rt => rt !== cookies.jwt);
+
+    if (cookies?.jwt) {
+
+      /* 
+      Scenario added here: 
+          1) User logs in but never uses RT and does not logout 
+          2) RT is stolen
+          3) If 1 & 2, reuse detection is needed to clear all RTs when user logs in
+      */
+      const refreshToken = cookies.jwt;
+      const foundToken = foundUser.refresh_token;
+
+      // Detected refresh token reuse!
+      if (!foundToken) {
+        // clear out ALL previous refresh tokens
+        newRefreshTokenArray = [];
+      }
+
+      res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+    }
+
+    // Saving refreshToken with current user
+    foundUser.refresh_token = [...newRefreshTokenArray, newRefreshToken];
+    const result = await usersQuery.updateUser(foundUser);
+
+    // Creates Secure Cookie with refresh token
+    res.cookie('jwt', newRefreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });
+
+    // Send authorization roles and access token to user
+    res.json({ accessToken });
 
   } catch (error) {
     console.error('Login failed:', error);

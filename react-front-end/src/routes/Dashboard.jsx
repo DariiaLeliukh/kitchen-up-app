@@ -1,14 +1,13 @@
 import TopNavigation from '../components/TopNavigation';
-import Login from '../components/Login';
 
-const HomeRoute = () => {
+const Dashboard = () => {
 
   return (
     <div className="home-route">
       <TopNavigation />
-      <Login />
+      Dashboard
     </div>
   );
 };
 
-export default HomeRoute;
+export default Dashboard;
