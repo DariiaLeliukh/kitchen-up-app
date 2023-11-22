@@ -1,11 +1,17 @@
 import { useRef, useState, useEffect } from 'react';
 import axios from "axios";
-import { Link } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 const Register = () => {
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/dashboard";
+
   const userRef = useRef();
   const errRef = useRef();
 
@@ -56,9 +62,6 @@ const Register = () => {
       return;
     }
     try {
-      console.log(username);
-
-
       const response = await axios.post("api/register", {
         username,
         first_name,
@@ -66,15 +69,17 @@ const Register = () => {
         email,
         password
       });
-      console.log(response?.data);
-      console.log(response?.accessToken);
-      console.log(JSON.stringify(response));
-      setSuccess(true);
-      //clear state and controlled inputs
-      //need value attrib on inputs for this
-      setUsername('');
+
+      const userAccessToken = response?.data?.result?.access_token || null;
+      const userEmail = response?.data?.result?.email || null;
+      const userId = response?.data?.result?.id || null;
+
+      setAuth({ userEmail, userAccessToken, userId });
+      setEmail('');
       setPassword('');
-      setMatchPassword('');
+
+      navigate(from, { replace: true });
+
     } catch (err) {
       if (!err?.response) {
         setErrorMessage('No Server Response');
@@ -92,121 +97,116 @@ const Register = () => {
   return (
     <div>
       <div>
-        {success ? (
-          <section>
-            <div>Registration successful</div>
-            <p>Go <Link to="/">home</Link></p>
-          </section>
-        ) : (
-          <section>
-            <p ref={errRef} className={errorMessage ? "errmsg" : "offscreen"} aria-live="assertive">{errorMessage}</p>
-            <h1>Register</h1>
-            <form onSubmit={handleRegister}>
-              <label htmlFor="username">
-                Username:
-                <i className={validUsername ? "valid fa-solid fa-check" : "hide"}> </i>
-                <i className={validUsername || !username ? "hide" : "invalid fa-solid fa-xmark"} > </i>
-              </label>
-              <input
-                type="text"
-                name="username"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                id="username"
-                ref={userRef}
-                autoComplete="off"
-                required
-                aria-invalid={validUsername ? "false" : "true"}
-                aria-describedby="uidnote"
-                onFocus={() => setUserFocus(true)}
-                onBlur={() => setUserFocus(false)}
-              />
-              <p id="uidnote" className={userFocus && username && !validUsername ? "instructions" : "offscreen"}>
-                <i className="fa-solid fa-circle-info" />
-                4 to 24 characters.<br />
-                Must begin with a letter.<br />
-                Letters, numbers, underscores, hyphens allowed.
-              </p>
 
-              <input
-                type="text"
-                name="first_name"
-                placeholder="First Name"
-                value={first_name}
-                onChange={(e) => setFirstName(e.target.value)}
-                required
-              />
-              <input
-                type="text"
-                name="last_name"
-                placeholder="Last Name"
-                value={last_name}
-                onChange={(e) => setLastName(e.target.value)}
-                required
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <label htmlFor="password">
-                Password:
-                <i className={validPassword ? "fa-solid fa-check valid" : "hide"} />
-                <i className={validPassword || !password ? "hide" : "invalid fa-solid fa-times"} />
-              </label>
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                id="password"
-                aria-invalid={validPassword ? "false" : "true"}
-                aria-describedby="pwdnote"
-                onFocus={() => setPasswordFocus(true)}
-                onBlur={() => setPasswordFocus(false)}
-              />
-              <p id="pwdnote" className={passwordFocus && !validPassword ? "instructions" : "offscreen"}>
-                <i className="fa-solid fa-info-cirle" />
-                8 to 24 characters.<br />
-                Must include uppercase and lowercase letters, a number and a special character.<br />
-                Allowed special characters: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
-              </p>
-              <label htmlFor="confirmPassword">
-                Confirm Password:
-                <i className={validMatch && matchPassword ? "valid fa-solid fa-check" : "hide"} />
-                <i className={validMatch || !matchPassword ? "hide" : "invalid fa-solid fa-times"} />
-              </label>
-              <input
-                type="password"
-                name="confirmPassword"
-                placeholder="Confirm Password"
-                value={matchPassword}
-                onChange={(e) => setMatchPassword(e.target.value)}
-                required
-                id="confirmPassword"
-                aria-invalid={validMatch ? "false" : "true"}
-                aria-describedby="confirmnote"
-                onFocus={() => setMatchFocus(true)}
-                onBlur={() => setMatchFocus(false)}
-              />
-              <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
-                <i className="fa-solid fa-info-circle" />
-                Must match the first password input field.
-              </p>
-              <button>Register</button>
-            </form>
-            <p>Registered? Login <Link to="/login">here</Link></p>
-            {errorMessage && (
-              <p style={{ color: "red" }}>{errorMessage}</p>
-            )}
-          </section>
-        )}
+        <section>
+          <p ref={errRef} className={errorMessage ? "errmsg" : "offscreen"} aria-live="assertive">{errorMessage}</p>
+          <h1>Register</h1>
+          <form onSubmit={handleRegister}>
+            <label htmlFor="username">
+              Username:
+              <i className={validUsername ? "valid fa-solid fa-check" : "hide"}> </i>
+              <i className={validUsername || !username ? "hide" : "invalid fa-solid fa-xmark"} > </i>
+            </label>
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              id="username"
+              ref={userRef}
+              autoComplete="off"
+              required
+              aria-invalid={validUsername ? "false" : "true"}
+              aria-describedby="uidnote"
+              onFocus={() => setUserFocus(true)}
+              onBlur={() => setUserFocus(false)}
+            />
+            <p id="uidnote" className={userFocus && username && !validUsername ? "instructions" : "offscreen"}>
+              <i className="fa-solid fa-circle-info" />
+              4 to 24 characters.<br />
+              Must begin with a letter.<br />
+              Letters, numbers, underscores, hyphens allowed.
+            </p>
+
+            <input
+              type="text"
+              name="first_name"
+              placeholder="First Name"
+              value={first_name}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              name="last_name"
+              placeholder="Last Name"
+              value={last_name}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <label htmlFor="password">
+              Password:
+              <i className={validPassword ? "fa-solid fa-check valid" : "hide"} />
+              <i className={validPassword || !password ? "hide" : "invalid fa-solid fa-times"} />
+            </label>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              id="password"
+              aria-invalid={validPassword ? "false" : "true"}
+              aria-describedby="pwdnote"
+              onFocus={() => setPasswordFocus(true)}
+              onBlur={() => setPasswordFocus(false)}
+            />
+            <p id="pwdnote" className={passwordFocus && !validPassword ? "instructions" : "offscreen"}>
+              <i className="fa-solid fa-info-cirle" />
+              8 to 24 characters.<br />
+              Must include uppercase and lowercase letters, a number and a special character.<br />
+              Allowed special characters: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
+            </p>
+            <label htmlFor="confirmPassword">
+              Confirm Password:
+              <i className={validMatch && matchPassword ? "valid fa-solid fa-check" : "hide"} />
+              <i className={validMatch || !matchPassword ? "hide" : "invalid fa-solid fa-times"} />
+            </label>
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              value={matchPassword}
+              onChange={(e) => setMatchPassword(e.target.value)}
+              required
+              id="confirmPassword"
+              aria-invalid={validMatch ? "false" : "true"}
+              aria-describedby="confirmnote"
+              onFocus={() => setMatchFocus(true)}
+              onBlur={() => setMatchFocus(false)}
+            />
+            <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
+              <i className="fa-solid fa-info-circle" />
+              Must match the first password input field.
+            </p>
+            <button>Register</button>
+          </form>
+          <p>Registered? Login <Link to="/login">here</Link></p>
+          {errorMessage && (
+            <p style={{ color: "red" }}>{errorMessage}</p>
+          )}
+        </section>
+
       </div>
     </div>
   );

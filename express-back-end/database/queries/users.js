@@ -11,11 +11,11 @@ const createUser = (user) => {
   const { username, first_name, last_name, email, password } = user;
 
   return db.query(
-    "INSERT INTO users(username, first_name, last_name, email, password) VALUES($1, $2, $3, $4, $5) RETURNING id",
+    "INSERT INTO users(username, first_name, last_name, email, password) VALUES($1, $2, $3, $4, $5) RETURNING *;",
     [username, first_name, last_name, email, password]
   )
     .then((data) => {
-      return data.rows[0].id;
+      return data.rows[0];
     });
 };
 
@@ -27,12 +27,20 @@ const getUserByEmail = (email) => {
     });
 };
 
-const updateUser = (data) => {
+const updateUserToken = (access_token, id) => {
   return db
-    .query("UPDATE users SET refresh_token = $1 WHERE id = $2 RETURNING *;", [data.refresh_token, data.id])
+    .query("UPDATE users SET access_token = $1 WHERE id = $2 RETURNING *;", [access_token, id])
     .then((data) => {
-      return data.rows || null; // Return user data or null if not found
+      return data.rows[0] || null; // Return user data or null if not found
     });
 };
 
-module.exports = { getUsers, createUser, getUserByEmail, updateUser };
+const getUserByToken = (token) => {
+  return db
+    .query("SELECT * FROM users WHERE access_token = $1;", [token])
+    .then((data) => {
+      return data.rows[0] || null; // Return user data or null if not found
+    });
+};
+
+module.exports = { getUsers, createUser, getUserByEmail, updateUserToken, getUserByToken };

@@ -5,7 +5,7 @@ import HomeRoute from "./routes/HomeRoute";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import RequireAuth from "./components/RequireAuth";
-import Dashboard from "./routes/Dashboard";
+import Dashboard from "./components/Dashboard";
 
 const App = () => {
   return (

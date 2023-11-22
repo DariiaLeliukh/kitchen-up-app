@@ -3,18 +3,45 @@ const express = require('express');
 const morgan = require('morgan');
 const app = express();
 const PORT = 8080;
+const bcrypt = require('bcrypt');
+const cookieParser = require('cookie-parser');
 const usersQuery = require('./database/queries/users');
 const sessionsQuery = require('./database/queries/cooking-sessions');
 const invitationsQuery = require("./database/queries/invitations");
 const recipeListQuery = require("./database/queries/recipe_lists");
-const groceryListQuery = require("./database/queries/grocery_list_items")
+const groceryListQuery = require("./database/queries/grocery_list_items");
 
 app.use(express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
-
+app.use(cookieParser());
 const jwt = require('jsonwebtoken');
+
+const verifyJWT = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+
+  if (!authHeader) {
+    return res.sendStatus(401);
+  }
+
+  const token = authHeader.split(' ')[1];
+
+  jwt.verify(
+    token,
+    process.env.ACCESS_TOKEN_SECRET,
+    (err, decoded) => {
+      if (err) {
+        console.log(err);
+
+        return res.sendStatus(403);
+      }
+      req.user = decoded.username;
+      next();
+    }
+  );
+
+};
 
 app.get('/data', (req, res) => {
   res.json({ message: "Seems to work" });
@@ -47,50 +74,78 @@ app.get("/recipe-lists", (req, res) => {
     res.json({ data: recipe_lists });
   });
 });
-
-app.get("/grocery-list", (req, res) => {
-  groceryListQuery.getGroceryListItems().then((grocery_list_items) => {
-    console.log(grocery_list_items);
-    res.json({ data: grocery_list_items });
-  });
-});
-
 // Registration endpoint
 app.post('/register', async (req, res) => {
-
-  console.log('req.body');
-  console.log(req.body);
   const { username, first_name, last_name, email, password } = req.body;
 
+  if (!username || !first_name || !last_name || !email || !password) {
+    return res.status(400).json({ error: 'Registration failed. Not enough info was provided' });
+  }
+
+  const existingUser = await usersQuery.getUserByEmail(email);
+
+  if (existingUser) {
+    // User with this email already exists
+    return res
+      .status(409)
+      .json({ error: "User with this email already exists" });
+  }
+
   try {
-    const existingUser = await usersQuery.getUserByEmail(email);
-    if (existingUser) {
-      // User with this email already exists
-      return res
-        .status(409)
-        .json({ error: "User with this email already exists" });
-    }
+    //encrypt the password
+    const hashedPwd = await bcrypt.hash(password, 10);
 
     // Insert the user into the database
     const userId = await usersQuery.createUser({
       username,
-      first_name: first_name,
-      last_name: last_name,
+      first_name,
+      last_name,
       email,
-      password,
+      password: hashedPwd,
     });
 
-    res.json({ userId });
+    const accessToken = jwt.sign(
+      { "username": userId.username },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: '600s' } //TODO: change later for something longer
+    );
+
+    userId.access_token = accessToken;
+    const result = await usersQuery.updateUserToken(userId.access_token, userId.id);
+
+    // Creates Secure Cookie with refresh token
+    res.cookie('jwt', accessToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });
+
+    return res.json({ result });
   } catch (error) {
-    console.error('Registration failed:', error);
-    res.status(500).json({ error: 'Registration failed' });
+    return res.status(500).json({ error: `Registration failed. ${error.message}` });
   }
 });
 
-// Login endpoint
-app.post('/login', async (req, res) => {
+app.post('/logout', async (req, res) => {
   const cookies = req.cookies;
 
+  if (!cookies?.jwt) {
+    return res.sendStatus(204);
+  }
+
+  const access_token = cookies.jwt;
+
+  try {
+    // Retrieve the user from the database based on their token
+    const foundUser = await usersQuery.getUserByToken(access_token);
+    const result = await usersQuery.updateUserToken(null, foundUser.id);
+
+    res.clearCookie('jwt', { httpOnly: true });
+    return res.sendStatus(204);
+  } catch (error) {
+    console.error('Logout failed:', error);
+    res.status(500).json({ error: 'Logout failed' });
+  }
+
+});
+// Login endpoint
+app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -106,55 +161,34 @@ app.post('/login', async (req, res) => {
     const accessToken = jwt.sign(
       { "username": foundUser.username },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: '30s' } //TODO: change later for something longer
+      { expiresIn: '600s' } //TODO: change later for something longer
     );
 
-    const newRefreshToken = jwt.sign(
-      { "username": foundUser.username },
-      process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: '1d' }
-    );
-
-    let newRefreshTokenArray =
-      !cookies?.jwt
-        ? foundUser.refresh_token
-        : foundUser.refresh_token.filter(rt => rt !== cookies.jwt);
-
-    if (cookies?.jwt) {
-
-      /* 
-      Scenario added here: 
-          1) User logs in but never uses RT and does not logout 
-          2) RT is stolen
-          3) If 1 & 2, reuse detection is needed to clear all RTs when user logs in
-      */
-      const refreshToken = cookies.jwt;
-      const foundToken = foundUser.refresh_token;
-
-      // Detected refresh token reuse!
-      if (!foundToken) {
-        // clear out ALL previous refresh tokens
-        newRefreshTokenArray = [];
-      }
-
-      res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
-    }
-
-    // Saving refreshToken with current user
-    foundUser.refresh_token = [...newRefreshTokenArray, newRefreshToken];
-    const result = await usersQuery.updateUser(foundUser);
+    foundUser.access_token = accessToken;
+    const result = await usersQuery.updateUserToken(foundUser.access_token, foundUser.id);
 
     // Creates Secure Cookie with refresh token
-    res.cookie('jwt', newRefreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });
+    res.cookie('jwt', accessToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });
 
-    // Send authorization roles and access token to user
-    res.json({ accessToken });
+    res.json({ result });
 
   } catch (error) {
     console.error('Login failed:', error);
     res.status(500).json({ error: 'Login failed' });
   }
 });
+
+// Next line specifies that anything bellow `app.use(verifyJWT)` requires to be authorized
+// app.use(verifyJWT);
+
+app.get("/grocery-list", (req, res) => {
+  groceryListQuery.getGroceryListItems().then((grocery_list_items) => {
+    console.log(grocery_list_items);
+    res.json({ data: grocery_list_items });
+  });
+});
+
+
 
 app.listen(PORT, () => {
   console.log("Express seems to be listening on port " + PORT + " so that's pretty good 👍");
