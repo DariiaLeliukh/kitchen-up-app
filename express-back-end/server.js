@@ -4,20 +4,40 @@ const morgan = require('morgan');
 const app = express();
 const PORT = 8080;
 const usersQuery = require('./database/queries/users');
-const sessionsQuery = require('./database/queries/cooking-sessions');
 const invitationsQuery = require("./database/queries/invitations");
 const recipeListQuery = require("./database/queries/recipe_lists");
 const groceryListQuery = require("./database/queries/grocery_list_items")
 
-const apiUrl = require('./routes/helper/api-routes');
-const axios = require('axios');
+/*
+TODO: For future use, if fetching data from the API from server.js
 
+Import:
+  const apiUrl = require('./routes/helper/api-routes');
+  const axios = require('axios');
+
+Example:
+  const url = apiUrl.getRecipeInformationBulk([715538,716429]);
+  
+  // Make a GET request using axios
+  axios.get(url).then(apiData => {
+  // Send the JSON response back to the client
+  res.json(apiData.data);
+*/
 
 app.use(express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
+
+// Separated Routes for each Resource
+// Note: Feel free to add more routes below with your own
+const cookingSessionRoutes = require("./routes/cooking-session");
+
+// Mount all resource routes
+// Note: Feel free to add routes below with your own
+// Note: Endpoints that return data (eg. JSON) usually start with `/api`
+app.use("/cooking-sessions", cookingSessionRoutes);
 
 
 app.get('/data', (req, res) => {
@@ -29,22 +49,6 @@ app.get('/users', (req, res) => {
     console.log(users);
     res.json({ data: users });
   });
-});
-
-app.get("/cooking-sessions", (req, res) => {
-  const url = apiUrl.getRecipeInformationBulk([715538,716429]);
-  console.log(url);
-
-  // Make a GET request using axios
-  axios.get(url).then(apiData => {
-    // Send the JSON response back to the client
-    res.json(apiData.data);
-  });  
-
-  // sessionsQuery.getCookingSessions().then((cooking_sessions) => {
-  //   console.log(cooking_sessions);
-  //   res.json({ data: cooking_sessions });
-  // });
 });
 
 app.get("/invitations", (req, res) => {
