@@ -1,10 +1,10 @@
-import TopNavigation from "../components/TopNavigation";
+import TopNavigation from './TopNavigation';
+
 
 const Dashboard = () => {
 
   return (
     <div className="home-route">
-      <TopNavigation />
       Dashboard
     </div>
   );
