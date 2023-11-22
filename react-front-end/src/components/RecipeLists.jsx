@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const RecipeLists = () => {
   const [recipeLists, setRecipeLists] = useState([]);
@@ -25,18 +26,16 @@ const RecipeLists = () => {
             <li key={list.id}>
               <strong>{list.name}</strong> - Created on{" "}
               {new Date(list.created_at).toLocaleDateString()}
-
-               {/* <Link to="/grocery-list"> */}
-        <button>Grocery List</button>
-      {/* </Link> */}
-              {/* <Link to={`/grocery-list/${list.id}`}> */}
-                <button> View List </button>
-                            {/* </Link> */}
+              {/* <Link to="/grocery-list"> */}
+              <button>Grocery List</button>
+              {/* </Link> */}
+              <Link to={`/recipe-list/${list.id}`}>
+                <button>View List</button>{" "}
+              </Link>
             </li>
           ))}
         </ul>
       )}
-      
     </div>
   );
 };
