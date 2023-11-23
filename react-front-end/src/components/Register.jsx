@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import "../styles/css/forms.css";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -95,19 +96,22 @@ const Register = () => {
 
 
   return (
-    <div>
-      <div>
+    <div className='container'>
 
-        <section>
-          <p ref={errRef} className={errorMessage ? "errmsg" : "offscreen"} aria-live="assertive">{errorMessage}</p>
-          <h1>Register</h1>
-          <form onSubmit={handleRegister}>
-            <label htmlFor="username">
+      <section className='form'>
+        <h1>Register</h1>
+        {errorMessage && (
+          <p className={errorMessage ? "errmsg my-3" : "offscreen"} style={{ color: "red" }}>{errorMessage}</p>
+        )}
+        <form onSubmit={handleRegister}>
+          <div className="mb-3">
+            <label className='form-label' htmlFor="username">
               Username:
               <i className={validUsername ? "valid fa-solid fa-check" : "hide"}> </i>
               <i className={validUsername || !username ? "hide" : "invalid fa-solid fa-xmark"} > </i>
             </label>
             <input
+              className='form-control'
               type="text"
               name="username"
               placeholder="Username"
@@ -122,14 +126,17 @@ const Register = () => {
               onFocus={() => setUserFocus(true)}
               onBlur={() => setUserFocus(false)}
             />
+
             <p id="uidnote" className={userFocus && username && !validUsername ? "instructions" : "offscreen"}>
               <i className="fa-solid fa-circle-info" />
               4 to 24 characters.<br />
               Must begin with a letter.<br />
               Letters, numbers, underscores, hyphens allowed.
             </p>
-
+          </div>
+          <div className='mb-3'>
             <input
+              className='form-control'
               type="text"
               name="first_name"
               placeholder="First Name"
@@ -137,7 +144,10 @@ const Register = () => {
               onChange={(e) => setFirstName(e.target.value)}
               required
             />
+          </div>
+          <div className="mb-3">
             <input
+              className='form-control'
               type="text"
               name="last_name"
               placeholder="Last Name"
@@ -145,7 +155,10 @@ const Register = () => {
               onChange={(e) => setLastName(e.target.value)}
               required
             />
+          </div>
+          <div className="mb-3">
             <input
+              className='form-control'
               type="email"
               name="email"
               placeholder="Email"
@@ -153,12 +166,15 @@ const Register = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <label htmlFor="password">
+          </div>
+          <div className="mb-3">
+            <label className='form-label' htmlFor="password">
               Password:
               <i className={validPassword ? "fa-solid fa-check valid" : "hide"} />
               <i className={validPassword || !password ? "hide" : "invalid fa-solid fa-times"} />
             </label>
             <input
+              className='form-control'
               type="password"
               name="password"
               placeholder="Password"
@@ -177,12 +193,15 @@ const Register = () => {
               Must include uppercase and lowercase letters, a number and a special character.<br />
               Allowed special characters: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
             </p>
-            <label htmlFor="confirmPassword">
+          </div>
+          <div className="mb-3">
+            <label className='form-label' htmlFor="confirmPassword">
               Confirm Password:
               <i className={validMatch && matchPassword ? "valid fa-solid fa-check" : "hide"} />
               <i className={validMatch || !matchPassword ? "hide" : "invalid fa-solid fa-times"} />
             </label>
             <input
+              className='form-control'
               type="password"
               name="confirmPassword"
               placeholder="Confirm Password"
@@ -196,18 +215,16 @@ const Register = () => {
               onBlur={() => setMatchFocus(false)}
             />
             <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
-              <i className="fa-solid fa-info-circle" />
+              <i className="fa-solid fa-info-circle pr-1" />
               Must match the first password input field.
             </p>
-            <button>Register</button>
-          </form>
-          <p>Registered? Login <Link to="/login">here</Link></p>
-          {errorMessage && (
-            <p style={{ color: "red" }}>{errorMessage}</p>
-          )}
-        </section>
+          </div>
+          <button>Register</button>
+        </form>
+        <p className='mt-3'>Registered? Login <Link to="/login">here</Link></p>
 
-      </div>
+      </section>
+
     </div>
   );
 
