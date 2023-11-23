@@ -7,7 +7,6 @@ const HomeRoute = (props) => {
   const [ingredientResults, setIngredientResults] = useState([]);
 
   const handleNameSearch = async (search) => {
-    console.log(`Searching by name for: ${search}`);
     try {
       const response = await fetch(`/api/search?name=${search}`);
       const data = await response.json();
@@ -18,16 +17,16 @@ const HomeRoute = (props) => {
     }
   };
 
-  const handleIngredientSearch = (search) => {
-    console.log(`Searching by ingredient for: ${search}`);
-
-    const filteredIngredientResults = recipes.filter((recipe) =>
-      recipe.ingredients.some((ingredient) =>
-        ingredient.toLowerCase().includes(search.toLowerCase())
-      )
-    );
-    setIngredientResults(filteredIngredientResults);
-  };
+  const handleIngredientSearch = async (search) => {
+  try {
+    const response = await fetch(`/api/search?ingredients=${search}`);
+    const data = await response.json();
+    console.log("Data from backend:", data);
+    setIngredientResults(Array.isArray(data) ? data : []);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
   const handleSearchSubmit = (search, searchType) => {
     // Clear old results based on searchType
     if (searchType === "name") {
@@ -44,8 +43,7 @@ const HomeRoute = (props) => {
     }
   };
 
-  const combinedResults = [...nameResults, ...(ingredientResults || [])];
-console.log(combinedResults);
+  const combinedResults = [...nameResults, ...ingredientResults];
 
   return (
     <div className="home-route">
