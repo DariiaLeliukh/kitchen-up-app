@@ -38,7 +38,7 @@ class Login extends Component {
 
   render() {
     return (
-      <div>
+      <div className="login-container">
         {this.state.success ? (
           <section>
             <div>You are logged In</div>
