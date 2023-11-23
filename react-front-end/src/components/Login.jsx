@@ -1,87 +1,90 @@
-import React, { Component } from "react";
+import { useEffect, useRef, useState } from "react";
+import useAuth from "../hooks/useAuth";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import "../styles/css/login.css"
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import "../styles/css/login.css";
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: "",
-      password: "",
-      errorMessage: "",
-      success: false
-    };
-  }
+const Login = () => {
+  const { setAuth } = useAuth();
 
-  handleInputChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  };
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/dashboard";
 
-  handleLogin = async (e) => {
+  const emailRef = useRef();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    emailRef.current.focus();
+  }, []);
+
+  useEffect(() => {
+    setErrorMessage('');
+  }, [email, password]);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const { email, password } = this.state;
-
     try {
       const response = await axios.post("/api/login", { email, password });
-      console.log(response);
-      this.setState({ success: true });
+
+      const userAccessToken = response?.data?.result?.access_token || null;
+      const userEmail = response?.data?.result?.email || null;
+      const userId = response?.data?.result?.id || null;
+
+
+      setAuth({ userEmail, userAccessToken, userId });
+      setEmail('');
+      setPassword('');
+
+      navigate(from, { replace: true });
     } catch (error) {
-      // Handle login error
-      this.setState({
-        errorMessage: "Invalid credentials. Please try again."
-      });
+      setErrorMessage('Login Failed');
     }
   };
 
-  render() {
-    return (
-      <div className="login-container">
-        {this.state.success ? (
-          <section>
-            <div>You are logged In</div>
-            <p>Go <Link to="/">home</Link></p>
-          </section>
-        ) : (
-          <section className="login-form">
-            <h2>Login</h2>
-            <form onSubmit={this.handleLogin}>
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="Email"
-                value={this.state.email}
-                onChange={this.handleInputChange}
-                required
-              />
+  return (
+    <div className="login-container">
+      <section className="login-form">
+        <h2>Login</h2>
+        <form onSubmit={handleLogin}>
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            ref={emailRef}
+          />
 
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Password"
-                value={this.state.password}
-                onChange={this.handleInputChange}
-              />
-              <button>Login</button>
-            </form>
-            <p>Not registered? Register <Link to="/register">here</Link></p>
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button>Login</button>
+        </form>
+        <p>Not registered? Register <Link to="/register">here</Link></p>
 
 
 
-            {this.state.errorMessage && (
-              <p style={{ color: "red" }}>{this.state.errorMessage}</p>
-            )}
-          </section>
+        {errorMessage && (
+          <p style={{ color: "red" }}>{errorMessage}</p>
         )}
-      </div>
-    );
-  }
-}
+      </section>
+    </div>
+  );
+
+};
 
 export default Login;
