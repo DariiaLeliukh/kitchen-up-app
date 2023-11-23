@@ -4,12 +4,40 @@ const morgan = require('morgan');
 const app = express();
 const PORT = 8080;
 const usersQuery = require('./database/queries/users');
+const invitationsQuery = require("./database/queries/invitations");
+const recipeListQuery = require("./database/queries/recipe_lists");
+const groceryListQuery = require("./database/queries/grocery_list_items")
+
+/*
+TODO: For future use, if fetching data from the API from server.js
+
+Import:
+  const recipeApiUrl = require('./routes/helper/api-routes');
+  const axios = require('axios');
+
+Example:
+  const url = recipeApiUrl.getRecipeInformationBulk([715538,716429]);
+  
+  // Make a GET request using axios
+  axios.get(url).then(apiData => {
+  // Send the JSON response back to the client
+  res.json(apiData.data);
+*/
 
 app.use(express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
+
+// Separated Routes for each Resource
+// Note: Feel free to add more routes below with your own
+const cookingSessionRoutes = require("./routes/cooking-session");
+
+// Mount all resource routes
+// Note: Feel free to add routes below with your own
+// Note: Endpoints that return data (eg. JSON) usually start with `/api`
+app.use("/cooking-sessions", cookingSessionRoutes);
 
 
 app.get('/data', (req, res) => {
@@ -22,6 +50,28 @@ app.get('/users', (req, res) => {
     res.json({ data: users });
   });
 });
+
+app.get("/invitations", (req, res) => {
+  invitationsQuery.getInvitations().then((invitations) => {
+    console.log(invitations);
+    res.json({ data: invitations });
+  });
+});
+
+app.get("/recipe-lists", (req, res) => {
+  recipeListQuery.getRecipeLists().then((recipe_lists) => {
+    console.log(recipe_lists);
+    res.json({ data: recipe_lists });
+  });
+});
+
+app.get("/grocery-list", (req, res) => {
+  groceryListQuery.getGroceryListItems().then((grocery_list_items) => {
+    console.log(grocery_list_items);
+    res.json({ data: grocery_list_items });
+  });
+});
+
 // Registration endpoint
 app.post('/register', async (req, res) => {
 
