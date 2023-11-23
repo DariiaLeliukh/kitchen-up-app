@@ -1,11 +1,12 @@
+import { Link } from "react-router-dom";
 import TopNavigation from "../components/TopNavigation";
 
 const Dashboard = () => {
-
   return (
     <div className="home-route">
-      <TopNavigation />
-      Dashboard
+      <Link to="/cooking-sessions">
+        <button>Cooking Sessons</button>
+      </Link>
     </div>
   );
 };
