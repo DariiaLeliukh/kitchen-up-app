@@ -1,18 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const CookingSessionListItem = ({ item, showInfoButton }) => (
+const CookingSessionListItem = ({ cookingSession, showInfoButton }) => (
   <li>
-    <strong>Host: {item.hostName}</strong>
+    <strong>Host: {cookingSession.hostName}</strong>
     <br />
-    <strong>Recipe: {item.recipeName}</strong>
+    <strong>Recipe: {cookingSession.recipeName}</strong>
     <br />
-    <span>Date: {item.date}</span>
+    <span>Date: {cookingSession.date}</span>
     <br />
-    <span>Time: {item.time}</span>
+    <span>Time: {cookingSession.time}</span>
     <br />
     {showInfoButton && (
-      <Link to={`/cooking-session/${item.id}`}>
+      <Link to={`/cooking-session/${cookingSession.id}`}>
         <button>View Info</button>
       </Link>
     )}
