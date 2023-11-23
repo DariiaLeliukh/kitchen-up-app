@@ -26,7 +26,7 @@ const RecipeListItem = ({ recipeList }) => {
 
       <div>
         <button>Edit List</button>
-        {/* <Link to={`/grocery-list/${recipeList.id}`}> */}
+        {/* <Link to={`/recipe-list/${recipeList.id}/grocery-list`}> */}
         <button>Grocery List</button>
         {/* </Link> */}
       </div>
