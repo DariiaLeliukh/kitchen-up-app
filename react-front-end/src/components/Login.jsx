@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import "../styles/css/login.css";
 
 const Login = () => {
   const { setAuth } = useAuth();
@@ -45,8 +46,8 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <section>
+    <div className="login-container">
+      <section className="login-form">
         <h2>Login</h2>
         <form onSubmit={handleLogin}>
           <label htmlFor="email">Email</label>
