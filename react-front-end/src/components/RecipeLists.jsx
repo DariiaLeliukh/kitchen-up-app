@@ -26,9 +26,9 @@ const RecipeLists = () => {
             <li key={list.id}>
               <strong>{list.name}</strong> - Created on{" "}
               {new Date(list.created_at).toLocaleDateString()}
-              {/* <Link to="/grocery-list"> */}
-              <button>Grocery List</button>
-              {/* </Link> */}
+              <Link to={`/recipe-list/${list.id}/grocery-list`}>
+                <button>Grocery List</button>
+              </Link>
               <Link to={`/recipe-list/${list.id}`}>
                 <button>View List</button>{" "}
               </Link>
