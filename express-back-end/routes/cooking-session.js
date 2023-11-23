@@ -9,11 +9,11 @@ const express = require("express");
 const router = express.Router();
 // const { Server } = require("socket.io");
 // const axios = require('axios');
-// const apiUrl = require('./routes/helper/api-routes');
+// const recipeApiUrl = require('../routes/helper/api-routes');
 const sessionsQuery = require('../database/queries/cooking-sessions');
 
 router.get("/", (req, res) => {
-  // const url = apiUrl.getRecipeInformationBulk([715538,716429]);
+  // const url = recipeApiUrl.getRecipeInformationBulk([715538,716429]);
   
   // // Make a GET request using axios
   // axios.get(url).then(apiData => {

@@ -44,7 +44,7 @@ While in back-end folder, reset database
 `Kitchen up` uses the spoonacular API to fetch recipes and ingredients information. In order to use the API, you need to:
 
 - Register for an [spoonacular account](https://spoonacular.com/food-api/console)
-- Configure the `API_KEY` environment variable in the `.env` file with your [api key](https://spoonacular.com/food-api/console#Profile).
+- Configure the `RECIPE_API_KEY` environment variable in the `.env` file with your [spoonacular api key](https://spoonacular.com/food-api/console#Profile).
 
 ### Launch Kitchen Up (back-end and front-end)
 

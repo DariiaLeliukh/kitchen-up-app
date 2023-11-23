@@ -12,7 +12,7 @@ require("dotenv").config();
   All the other search parameters can be combined with the apiKey.
 */
 
-const apiUrl = {
+const recipeApiUrl = {
   /*
   GET https://api.spoonacular.com/recipes/complexSearch?query=pasta&maxFat=25&number=2
   Use res.data.result for the desired dataset
@@ -24,38 +24,44 @@ const apiUrl = {
   Setting instructionsRequired=true, once only recipes containing the steps are valid for this project
   */
   getRecipesByNaturalLanguage: (query) => {
-    return `https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.API_KEY}&instructionsRequired=true&query=${query}`;
+    return `https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.RECIPE_API_KEY}&instructionsRequired=true&query=${query}`;
   },
-  
+
   /*
   GET https://api.spoonacular.com/recipes/findByIngredients?ingredients=apples,+flour,+sugar&number=2
   Use res.data for the desired dataset
   */
   getRecipesByIngredient: (ingredientsArray) => {
-    return `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${process.env.API_KEY}&ingredients=${ingredientsArray.join(',+')}`;
+    return `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${
+      process.env.RECIPE_API_KEY
+    }&ingredients=${ingredientsArray.join(",+")}`;
   },
-  
+
   /*
   GET https://api.spoonacular.com/recipes/716429/information?includeNutrition=false
   Use res.data for the desired dataset
   */
   getRecipeInformation: (recipeId) => {
-    return `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${process.env.API_KEY}`;
+    return `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${process.env.RECIPE_API_KEY}`;
   },
-  
+
   /*
   GET https://api.spoonacular.com/recipes/informationBulk?ids=715538,716429
   Use res.data for the desired dataset
   */
-  getRecipeInformationBulk: (recipeIdsArray) => { return `https://api.spoonacular.com/recipes/informationBulk?apiKey=${process.env.API_KEY}&ids=${recipeIdsArray.join(',')}`; },
-  
+  getRecipeInformationBulk: (recipeIdsArray) => {
+    return `https://api.spoonacular.com/recipes/informationBulk?apiKey=${
+      process.env.RECIPE_API_KEY
+    }&ids=${recipeIdsArray.join(",")}`;
+  },
+
   /*
   GET https://api.spoonacular.com/recipes/324694/analyzedInstructions
   Use res.data for the desired dataset
   */
   getAnalyzedRecipeInstructions: (recipeId) => {
-    return `https://api.spoonacular.com/recipes/${recipeId}/analyzedInstructions?apiKey=${process.env.API_KEY}&`;
+    return `https://api.spoonacular.com/recipes/${recipeId}/analyzedInstructions?apiKey=${process.env.RECIPE_API_KEY}&`;
   },
 };
 
-module.exports = apiUrl;
+module.exports = recipeApiUrl;

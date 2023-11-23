@@ -12,11 +12,11 @@ const groceryListQuery = require("./database/queries/grocery_list_items")
 TODO: For future use, if fetching data from the API from server.js
 
 Import:
-  const apiUrl = require('./routes/helper/api-routes');
+  const recipeApiUrl = require('./routes/helper/api-routes');
   const axios = require('axios');
 
 Example:
-  const url = apiUrl.getRecipeInformationBulk([715538,716429]);
+  const url = recipeApiUrl.getRecipeInformationBulk([715538,716429]);
   
   // Make a GET request using axios
   axios.get(url).then(apiData => {
