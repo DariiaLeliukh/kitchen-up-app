@@ -15,7 +15,7 @@ require("dotenv").config();
 const recipeApiUrl = {
   /*
   GET https://api.spoonacular.com/recipes/complexSearch?query=pasta&maxFat=25&number=2
-  Use res.data.result for the desired dataset
+  Use res.data.results for the desired dataset
 
   Use the following parameters for pagination:
     - offset	number	0	  The number of results to skip (between 0 and 900).

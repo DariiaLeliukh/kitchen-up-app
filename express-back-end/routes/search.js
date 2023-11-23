@@ -1,0 +1,24 @@
+const express = require("express");
+const router = express.Router();
+// const { Server } = require("socket.io");
+const axios = require("axios");
+const recipeApiUrl = require("../routes/helper/api-routes");
+// const sessionsQuery = require('../database/queries/cooking-sessions');
+
+router.get("/", (req, res) => {
+  const { name } = req.query;
+  const url = recipeApiUrl.getRecipesByNaturalLanguage(name);
+
+  // // Make a GET request using axios
+  axios.get(url).then((apiData) => {
+    //   // Send the JSON response back to the client
+    res.json(apiData.data);
+  });
+
+  // sessionsQuery.getCookingSessions().then((cooking_sessions) => {
+  //   console.log(cooking_sessions);
+  //   res.json({ data: cooking_sessions });
+  // });
+});
+
+module.exports = router;

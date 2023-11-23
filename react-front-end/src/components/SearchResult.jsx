@@ -10,7 +10,12 @@ const SearchResults = ({ combinedResults }) => {
       ) : (
         <ul>
           {combinedResults.map((result, index) => (
-            <li key={`${result.id}-${index}`}>{result.recipeName}</li>
+            <li key={`${result.id}-${index}`}>
+              <Link to={`/api/search/${result.id}`}>
+                <img src={result.image} alt={result.title} />
+                <p>{result.title}</p>
+              </Link>
+            </li>
           ))}
         </ul>
       )}

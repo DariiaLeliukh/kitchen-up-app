@@ -33,12 +33,12 @@ app.use(morgan('dev'));
 // Separated Routes for each Resource
 // Note: Feel free to add more routes below with your own
 const cookingSessionRoutes = require("./routes/cooking-session");
-
+const searchRoutes = require("./routes/search");
 // Mount all resource routes
 // Note: Feel free to add routes below with your own
 // Note: Endpoints that return data (eg. JSON) usually start with `/api`
 app.use("/cooking-sessions", cookingSessionRoutes);
-
+app.use("/search", searchRoutes);
 
 app.get('/data', (req, res) => {
   res.json({ message: "Seems to work" });
