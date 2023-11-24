@@ -17,7 +17,7 @@ const CookingSessionInfo = ({ match }) => {
   return (
     <div style={{ display: 'flex' }}>
       <div style={{ flex: 1, marginRight: '20px' }}>
-        {session && <CookingSessionListItem cookingSession={cookingSession} showInfoButton={false} />}
+        {cookingSession && <CookingSessionListItem cookingSession={cookingSession} showInfoButton={false} />}
       </div>
       <div style={{ flex: 1 }}>
         <h3>Actions</h3>
