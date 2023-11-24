@@ -1,15 +1,17 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import { format } from "date-fns";
 
 const CookingSessionListItem = ({ cookingSession, showInfoButton }) => (
   <li>
-    <strong>Host: {cookingSession.host_name}</strong>
-    <br />
+    <h2>{cookingSession.host_name}</h2>
     <strong>Recipe: {cookingSession.api_recipe_name}</strong>
     <br />
-    <span>Date: {cookingSession.session_date}</span>
+    <span>
+      Date: {format(new Date(cookingSession.session_datetime), "dd MMM yyyy")}
+    </span>
     <br />
-    <span>Time: {cookingSession.session_time}</span>
+    <span>Time: {format(new Date(cookingSession.session_datetime), "HH:mm")}</span>
     <br />
     {showInfoButton && (
       <Link to={`/cooking-session/${cookingSession.id}`}>

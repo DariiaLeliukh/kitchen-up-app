@@ -25,8 +25,8 @@ const CookingSessionList = () => {
   const currentDate = new Date();
 
   // Filter upcoming and expired sessions
-  const upcomingSessions = cookingSessions.length === 0 ? [] : cookingSessions.filter((session) => new Date(`${session.session_date.split('T')[0]} ${session.session_time}`) > currentDate);
-  const expiredSessions = cookingSessions.length === 0 ? [] : cookingSessions.filter((session) => new Date(`${session.session_date.split('T')[0]} ${session.session_time}`) <= currentDate);
+  const upcomingSessions = cookingSessions.length === 0 ? [] : cookingSessions.filter((session) => new Date(session.session_datetime) > currentDate);
+  const expiredSessions = cookingSessions.length === 0 ? [] : cookingSessions.filter((session) => new Date(session.session_datetime) <= currentDate);
 
   // console.log(`#Records: ${cookingSessions.length}, #Upcoming: ${upcomingSessions.length}, #Passed: ${expiredSessions.length}, `)
   
