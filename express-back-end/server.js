@@ -43,7 +43,7 @@ const searchRoutes = require("./routes/search");
 // Note: Feel free to add routes below with your own
 // Note: Endpoints that return data (eg. JSON) usually start with `/api`
 app.use("/cooking-sessions", cookingSessionRoutes);
-
+app.use("/search", searchRoutes);
 
 app.get('/data', (req, res) => {
   res.json({ message: "Seems to work" });
