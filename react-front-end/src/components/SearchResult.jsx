@@ -4,10 +4,8 @@ import { Link } from "react-router-dom";
 const SearchResults = ({ combinedResults }) => {
   return (
     <div>
-      <h2>Search Results</h2>
-      {combinedResults.length === 0 ? (
-        <p>No results found.</p>
-      ) : (
+      {/* <h2>Search Results</h2> */}
+      {combinedResults.length > 0 ? (
         <ul>
           {combinedResults.map((result, index) => (
             <li key={`${result.id}-${index}`}>
@@ -18,7 +16,7 @@ const SearchResults = ({ combinedResults }) => {
             </li>
           ))}
         </ul>
-      )}
+      ) : null}
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Search from "./Search";
 
 const HomeRoute = (props) => {
   const [randomRecipes, setRandomRecipes] = useState([]);
@@ -19,6 +20,7 @@ const HomeRoute = (props) => {
 
   return (
     <div className="home-route">
+      <Search />
       <ul>
         {randomRecipes.map((recipe) => (
           <li key={recipe.id}>

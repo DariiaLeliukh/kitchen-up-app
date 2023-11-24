@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import SearchBar from '../components/SearchBar';
 import SearchResults from '../components/SearchResult';
 
-const HomeRoute = (props) => {
+const Search = (props) => {
   const [nameResults, setNameResults] = useState([]);
   const [ingredientResults, setIngredientResults] = useState([]);
 
@@ -64,4 +64,4 @@ const HomeRoute = (props) => {
   );
 };
 
-export default HomeRoute;
+export default Search;
