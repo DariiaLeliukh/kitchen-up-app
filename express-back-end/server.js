@@ -37,13 +37,38 @@ const jwt = require('jsonwebtoken');
 
 // Separated Routes for each Resource
 // Note: Feel free to add more routes below with your own
-const cookingSessionRoutes = require("./routes/cooking-session");
-const searchRoutes = require("./routes/search");
+const cookingSessionRouter = require("./routes/cooking-sessions");
+const searchRouter = require("./routes/search");
 // Mount all resource routes
 // Note: Feel free to add routes below with your own
 // Note: Endpoints that return data (eg. JSON) usually start with `/api`
-app.use("/cooking-sessions", cookingSessionRoutes);
-app.use("/search", searchRoutes);
+app.use("/cooking-sessions", cookingSessionRouter);
+app.use("/search", searchRouter);
+
+const verifyJWT = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+
+  if (!authHeader) {
+    return res.sendStatus(401);
+  }
+
+  const token = authHeader.split(' ')[1];
+
+  jwt.verify(
+    token,
+    process.env.ACCESS_TOKEN_SECRET,
+    (err, decoded) => {
+      if (err) {
+        console.log(err);
+
+        return res.sendStatus(403);
+      }
+      req.user = decoded.username;
+      next();
+    }
+  );
+
+};
 
 app.get('/data', (req, res) => {
   res.json({ message: "Seems to work" });

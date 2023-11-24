@@ -1,14 +1,17 @@
 import { Route, Routes } from 'react-router-dom';
-import TopNavigation from "./components/TopNavigation";
-import HomeRoute from "./routes/HomeRoute";
-import Register from "./components/Register";
-import Login from "./components/Login";
-import SearchResults from "./routes/Search";
-import RecipeLists from "./components/RecipeLists";
-import RecipeListItem from "./components/RecipeListItem";
-import GroceryList from "./components/GroceryList";
 import RequireAuth from "./components/RequireAuth";
-import Dashboard from "./components/Dashboard";
+import TopNavigation from "./components/TopNavigation";
+
+import HomeRoute from "./routes/HomeRoute";
+import Login from "./routes/Login";
+import Register from "./routes/Register";
+import SearchResults from "./routes/Search";
+import RecipeLists from "./routes/RecipeLists";
+import RecipeListItem from "./routes/RecipeListItem";
+import GroceryList from "./routes/GroceryList";
+import Dashboard from "./routes/Dashboard";
+import CookingSessionList from "./routes/CookingSessionList";
+import CookingSessionInfo from "./routes/CookingSessionInfo";
 
 const App = () => {
   return (
@@ -21,15 +24,14 @@ const App = () => {
         <Route path="/search" element={<SearchResults />} />
         <Route path="/recipe-lists" element={<RecipeLists />} />
         <Route path="/recipe-list/:id" element={<RecipeListItem />} />
-        <Route path="/recipe-list/:id/grocery-list" element={<GroceryList />}
-        />
+        <Route path="/recipe-list/:id/grocery-list" element={<GroceryList />} />
 
         {/* protected routes for logged in users */}
         <Route element={<RequireAuth />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/cooking-sessions" element={<CookingSessionList />} />
+          <Route path="/cooking-sessions/:id" element={<CookingSessionInfo />} />
         </Route>
-
-
       </Routes>
     </div>
   );
