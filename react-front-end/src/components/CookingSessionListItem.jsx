@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 
 const CookingSessionListItem = ({ cookingSession, showInfoButton }) => (
   <li>
-    <strong>Host: {cookingSession.hostName}</strong>
+    <strong>Host: {cookingSession.host_name}</strong>
     <br />
-    <strong>Recipe: {cookingSession.recipeName}</strong>
+    <strong>Recipe: {cookingSession.api_recipe_name}</strong>
     <br />
-    <span>Date: {cookingSession.date}</span>
+    <span>Date: {cookingSession.session_date}</span>
     <br />
-    <span>Time: {cookingSession.time}</span>
+    <span>Time: {cookingSession.session_time}</span>
     <br />
     {showInfoButton && (
       <Link to={`/cooking-session/${cookingSession.id}`}>

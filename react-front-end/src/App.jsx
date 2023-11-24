@@ -25,10 +25,12 @@ const App = () => {
         <Route path="/recipe-list/:id" element={<RecipeListItem />} />
         <Route path="/recipe-list/:id/grocery-list" element={<GroceryList />} />
 
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/cooking-sessions" element={<CookingSessionList />} />
+
         {/* protected routes for logged in users */}
         <Route element={<RequireAuth />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/cooking-sessions" element={<CookingSessionList />} />
+
         </Route>
       </Routes>
     </div>
