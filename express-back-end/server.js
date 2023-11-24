@@ -7,6 +7,8 @@ const usersQuery = require('./database/queries/users');
 const invitationsQuery = require("./database/queries/invitations");
 const recipeListQuery = require("./database/queries/recipe_lists");
 const groceryListQuery = require("./database/queries/grocery_list_items")
+const recipeApiUrl = require("./routes/helper/api-routes");
+const axios = require("axios");
 
 /*
 TODO: For future use, if fetching data from the API from server.js
@@ -44,6 +46,17 @@ app.get('/data', (req, res) => {
   res.json({ message: "Seems to work" });
 });
 
+
+app.get('/', (req, res) => {
+  const url = recipeApiUrl.getRandomRecipes({ number: 10 });
+  
+  // Make a GET request using axios
+  axios.get(url).then(apiData => {
+    // Send the JSON response back to the client
+    res.json(apiData.data);
+  });
+});
+  
 app.get('/users', (req, res) => {
   usersQuery.getUsers().then((users) => {
     console.log(users);

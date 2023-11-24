@@ -62,6 +62,10 @@ const recipeApiUrl = {
   getAnalyzedRecipeInstructions: (recipeId) => {
     return `https://api.spoonacular.com/recipes/${recipeId}/analyzedInstructions?apiKey=${process.env.RECIPE_API_KEY}&`;
   },
+
+  getRandomRecipes: ({ number }) => {
+    return `https://api.spoonacular.com/recipes/random?apiKey=${process.env.RECIPE_API_KEY}&number=${number}`;
+  }
 };
 
 module.exports = recipeApiUrl;
