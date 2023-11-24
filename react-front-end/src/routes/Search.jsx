@@ -2,52 +2,30 @@ import React, { useState } from 'react';
 import SearchBar from '../components/SearchBar';
 import SearchResults from '../components/SearchResult';
 
-const HomeRoute = (props) => {
-const [nameResults, setNameResults] = useState([]);
-const [ingredientResults, setIngredientResults] = useState([]);
-  
-//  Will connect to API
-  const recipes = [
-    {
-      id: 1,
-      recipeName: "Spaghetti Alfredo",
-      ingredients: ["pasta", "cream", "parmesan"]
-    },
-    {
-      id: 2,
-      recipeName: "Lasagna",
-      ingredients: ["pasta", "tomato sauce", "cheese"]
-    },
-    {
-      id: 3,
-      recipeName: "Pasta with Tomato Sauce",
-      ingredients: ["pasta", "tomato sauce"]
-    },
-    {
-      id: 4,
-      recipeName: "Chicken Stir-Fry",
-      ingredients: ["chicken", "vegetables", "soy sauce"]
+const Search = (props) => {
+  const [nameResults, setNameResults] = useState([]);
+  const [ingredientResults, setIngredientResults] = useState([]);
+
+  const handleNameSearch = async (search) => {
+    try {
+      const response = await fetch(`/api/search?name=${search}`);
+      const data = await response.json();
+      console.log("Data from backend:", data);
+      setNameResults(Array.isArray(data.results) ? data.results : []);
+      } catch (error) {
+      console.error("Error fetching data:", error);
     }
-  ];
-
-const handleNameSearch = (search) => {
-  console.log(`Searching by name for: ${search}`);
-
-const filteredNameResults = recipes.filter((recipe) =>
-      recipe.recipeName.toLowerCase().includes(search.toLowerCase())
-    );
-    setNameResults(filteredNameResults);
   };
 
-const handleIngredientSearch = (search) => {
-  console.log(`Searching by ingredient for: ${search}`);
-
-  const filteredIngredientResults = recipes.filter((recipe) =>
-    recipe.ingredients.some((ingredient) =>
-      ingredient.toLowerCase().includes(search.toLowerCase())
-    )
-  );
-  setIngredientResults(filteredIngredientResults);
+  const handleIngredientSearch = async (search) => {
+  try {
+    const response = await fetch(`/api/search?ingredients=${search}`);
+    const data = await response.json();
+    console.log("Data from backend:", data);
+    setIngredientResults(Array.isArray(data) ? data : []);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 };
   const handleSearchSubmit = (search, searchType) => {
     // Clear old results based on searchType
@@ -64,7 +42,7 @@ const handleIngredientSearch = (search) => {
       handleIngredientSearch(search);
     }
   };
-  
+
   const combinedResults = [...nameResults, ...ingredientResults];
 
   return (
@@ -86,4 +64,4 @@ const handleIngredientSearch = (search) => {
   );
 };
 
-export default HomeRoute;
+export default Search;

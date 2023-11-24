@@ -9,6 +9,8 @@ const usersQuery = require('./database/queries/users');
 const invitationsQuery = require("./database/queries/invitations");
 const recipeListQuery = require("./database/queries/recipe_lists");
 const groceryListQuery = require("./database/queries/grocery_list_items");
+const recipeApiUrl = require("./routes/helper/api-routes");
+const axios = require("axios");
 
 /*
 TODO: For future use, if fetching data from the API from server.js
@@ -36,41 +38,28 @@ const jwt = require('jsonwebtoken');
 // Separated Routes for each Resource
 // Note: Feel free to add more routes below with your own
 const cookingSessionRoutes = require("./routes/cooking-session");
-
+const searchRoutes = require("./routes/search");
 // Mount all resource routes
 // Note: Feel free to add routes below with your own
 // Note: Endpoints that return data (eg. JSON) usually start with `/api`
 app.use("/cooking-sessions", cookingSessionRoutes);
-
-const verifyJWT = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-
-  if (!authHeader) {
-    return res.sendStatus(401);
-  }
-
-  const token = authHeader.split(' ')[1];
-
-  jwt.verify(
-    token,
-    process.env.ACCESS_TOKEN_SECRET,
-    (err, decoded) => {
-      if (err) {
-        console.log(err);
-
-        return res.sendStatus(403);
-      }
-      req.user = decoded.username;
-      next();
-    }
-  );
-
-};
+app.use("/search", searchRoutes);
 
 app.get('/data', (req, res) => {
   res.json({ message: "Seems to work" });
 });
 
+
+app.get('/', (req, res) => {
+  const url = recipeApiUrl.getRandomRecipes({ number: 10 });
+  
+  // Make a GET request using axios
+  axios.get(url).then(apiData => {
+    // Send the JSON response back to the client
+    res.json(apiData.data);
+  });
+});
+  
 app.get('/users', (req, res) => {
   usersQuery.getUsers().then((users) => {
     console.log(users);
