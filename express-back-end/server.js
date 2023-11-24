@@ -37,7 +37,7 @@ const jwt = require('jsonwebtoken');
 
 // Separated Routes for each Resource
 // Note: Feel free to add more routes below with your own
-const cookingSessionRouter = require("./routes/cooking-session");
+const cookingSessionRouter = require("./routes/cooking-sessions");
 const searchRouter = require("./routes/search");
 // Mount all resource routes
 // Note: Feel free to add routes below with your own
