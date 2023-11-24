@@ -1,0 +1,77 @@
+.form {
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 100px 15px;
+
+  h1 {
+    color: #000;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    /* 100% */
+    text-transform: capitalize;
+    margin-bottom: 40px
+  }
+
+  form {
+
+    max-width: 500px;
+
+    input,
+    label {
+      display: block;
+      width: 100%;
+    }
+
+    label {
+      color: #333;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+
+
+.instructions {
+  font-size: 0.75rem;
+  border-radius: 0.5rem;
+  background: #084F20;
+  color: #fff;
+  padding: 10px;
+  position: relative;
+  bottom: -10px;
+  line-height: normal;
+
+  >svg {
+    margin-right: 0.25rem;
+  }
+}
+
+
+
+.offscreen {
+  position: absolute;
+  left: -9999px;
+}
+
+.hide {
+  display: none;
+}
+
+.valid {
+  color: limegreen;
+  margin-left: 0.25rem;
+}
+
+.invalid {
+  color: red;
+  margin-left: 0.25rem;
+}
