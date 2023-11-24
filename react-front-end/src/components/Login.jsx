@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import "../styles/css/forms.css";
 import "../styles/css/login.css";
 
 const Login = () => {
@@ -46,41 +47,47 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <section className="login-form">
-        <h2>Login</h2>
+    <div className="container">
+      <section className="form">
+        <h1>Login</h1>
+        {errorMessage && (
+          <p className='my-3' style={{ color: "red" }}>{errorMessage}</p>
+        )}
         <form onSubmit={handleLogin}>
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            ref={emailRef}
-          />
-
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div className="mb-3">
+            <label className="form-label" htmlFor="email">Email</label>
+            <input
+              className="form-control"
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              ref={emailRef}
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label" htmlFor="password">Password</label>
+            <input
+              className="form-control"
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
           <button>Login</button>
         </form>
-        <p>Not registered? Register <Link to="/register">here</Link></p>
+        <p className="mt-3">Not registered? Register <Link to="/register">here</Link></p>
 
 
 
-        {errorMessage && (
-          <p style={{ color: "red" }}>{errorMessage}</p>
-        )}
+
       </section>
     </div>
   );

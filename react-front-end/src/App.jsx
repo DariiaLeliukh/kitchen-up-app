@@ -1,5 +1,4 @@
-import "./App.css";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes } from 'react-router-dom';
 import TopNavigation from "./components/TopNavigation";
 import HomeRoute from "./routes/HomeRoute";
 import Register from "./components/Register";
