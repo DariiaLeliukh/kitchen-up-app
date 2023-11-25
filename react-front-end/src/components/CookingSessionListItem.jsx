@@ -11,7 +11,11 @@ const CookingSessionListItem = ({ cookingSession, showInfoButton }) => (
       Date: {format(new Date(cookingSession.session_datetime), "dd MMM yyyy")}
     </span>
     <br />
-    <span>Time: {format(new Date(cookingSession.session_datetime), "HH:mm")}</span>
+    <span>
+      Time: {format(new Date(cookingSession.session_datetime), "HH:mm")}
+    </span>
+    <br />
+    <span>Invitation: {cookingSession.status}</span>
     <br />
     {showInfoButton && (
       <Link to={`/cooking-session/${cookingSession.id}`}>
