@@ -107,7 +107,7 @@ app.get("/recipe-lists", (req, res) => {
 });
 // Registration endpoint
 app.post('/register', async (req, res) => {
-  const { username, first_name, last_name, email, password } = req.body;
+  const { username, first_name, last_name, email, profile_picture_url, password } = req.body;
 
   if (!username || !first_name || !last_name || !email || !password) {
     return res.status(400).json({ error: 'Registration failed. Not enough info was provided' });
@@ -132,6 +132,7 @@ app.post('/register', async (req, res) => {
       first_name,
       last_name,
       email,
+      profile_picture_url,
       password: hashedPwd,
     });
 

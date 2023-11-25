@@ -20,6 +20,7 @@ const Register = () => {
   const [first_name, setFirstName] = useState('');
   const [last_name, setLastName] = useState('');
   const [email, setEmail] = useState('');
+  const [profile_picture_url, setProfilePictureUrl] = useState('');
   const [validUsername, setvalidUsername] = useState(false);
   const [userFocus, setUserFocus] = useState(false);
 
@@ -68,6 +69,7 @@ const Register = () => {
         first_name,
         last_name,
         email,
+        profile_picture_url,
         password
       });
 
@@ -164,6 +166,17 @@ const Register = () => {
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className='mb-3'>
+            <input
+              className='form-control'
+              type="text"
+              name="profile_picture_url"
+              placeholder="Profile picture URL"
+              value={profile_picture_url}
+              onChange={(e) => setProfilePictureUrl(e.target.value)}
               required
             />
           </div>
