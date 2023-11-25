@@ -4,7 +4,7 @@ import { format } from "date-fns";
 
 const CookingSessionListItem = ({ cookingSession, showInfoButton }) => (
   <li>
-    <h2>{cookingSession.host_name}</h2>
+    <h2>{cookingSession.is_host ? "Hosting" : cookingSession.host_name}</h2>
     <strong>Recipe: {cookingSession.api_recipe_name}</strong>
     <br />
     <span>
