@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS grocery_list_items CASCADE;
 
 CREATE TABLE grocery_list_items (
-    id SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY NOT NULL,
     api_ingredient_id INTEGER NOT NULL,
     recipe_list_id INTEGER REFERENCES recipe_lists(id) ON DELETE CASCADE NOT NULL,
     api_image VARCHAR(255),
