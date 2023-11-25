@@ -32,7 +32,8 @@ const CookingSessionList = () => {
   
   return (
     <div>
-      <h2>Upcoming Cooking Sessions</h2>
+      <h1>Cooking Sessions</h1>
+      <h2>Upcoming Sessions</h2>
       {upcomingSessions.length === 0 ?
         <div><p>You don&apost have an upcoming cooking session, yet! Invite your friends!!</p></div>
         :
@@ -42,7 +43,7 @@ const CookingSessionList = () => {
           ))}
         </ul>
       }
-      <h2>Expired Cooking Sessions</h2>
+      <h2>Expired Sessions</h2>
       {expiredSessions.length === 0 ?
         <div><p>Have you never cooked with your friends before? Invite them!!</p></div>
         :
