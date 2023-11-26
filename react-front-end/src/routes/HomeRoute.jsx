@@ -10,7 +10,15 @@ const HomeRoute = (props) => {
       try {
         const response = await fetch("/api");
         const data = await response.json();
-        setRandomRecipes(data.recipes);
+
+        // Filter out recipes without instructions
+        const recipesWithInstructions = data.recipes.filter(
+          (recipe) =>
+            recipe.analyzedInstructions &&
+            recipe.analyzedInstructions.length > 0
+        );
+
+        setRandomRecipes(recipesWithInstructions);
       } catch (error) {
         console.error("Error fetching random recipes:", error);
       }
@@ -26,9 +34,9 @@ const HomeRoute = (props) => {
         {randomRecipes.map((recipe) => (
           <li key={recipe.id}>
             <Link to={`/recipe/${recipe.id}`}>
-            <img src={recipe.image} alt={recipe.title} />
-            <p>{recipe.title}</p>
-          </Link>
+              <img src={recipe.image} alt={recipe.title} />
+              <p>{recipe.title}</p>
+            </Link>
           </li>
         ))}
       </ul>
