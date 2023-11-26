@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const InvitationListItem = ({ invitation, isNotExpired }) => {
-  const { status, setStatus } = useState(invitation.status);
+  const [ status, setStatus ] = useState(invitation.status);
 
   const handleStatusClick = async (newStatus) => {
     try {
-      // Make a POST request to update the invitation status
-      // await axios.post(`/api/invitations/${invitation.id}`, {
-      //   status: newStatus,
-      // });
+      //Make a POST request to update the invitation status
+      await axios.post(`/api/invitations/${invitation.id}`, {
+        status: newStatus,
+      });
 
       setStatus(newStatus);
 
@@ -54,11 +54,11 @@ const InvitationListItem = ({ invitation, isNotExpired }) => {
       <div>{status} </div>
       {isNotExpired && (
         <div>
-          {invitation.status !== "Accepted" && (
-            <button onClick={handleStatusClick("Accepted")}>Accept</button>
+          {status !== "Accepted" && (
+            <button onClick={()=>handleStatusClick("Accepted")}>Accept</button>
           )}
-          {invitation.status !== "Declined" && (
-            <button onClick={handleStatusClick("Declined")}>Decline</button>
+          {status !== "Declined" && (
+            <button onClick={()=>handleStatusClick("Declined")}>Decline</button>
           )}
         </div>
       )}
