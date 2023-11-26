@@ -12,6 +12,7 @@ const axios = require('axios');
 const recipeApiUrl = require('../routes/helper/api-routes');
 const sessionsQuery = require('../database/queries/cooking-sessions');
 const usersQuery = require('../database/queries/users');
+const invitationsQuery = require('../database/queries/invitations');
 
 router.get("/", async (req, res) => {
   const access_token = req.cookies.jwt;
@@ -37,6 +38,19 @@ router.get("/:id", async (req, res) => {
   })
   .catch(error => {
     console.error('At least one connection was rejected:', error);
+  });
+});
+
+router.get("/:id/invitations", async (req, res) => {
+  const cookingSessionId = req.params.id;
+  
+  //get the cooking session's invitations
+  invitationsQuery.getInvitationsByCookingSession(cookingSessionId).then((invitations) => {
+    //send the response
+    res.json(invitations);      
+  })
+  .catch(error => {
+    console.error('Error when retrieving invitations:', error);
   });
 });
 

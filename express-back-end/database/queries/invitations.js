@@ -17,4 +17,4 @@ const getInvitationsByCookingSession = (cookingSessionId) => {
   });
 };
 
-module.exports = { getInvitations };
+module.exports = { getInvitations, getInvitationsByCookingSession };
