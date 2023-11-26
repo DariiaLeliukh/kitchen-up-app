@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import DOMPurify from "dompurify";
 import axios from "axios";
 import CookingSessionListItem from "../components/CookingSessionListItem";
@@ -34,12 +34,12 @@ const CookingSessionInfo = () => {
           />
         </div>
         <div style={{ flex: 1 }}>
-          <button onClick={() => console.log("Start Session")}>
-            Start Session
-          </button>
-          <button onClick={() => console.log("View Recipe")}>
-            View Recipe
-          </button>
+          <Link to={`/cooking-sessions/${id}/join`}>
+            <button>Join Session</button>
+          </Link>
+          <Link to={`/recipe/${cookingSession.api_recipe_id}`}>
+            <button>View Recipe</button>
+          </Link>
           <button onClick={() => console.log("Add To Grocery List")}>
             Add To Grocery List
           </button>
