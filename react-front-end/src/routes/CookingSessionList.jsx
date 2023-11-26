@@ -20,7 +20,7 @@ const CookingSessionList = () => {
   // console.log(
   //   `# Records: ${cookingSessions.length}, First: ${cookingSessions[0]}`
   // );
-  
+
   // Get the current date
   const currentDate = new Date();
 
@@ -29,7 +29,7 @@ const CookingSessionList = () => {
   const expiredSessions = cookingSessions.length === 0 ? [] : cookingSessions.filter((session) => new Date(session.session_datetime) <= currentDate);
 
   // console.log(`#Records: ${cookingSessions.length}, #Upcoming: ${upcomingSessions.length}, #Passed: ${expiredSessions.length}, `)
-  
+
   return (
     <div>
       <h2>Upcoming Cooking Sessions</h2>

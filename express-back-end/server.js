@@ -45,30 +45,61 @@ const searchRouter = require("./routes/search");
 app.use("/cooking-sessions", cookingSessionRouter);
 app.use("/search", searchRouter);
 
-const verifyJWT = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
+async function findUserByJWTcookie(access_token) {
+  const foundUser = await usersQuery.getUserByToken(access_token);
+  // console.log(foundUser);
+  return foundUser || null;
 
-  if (!authHeader) {
-    return res.sendStatus(401);
+}
+
+app.post('/verifyJWT', async (req, res, next) => {
+  const cookies = req.cookies;
+
+  if (!cookies?.jwt) {
+    return res.status(401).send({ message: `No JWT cookie` });
   }
 
-  const token = authHeader.split(' ')[1];
+  const access_token = cookies.jwt;
 
   jwt.verify(
-    token,
+    access_token,
     process.env.ACCESS_TOKEN_SECRET,
     (err, decoded) => {
       if (err) {
-        console.log(err);
-
-        return res.sendStatus(403);
+        res.clearCookie('jwt', { httpOnly: true });
+        return res.status(403).send({ message: `Expired access_token` });
       }
-      req.user = decoded.username;
-      next();
+
+      findUserByJWTcookie(access_token)
+        .then((result) => {
+          return res.json({ result });
+        });
     }
   );
 
-};
+  // const authHeader = req.headers['authorization'];
+
+  // if (!authHeader) {
+  //   return res.sendStatus(401);
+  // }
+
+  // const token = authHeader.split(' ')[1];
+
+  // jwt.verify(
+  //   token,
+  //   process.env.ACCESS_TOKEN_SECRET,
+  //   (err, decoded) => {
+  //     if (err) {
+  //       console.log(err);
+
+  //       return res.sendStatus(403);
+  //     }
+  //     req.user = decoded.username;
+  //     next();
+  //   }
+  // );
+
+});
 
 app.get('/data', (req, res) => {
   res.json({ message: "Seems to work" });
@@ -77,14 +108,14 @@ app.get('/data', (req, res) => {
 
 app.get('/', (req, res) => {
   const url = recipeApiUrl.getRandomRecipes({ number: 10 });
-  
+
   // Make a GET request using axios
   axios.get(url).then(apiData => {
     // Send the JSON response back to the client
     res.json(apiData.data);
   });
 });
-  
+
 app.get('/users', (req, res) => {
   usersQuery.getUsers().then((users) => {
     console.log(users);
@@ -192,7 +223,7 @@ app.post('/login', async (req, res) => {
     const accessToken = jwt.sign(
       { "username": foundUser.username },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: '600s' } //TODO: change later for something longer
+      { expiresIn: '600s' } //10m TODO: change later for something longer
     );
 
     foundUser.access_token = accessToken;
