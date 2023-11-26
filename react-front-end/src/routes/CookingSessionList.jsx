@@ -3,7 +3,7 @@ import axios from "axios";
 import CookingSessionListItem from "../components/CookingSessionListItem";
 
 const CookingSessionList = () => {
-  const [cookingSessions, setCookingSessions] = useState([]);
+  const [cookingSessions, setCookingSessions] = useState(null);
 
   useEffect(() => {
     // Fetch data from the API endpoint using Axios
@@ -17,10 +17,12 @@ const CookingSessionList = () => {
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
-  // console.log(
-  //   `# Records: ${cookingSessions.length}, First: ${cookingSessions[0]}`
-  // );
-  
+  // Conditionally render based on whether cookingSession is available
+  if (cookingSessions === null) {
+    // If cookingSession is still null, you can render a loading state or return null
+    return <p>Loading...</p>;
+  }
+
   // Get the current date
   const currentDate = new Date();
 
@@ -28,8 +30,8 @@ const CookingSessionList = () => {
   const upcomingSessions = cookingSessions.length === 0 ? [] : cookingSessions.filter((session) => new Date(session.session_datetime) > currentDate);
   const expiredSessions = cookingSessions.length === 0 ? [] : cookingSessions.filter((session) => new Date(session.session_datetime) <= currentDate);
 
-  // console.log(`#Records: ${cookingSessions.length}, #Upcoming: ${upcomingSessions.length}, #Passed: ${expiredSessions.length}, `)
-  
+
+
   return (
     <div>
       <h1>Cooking Sessions</h1>
