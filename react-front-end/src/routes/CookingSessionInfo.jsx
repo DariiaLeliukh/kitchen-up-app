@@ -61,7 +61,7 @@ const CookingSessionInfo = () => {
           }}
         ></div>
         <div style={{ flex: 1 }}>
-          <h3>Who is coming</h3>
+          <h3>Who {isNotExpired ? 'is coming' : 'was invited'}</h3>
           <InvitationList cookingSessionId={id} isNotExpired={isNotExpired}></InvitationList>
         </div>
       </div>
