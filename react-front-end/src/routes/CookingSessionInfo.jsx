@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import DOMPurify from "dompurify";
 import axios from "axios";
 import CookingSessionListItem from "../components/CookingSessionListItem";
+import InvitationList from "../components/InvitationList";
 
 const CookingSessionInfo = () => {
   const [cookingSession, setCookingSession] = useState(null);
@@ -54,6 +55,7 @@ const CookingSessionInfo = () => {
         ></div>
         <div style={{ flex: 1 }}>
           <h3>Who is coming</h3>
+          <InvitationList cookingSessionId={id}></InvitationList>
         </div>
       </div>
     </div>
