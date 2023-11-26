@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Search from "./Search";
+import { Link } from "react-router-dom";
 
 const HomeRoute = (props) => {
   const [randomRecipes, setRandomRecipes] = useState([]);
@@ -24,8 +25,10 @@ const HomeRoute = (props) => {
       <ul>
         {randomRecipes.map((recipe) => (
           <li key={recipe.id}>
+            <Link to={`/recipe/${recipe.id}`}>
             <img src={recipe.image} alt={recipe.title} />
             <p>{recipe.title}</p>
+          </Link>
           </li>
         ))}
       </ul>
