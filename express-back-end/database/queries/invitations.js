@@ -7,7 +7,12 @@ const getInvitations = () => {
 };
 
 const getInvitationsByCookingSession = (cookingSessionId) => {
-  return db.query(` SELECT first_name, last_name, status, (host_id = guest_id) AS is_host
+  return db.query(` SELECT  invitations.id, 
+                            first_name, 
+                            last_name, 
+                            profile_picture_url,
+                            status, 
+                            (host_id = guest_id) AS is_host
                     FROM invitations
                     JOIN users ON invitations.guest_id = users.id
                     JOIN cooking_sessions ON cooking_sessions.id = invitations.cooking_session_id

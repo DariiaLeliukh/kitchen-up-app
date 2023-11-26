@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import InvitationListItem from "./InvitationListItem";
 
-const InvitationList = ({ cookingSessionId }) => {
+const InvitationList = ({ cookingSessionId, isNotExpired }) => {
   const [attendance, setAttendance] = useState(null);
 
   useEffect(() => {
@@ -21,7 +21,19 @@ const InvitationList = ({ cookingSessionId }) => {
     return <p>Loading...</p>;
   }
 
-  return (<div><ul>{attendance.map((item) => `${item.first_name} ${item.last_name} - ${item.status}`) }</ul></div>);
+  return (
+    <div>
+      <ul>
+        {attendance.map((item) => (
+          <InvitationListItem
+            key={item.id}
+            isNotExpired={isNotExpired}
+            invitation={item}
+          ></InvitationListItem>
+        ))}
+      </ul>
+    </div>
+  );
 };
 
 export default InvitationList;
