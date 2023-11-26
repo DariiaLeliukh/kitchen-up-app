@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
+import useAuth from "../hooks/useAuth";
 
 const InvitationListItem = ({ invitation, isNotExpired }) => {
-  const [ status, setStatus ] = useState(invitation.status);
+  const { auth } = useAuth();
+  const [status, setStatus] = useState(invitation.status);
 
   const handleStatusClick = async (newStatus) => {
     try {
@@ -54,11 +56,15 @@ const InvitationListItem = ({ invitation, isNotExpired }) => {
       <div>{status} </div>
       {isNotExpired && (
         <div>
-          {status !== "Accepted" && (
-            <button onClick={()=>handleStatusClick("Accepted")}>Accept</button>
+          {auth.userId === invitation.guest_id && status !== "Accepted" && (
+            <button onClick={() => handleStatusClick("Accepted")}>
+              Accept
+            </button>
           )}
-          {status !== "Declined" && (
-            <button onClick={()=>handleStatusClick("Declined")}>Decline</button>
+          {auth.userId === invitation.guest_id && status !== "Declined" && (
+            <button onClick={() => handleStatusClick("Declined")}>
+              Decline
+            </button>
           )}
         </div>
       )}

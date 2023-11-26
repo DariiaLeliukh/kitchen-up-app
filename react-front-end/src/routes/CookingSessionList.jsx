@@ -39,7 +39,7 @@ const CookingSessionList = () => {
       {upcomingSessions.length === 0 ?
         <div><p>You don&apost have an upcoming cooking session, yet! Invite your friends!!</p></div>
         :
-        <ul>
+        <ul style={{ display: "flex" }}>
           {upcomingSessions.map((cookingSession) => (
             <CookingSessionListItem key={cookingSession.id} cookingSession={cookingSession} showInfoButton={true} />
           ))}
@@ -49,7 +49,7 @@ const CookingSessionList = () => {
       {expiredSessions.length === 0 ?
         <div><p>Have you never cooked with your friends before? Invite them!!</p></div>
         :
-        <ul>
+        <ul style={{ display: "flex" }}>
           {expiredSessions.map((cookingSession) => (
             <CookingSessionListItem key={cookingSession.id} cookingSession={cookingSession} showInfoButton={true} />
           ))}
