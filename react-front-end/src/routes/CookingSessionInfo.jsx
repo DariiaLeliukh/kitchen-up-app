@@ -25,6 +25,11 @@ const CookingSessionInfo = () => {
     return <p>Loading...</p>;
   }
 
+  // Get the current date
+  const currentDate = new Date();
+  //check if the cooking session scheduled time has passed
+  const isNotExpired = (new Date(cookingSession.session_datetime) >= currentDate);
+  
   return (
     <div>
       <div style={{ display: "flex" }}>
@@ -35,9 +40,11 @@ const CookingSessionInfo = () => {
           />
         </div>
         <div style={{ flex: 1 }}>
-          <Link to={`/cooking-sessions/${id}/join`}>
-            <button>Join Session</button>
-          </Link>
+          {isNotExpired &&
+            <Link to={`/cooking-sessions/${id}/join`}>
+              <button>Join Session</button>
+            </Link>
+          }
           <Link to={`/recipe/${cookingSession.api_recipe_id}`}>
             <button>View Recipe</button>
           </Link>
@@ -55,7 +62,7 @@ const CookingSessionInfo = () => {
         ></div>
         <div style={{ flex: 1 }}>
           <h3>Who is coming</h3>
-          <InvitationList cookingSessionId={id}></InvitationList>
+          <InvitationList cookingSessionId={id} isNotExpired={isNotExpired}></InvitationList>
         </div>
       </div>
     </div>
