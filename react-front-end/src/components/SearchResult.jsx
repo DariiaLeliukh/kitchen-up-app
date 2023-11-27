@@ -9,7 +9,7 @@ const SearchResults = ({ combinedResults }) => {
         <ul>
           {combinedResults.map((result, index) => (
             <li key={`${result.id}-${index}`}>
-              <Link to={`/api/search/${result.id}`}>
+              <Link to={`/recipe/${result.id}`}>
                 <img src={result.image} alt={result.title} />
                 <p>{result.title}</p>
               </Link>

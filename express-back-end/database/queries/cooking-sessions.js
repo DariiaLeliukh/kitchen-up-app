@@ -1,6 +1,6 @@
 const db = require("../connection");
 
-const getCookingSessions = (guestId) => {
+const getCookingSessionsByGuestId = (guestId) => {
   return db.query(`SELECT cooking_sessions.*, 
                     users.first_name || ' ' || users.last_name AS host_name, 
                     invitations.status, 
@@ -13,17 +13,15 @@ const getCookingSessions = (guestId) => {
   });
 };
 
-const getCookingSession = (cookingSessionId, guestId) => {
+const getCookingSession = (cookingSessionId) => {
   return db.query(`SELECT cooking_sessions.*, 
-                    users.first_name || ' ' || users.last_name AS host_name,
-                    (host_id = guest_id) as is_host
+                    users.first_name || ' ' || users.last_name AS host_name
                   FROM cooking_sessions
                   JOIN users ON cooking_sessions.host_id = users.id
-                  JOIN invitations ON cooking_sessions.id = invitations.cooking_session_id
-                  WHERE cooking_sessions.id = $1
-                  AND guest_id = $2`, [cookingSessionId, guestId]).then((data) => {
+                  WHERE cooking_sessions.id = $1`,
+      [cookingSessionId]).then((data) => {
     return data.rows;
   });
 };
 
-module.exports = { getCookingSessions, getCookingSession};
+module.exports = { getCookingSessionsByGuestId, getCookingSession};

@@ -18,22 +18,28 @@ router.get("/", async (req, res) => {
   const access_token = req.cookies.jwt;
   const foundUser = await usersQuery.getUserByToken(access_token);
 
-  sessionsQuery.getCookingSessions(foundUser.id).then((cooking_sessions) => {
+  sessionsQuery.getCookingSessionsByGuestId(foundUser.id).then((cooking_sessions) => {
     res.json(cooking_sessions);
   });
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", (req, res) => {
   const cookingSessionId = req.params.id;
-  const access_token = req.cookies.jwt;
-  const foundUser = await usersQuery.getUserByToken(access_token);
-
+      
   //get the cooking session info
-  sessionsQuery.getCookingSession(cookingSessionId, foundUser.id).then((cookingSession) => {
+  sessionsQuery.getCookingSession(cookingSessionId).then((cookingSession) => {
     //get the recipe details
-    axios.get(recipeApiUrl.getRecipeSummary(cookingSession[0].api_recipe_id)).then((recipe) => {
+    axios.get(recipeApiUrl.getRecipeSummary(cookingSession[0].api_recipe_id)).then(async (recipe) => {
+      //verify if the user is the cooking session's host 
+      const access_token = req.cookies.jwt;
+      const userId = await usersQuery.getUserByToken(access_token).id;
+
       //join the data & send the response
-      res.json({ ...cookingSession[0], api_recipe_summary: recipe.data.summary });      
+      res.json({
+        ...cookingSession[0],
+        is_host: (userId === cookingSession[0].host_id),
+        api_recipe_summary: recipe.data.summary
+      });      
     });
   })
   .catch(error => {

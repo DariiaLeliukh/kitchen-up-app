@@ -56,7 +56,9 @@ const CookingSessionInfo = () => {
       <div style={{ display: "flex" }}>
         <div
           style={{ flex: 1, marginRight: "20px" }}
+          //injecting the HTML coming from the string 
           dangerouslySetInnerHTML={{
+            //cleaning any possible malicious code
             __html: DOMPurify.sanitize(cookingSession.api_recipe_summary),
           }}
         ></div>
