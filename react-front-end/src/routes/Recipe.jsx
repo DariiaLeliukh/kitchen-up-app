@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
 import "../styles/css/forms.css";
 
-const Recipe = () => {
+const Recipe = (props) => {
   const { recipeId } = useParams();
   const [recipe, setRecipe] = useState(null);
 
@@ -20,10 +20,6 @@ const Recipe = () => {
 
     fetchRecipe();
   }, [recipeId]);
-
-  const handleCookSession = () => {
-    alert("Opened Cooking Session!");
-  };
 
   const handleFavorites = () => {
     alert("Added to Favorites!");
@@ -46,13 +42,13 @@ const Recipe = () => {
             ))}
           </ul>
           <div>
-            <button onClick={handleCookSession}>Cook with Friends</button>
+            <Link to="/cooking-sessions/new" state={{ recipeId, recipeTitle: recipe.title }} className="button">Cook with Friends</Link>
             <button onClick={handleFavorites}>Add Favorites</button>
             <button onClick={handleGroceriList}>Add to Grocery List</button>
           </div>
           <hr />
           {recipe.analyzedInstructions &&
-          recipe.analyzedInstructions.length > 0 ? (
+            recipe.analyzedInstructions.length > 0 ? (
             <section className="form">
               <ol>
                 {recipe.analyzedInstructions[0].steps.map((step) => (

@@ -8,7 +8,7 @@ const CookingSessionInfo = ({ match }) => {
   useEffect(() => {
     // Fetch data for the specific cooking session using the id from the URL params
     const cookingSessionId = match.params.id;
-    
+
     axios.get(`/api/cooking_sessions/${cookingSessionId}`)
       .then((response) => setCookingSession(response.data))
       .catch((error) => console.error('Error fetching cooking session details:', error));

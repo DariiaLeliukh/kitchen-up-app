@@ -2760,6 +2760,11 @@ react-is@^16.13.1:
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-multi-email@^1.0.19:
+  version "1.0.19"
+  resolved "https://registry.yarnpkg.com/react-multi-email/-/react-multi-email-1.0.19.tgz#593504b3774bb1a20307163ffdf00d30fd298955"
+  integrity sha512-JCj9ZBQBXuMOxAu+f3VNbqRKUfp8fainc2fBzMIbjMfwdVrLS8Vy72rvbZqqws8wu1F1bTyPTNEQQFg3QtrlJg==
+
 react-refresh@^0.14.0:
   version "0.14.0"
   resolved "https://registry.npmjs.org/react-refresh/-/react-refresh-0.14.0.tgz"
