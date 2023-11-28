@@ -3,7 +3,7 @@ import axios from "axios";
 import CookingSessionListItem from "../components/CookingSessionListItem";
 
 const CookingSessionList = () => {
-  const [cookingSessions, setCookingSessions] = useState([]);
+  const [cookingSessions, setCookingSessions] = useState(null);
 
   useEffect(() => {
     // Fetch data from the API endpoint using Axios
@@ -17,36 +17,39 @@ const CookingSessionList = () => {
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
-  // console.log(
-  //   `# Records: ${cookingSessions.length}, First: ${cookingSessions[0]}`
-  // );
-  
+  // Conditionally render based on whether cookingSession is available
+  if (cookingSessions === null) {
+    // If cookingSession is still null, you can render a loading state or return null
+    return <p>Loading...</p>;
+  }
+
   // Get the current date
   const currentDate = new Date();
 
   // Filter upcoming and expired sessions
-  const upcomingSessions = cookingSessions.length === 0 ? [] : cookingSessions.filter((session) => new Date(session.session_datetime) > currentDate);
-  const expiredSessions = cookingSessions.length === 0 ? [] : cookingSessions.filter((session) => new Date(session.session_datetime) <= currentDate);
+  const upcomingSessions = cookingSessions.length === 0 ? [] : cookingSessions.filter((session) => new Date(session.session_datetime) >= currentDate);
+  const expiredSessions = cookingSessions.length === 0 ? [] : cookingSessions.filter((session) => new Date(session.session_datetime) < currentDate);
 
-  // console.log(`#Records: ${cookingSessions.length}, #Upcoming: ${upcomingSessions.length}, #Passed: ${expiredSessions.length}, `)
-  
+
+
   return (
     <div>
-      <h2>Upcoming Cooking Sessions</h2>
+      <h1>Cooking Sessions</h1>
+      <h2>Upcoming Sessions</h2>
       {upcomingSessions.length === 0 ?
         <div><p>You don&apost have an upcoming cooking session, yet! Invite your friends!!</p></div>
         :
-        <ul>
+        <ul style={{ display: "flex" }}>
           {upcomingSessions.map((cookingSession) => (
             <CookingSessionListItem key={cookingSession.id} cookingSession={cookingSession} showInfoButton={true} />
           ))}
         </ul>
       }
-      <h2>Expired Cooking Sessions</h2>
+      <h2>Expired Sessions</h2>
       {expiredSessions.length === 0 ?
         <div><p>Have you never cooked with your friends before? Invite them!!</p></div>
         :
-        <ul>
+        <ul style={{ display: "flex" }}>
           {expiredSessions.map((cookingSession) => (
             <CookingSessionListItem key={cookingSession.id} cookingSession={cookingSession} showInfoButton={true} />
           ))}
