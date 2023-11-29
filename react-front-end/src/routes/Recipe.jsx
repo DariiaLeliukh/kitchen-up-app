@@ -41,7 +41,7 @@ const Recipe = () => {
       if (response.ok) {
         alert("Added to Favorites!");
       } else {
-        alert("Error adding to Favorites!");
+        alert("Please login!");
       }
     } catch (error) {
       console.error("Error adding to Favorites:", error);
