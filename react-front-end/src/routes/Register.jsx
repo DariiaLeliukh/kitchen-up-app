@@ -3,6 +3,8 @@ import axios from "axios";
 import useAuth from "../hooks/useAuth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../styles/css/forms.css";
+import DOMPurify from "dompurify";
+
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -176,8 +178,8 @@ const Register = () => {
               name="profile_picture_url"
               placeholder="Profile picture URL"
               value={profile_picture_url}
-              onChange={(e) => setProfilePictureUrl(e.target.value)}
-              required
+              //cleaning any possible malicious code
+              onChange={(e) => setProfilePictureUrl(DOMPurify.sanitize(e.target.value))}
             />
           </div>
           <div className="mb-3">
