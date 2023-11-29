@@ -13,6 +13,7 @@ import Dashboard from "./routes/Dashboard";
 import CookingSessionList from "./routes/CookingSessionList";
 import CookingSessionInfo from "./routes/CookingSessionInfo";
 import Recipe from './routes/Recipe';
+import Favorites from './routes/Favorites';
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
         <Route path="/recipe-list/:id" element={<RecipeListItem />} />
         <Route path="/recipe-list/:id/grocery-list" element={<GroceryList />} />
         <Route path="/recipe/:recipeId" element={<Recipe />} />
+        <Route path="/favorites" element={<Favorites />} />
 
         {/* protected routes for logged in users */}
         <Route element={<RequireAuth />}>

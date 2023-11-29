@@ -9,6 +9,7 @@ const usersQuery = require('./database/queries/users');
 const invitationsQuery = require("./database/queries/invitations");
 const recipeListQuery = require("./database/queries/recipe_lists");
 const groceryListQuery = require("./database/queries/grocery_list_items");
+const favoriteQuery = require("./database/queries/favorites");
 const recipeApiUrl = require("./routes/helper/api-routes");
 const axios = require("axios");
 
@@ -25,6 +26,7 @@ const cookingSessionRouter = require("./routes/cooking-sessions");
 const searchRouter = require("./routes/search");
 const invitationsRouter = require("./routes/invitations");
 const recipeRouter = require("./routes/recipe");
+const favoritesRouter = require("./routes/favorites");
 // Mount all resource routes
 // Note: Feel free to add routes below with your own
 // Note: Endpoints that return data (eg. JSON) usually start with `/api`
@@ -32,6 +34,7 @@ app.use("/cooking-sessions", cookingSessionRouter);
 app.use("/search", searchRouter);
 app.use("/invitations", invitationsRouter);
 app.use("/recipe", recipeRouter);
+app.use("/favorites", favoritesRouter);
 
 const verifyJWT = (req, res, next) => {
   const authHeader = req.headers['authorization'];
@@ -201,6 +204,20 @@ app.get("/grocery-list", (req, res) => {
   });
 });
 
+app.get("/favorites/:userId", (req, res) => {
+  const userId = req.params.userId;
+
+  favoriteQuery.getFavoriteIdsByUserId(userId)
+    .then((recipeIds) => {
+      console.log("Favorite ID:", recipeIds);
+      res.json({ data: recipeIds });
+      
+    })
+    .catch((error) => {
+      console.error("Error fetching favorite ID:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    });
+});
 
 
 app.listen(PORT, () => {

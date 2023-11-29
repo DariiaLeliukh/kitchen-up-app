@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 import "../styles/css/forms.css";
 
 const Recipe = () => {
   const { recipeId } = useParams();
   const [recipe, setRecipe] = useState(null);
+  const { auth } = useAuth();
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -25,10 +27,27 @@ const Recipe = () => {
     alert("Opened Cooking Session!");
   };
 
-  const handleFavorites = () => {
-    alert("Added to Favorites!");
-  };
+  const handleFavorites = async () => {
+    try {
+      
+      const response = await fetch("/api/favorites/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_id: auth.userId, api_recipe_id: recipeId }),
+      });
 
+      if (response.ok) {
+        alert("Added to Favorites!");
+      } else {
+        alert("Error adding to Favorites!");
+      }
+    } catch (error) {
+      console.error("Error adding to Favorites:", error);
+      alert("Error adding to Favorites!");
+    }
+  };
   const handleGroceriList = () => {
     alert("Added to Grocery list");
   };
