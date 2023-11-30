@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from "react-router-dom";
 import RequireAuth from "./components/RequireAuth";
 import TopNavigation from "./components/TopNavigation";
 
@@ -12,8 +12,9 @@ import GroceryList from "./routes/GroceryList";
 import Dashboard from "./routes/Dashboard";
 import CookingSessionList from "./routes/CookingSessionList";
 import CookingSessionInfo from "./routes/CookingSessionInfo";
-import Recipe from './routes/Recipe';
-import CreateNewCookingSession from './routes/CreateNewCookingSession';
+import CookingSession from "./routes/CookingSession";
+import Recipe from "./routes/Recipe";
+import CreateNewCookingSession from "./routes/CreateNewCookingSession";
 
 const App = () => {
   return (
@@ -33,8 +34,18 @@ const App = () => {
         <Route element={<RequireAuth />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/cooking-sessions" element={<CookingSessionList />} />
-          <Route path="/cooking-sessions/:id" element={<CookingSessionInfo />} />
-          <Route path="/cooking-sessions/new" element={<CreateNewCookingSession />} />
+          <Route
+            path="/cooking-sessions/:id"
+            element={<CookingSessionInfo />}
+          />
+          <Route
+            path="/cooking-sessions/new"
+            element={<CreateNewCookingSession />}
+          />
+          <Route
+            path="/cooking-sessions/:id/join"
+            element={<CookingSession />}
+          />
         </Route>
       </Routes>
     </div>
