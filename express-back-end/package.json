@@ -16,9 +16,11 @@
     "bcrypt": "^5.1.1",
     "chalk": "^4.0.0",
     "cookie-parser": "^1.4.6",
+    "cookie-session": "^2.0.0",
     "core-js-pure": "^3.33.2",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "nodemon": "^3.0.1",
@@ -28,7 +30,7 @@
     "react-avatar": "^5.0.3",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.19.0",
-    "socket.io": "^4.7.2"
+    "socket.io": "4.5.1"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

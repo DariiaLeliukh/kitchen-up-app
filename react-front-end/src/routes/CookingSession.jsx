@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
-import "../styles/css/forms.css";
+import io from "socket.io-client";
 import RecipeHeader from "../components/RecipeHeader";
 import RecipeInstructionList from "../components/RecipeInstructionList";
+import "../styles/css/forms.css";
 
 const CookingSession = () => {
+  const [socket, setSocket] = useState();
+  const [messages, setMessages] = useState([]);
   const [recipe, setRecipe] = useState(null);
   const { id } = useParams();
 
@@ -20,6 +23,21 @@ const CookingSession = () => {
           error
         )
       );
+  }, []);
+
+  useEffect(() => {
+    const socket = io();
+    setSocket(socket);
+console.log(`Inside sockets'useEffect: `, socket)
+    socket.on("connect", () => {
+      setMessages((prev) => [...prev, "Connecting to the server"]);
+    });
+
+    socket.on("system", (data) => {
+      setMessages(prev => [data, ...prev]);
+    });
+
+    return () => socket.disconnect(); // prevents memory leaks
   }, []);
 
   // Conditionally render based on whether cookingSession is available
@@ -43,6 +61,10 @@ const CookingSession = () => {
       ) : (
         <p>No instructions available.</p>
       )}
+      <hr />
+      {messages.map((item, index) => (
+        <p key={index}>{item}</p>
+      ))}
     </div>
   );
 };

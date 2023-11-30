@@ -6,11 +6,11 @@ const PORT = 8080;
 const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
 const usersQuery = require('./database/queries/users');
-const invitationsQuery = require("./database/queries/invitations");
 const recipeListQuery = require("./database/queries/recipe_lists");
 const groceryListQuery = require("./database/queries/grocery_list_items");
 const recipeApiUrl = require("./routes/helper/api-routes");
 const axios = require("axios");
+const { Server } = require("socket.io");
 
 app.use(express.static(__dirname + '/public'));
 app.use(express.json());
@@ -203,6 +203,40 @@ app.get("/grocery-list", (req, res) => {
 
 
 
-app.listen(PORT, () => {
+const httpServer = app.listen(PORT, () => {
   console.log("Express seems to be listening on port " + PORT + " so that's pretty good 👍");
+});
+
+//socketConfig.configureSocketConnections(app, httpServer);
+// require('dotenv').config();
+
+console.log(`Configuring the sockets`)
+// // Enable Cookie Sessions
+// const cookieSession = require("cookie-session"); // for Client Cookie Sessions
+// const session = cookieSession({
+//   name: "cookingSession",
+//   keys: [process.env.ACCESS_TOKEN_SECRET],
+//   sameSite: true,
+// });
+// app.use(session);
+
+// Start WS Server
+const io = new Server(httpServer, {
+  connectionStateRecovery: {}
+});
+
+// // Allow socket.io to access session
+// const wrap = (middleware) => (socket, next) =>
+//   middleware(socket.request, {}, next);
+// io.use(wrap(session));
+
+//data structure to hold the different cooking sessions' information
+const cookingSessions = {};
+
+io.on("connection", (client) => {
+  // const session = client.request.session;
+  // const name = session?.user?.name;
+
+  console.log("Client Connected! : ", client.id);
+  io.emit("system", `A new user has just joined. Welcome! ${client.id}`);
 });
