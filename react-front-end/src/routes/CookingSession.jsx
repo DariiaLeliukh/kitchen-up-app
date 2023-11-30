@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/css/forms.css";
+import RecipeHeader from "../components/RecipeHeader";
+import RecipeInstructionList from "../components/RecipeInstructionList";
 
 const CookingSession = () => {
   const [recipe, setRecipe] = useState(null);
@@ -13,7 +15,10 @@ const CookingSession = () => {
       .get(`/api/recipes/${id}/cooking-session`)
       .then((response) => setRecipe(response.data))
       .catch((error) =>
-        console.error("Error fetching the cooking session's recipe details:", error)
+        console.error(
+          "Error fetching the cooking session's recipe details:",
+          error
+        )
       );
   }, []);
 
@@ -23,7 +28,23 @@ const CookingSession = () => {
     return <p>Loading...</p>;
   }
 
-  return (<p>{recipe.summary}</p>);
+  return (
+    <div className="container">
+      <RecipeHeader
+        title={recipe.title}
+        imageUrl={recipe.image}
+        ingredients={recipe.extendedIngredients}
+      />
+      <hr />
+      {recipe.analyzedInstructions && recipe.analyzedInstructions.length > 0 ? (
+        <RecipeInstructionList
+          instructions={recipe.analyzedInstructions[0].steps}
+        />
+      ) : (
+        <p>No instructions available.</p>
+      )}
+    </div>
+  );
 };
 
 export default CookingSession;
