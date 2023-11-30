@@ -1,4 +1,5 @@
 import React from "react";
+import IngredientList from "./IngredientList";
 
 const RecipeHeader = ({ title, imageUrl, ingredients }) => {
   
@@ -15,11 +16,7 @@ const RecipeHeader = ({ title, imageUrl, ingredients }) => {
       <img src={imageUrl} alt={title} style={imageStyle}/>
       <h2>{title}</h2>
       <h3>Ingredients</h3>
-      <ul>
-        {ingredients.map((ingredient, index) => (
-          <li key={index}>{ingredient.original}</li>
-        ))}
-      </ul>
+      <IngredientList ingredients={ingredients}/>
     </div>
   );
 };
