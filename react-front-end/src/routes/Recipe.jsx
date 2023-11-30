@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import "../styles/css/forms.css";
+import RecipeHeader from "../components/RecipeHeader";
 
 const Recipe = (props) => {
   const { id } = useParams();
@@ -33,14 +34,7 @@ const Recipe = (props) => {
     <div className="container">
       {recipe ? (
         <div>
-          <h2>{recipe.title}</h2>
-          <img src={recipe.image} alt={recipe.title} />
-          <h3>Ingredients</h3>
-          <ul>
-            {recipe.extendedIngredients.map((ingredient, index) => (
-              <li key={index}>{ingredient.original}</li>
-            ))}
-          </ul>
+          <RecipeHeader title={recipe.title } imageUrl={recipe.image } ingredients={ recipe.extendedIngredients} />          
           <div>
             <Link to="/cooking-sessions/new" state={{ id, recipeTitle: recipe.title }} className="button">Cook with Friends</Link>
             <button onClick={handleFavorites}>Add Favorites</button>
