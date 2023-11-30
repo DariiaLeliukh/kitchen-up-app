@@ -3,6 +3,8 @@ import axios from "axios";
 import useAuth from "../hooks/useAuth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../styles/css/forms.css";
+import DOMPurify from "dompurify";
+
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -20,6 +22,7 @@ const Register = () => {
   const [first_name, setFirstName] = useState('');
   const [last_name, setLastName] = useState('');
   const [email, setEmail] = useState('');
+  const [profile_picture_url, setProfilePictureUrl] = useState('');
   const [validUsername, setvalidUsername] = useState(false);
   const [userFocus, setUserFocus] = useState(false);
 
@@ -70,6 +73,7 @@ const Register = () => {
         first_name,
         last_name,
         email,
+        profile_picture_url,
         password
       });
 
@@ -167,6 +171,17 @@ const Register = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+            />
+          </div>
+          <div className='mb-3'>
+            <input
+              className='form-control'
+              type="text"
+              name="profile_picture_url"
+              placeholder="Profile picture URL"
+              value={profile_picture_url}
+              //cleaning any possible malicious code
+              onChange={(e) => setProfilePictureUrl(DOMPurify.sanitize(e.target.value))}
             />
           </div>
           <div className="mb-3">

@@ -60,7 +60,15 @@ const recipeApiUrl = {
   Use res.data for the desired dataset
   */
   getAnalyzedRecipeInstructions: (recipeId) => {
-    return `https://api.spoonacular.com/recipes/${recipeId}/analyzedInstructions?apiKey=${process.env.RECIPE_API_KEY}&`;
+    return `https://api.spoonacular.com/recipes/${recipeId}/analyzedInstructions?apiKey=${process.env.RECIPE_API_KEY}`;
+  },
+
+  /*
+  GET https://api.spoonacular.com/recipes/4632/summary
+  Use res.data for the desired dataset
+  */
+  getRecipeSummary: (recipeId) => {
+    return `https://api.spoonacular.com/recipes/${recipeId}/summary?apiKey=${process.env.RECIPE_API_KEY}`;
   },
 
   getRandomRecipes: ({ number }) => {

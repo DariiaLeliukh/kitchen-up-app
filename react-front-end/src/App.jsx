@@ -15,6 +15,8 @@ import CookingSessionInfo from "./routes/CookingSessionInfo";
 import useAuth from './hooks/useAuth';
 import { useEffect } from 'react';
 import axios from 'axios';
+import Recipe from './routes/Recipe';
+import CreateNewCookingSession from './routes/CreateNewCookingSession';
 
 const App = () => {
   const { setAuth } = useAuth();
@@ -52,12 +54,14 @@ const App = () => {
         <Route path="/recipe-lists" element={<RecipeLists />} />
         <Route path="/recipe-list/:id" element={<RecipeListItem />} />
         <Route path="/recipe-list/:id/grocery-list" element={<GroceryList />} />
+        <Route path="/recipe/:recipeId" element={<Recipe />} />
 
         {/* protected routes for logged in users */}
         <Route element={<RequireAuth />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/cooking-sessions" element={<CookingSessionList />} />
           <Route path="/cooking-sessions/:id" element={<CookingSessionInfo />} />
+          <Route path="/cooking-sessions/new" element={<CreateNewCookingSession />} />
         </Route>
       </Routes>
     </div>

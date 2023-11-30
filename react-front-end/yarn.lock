@@ -1016,6 +1016,11 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
+dompurify@^3.0.6:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-3.0.6.tgz#925ebd576d54a9531b5d76f0a5bef32548351dae"
+  integrity sha512-ilkD8YEnnGh1zJ240uJsW7AzE+2qpbOUYjacomn3AvJ6J4JhKGSZ2nh4wUIXPZrEPppaCLx5jFe8T89Rk8tQ7w==
+
 electron-to-chromium@^1.4.535:
   version "1.4.588"
   resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.588.tgz"
@@ -2759,6 +2764,11 @@ react-is@^16.13.1:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+react-multi-email@^1.0.19:
+  version "1.0.19"
+  resolved "https://registry.yarnpkg.com/react-multi-email/-/react-multi-email-1.0.19.tgz#593504b3774bb1a20307163ffdf00d30fd298955"
+  integrity sha512-JCj9ZBQBXuMOxAu+f3VNbqRKUfp8fainc2fBzMIbjMfwdVrLS8Vy72rvbZqqws8wu1F1bTyPTNEQQFg3QtrlJg==
 
 react-refresh@^0.14.0:
   version "0.14.0"
