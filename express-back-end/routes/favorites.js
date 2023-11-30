@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { createFavorites } = require("../database/queries/favorites");
+const favoriteQuery = require("../database/queries/favorites");
+
 
 // Endpoint to add a recipe to favorites
 router.post("/add", async (req, res) => {
@@ -23,5 +25,20 @@ router.post("/add", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+router.get("/:userId", (req, res) => {
+  const userId = req.params.userId;
+
+  favoriteQuery
+    .getFavoriteIdsByUserId(userId)
+    .then((recipeIds) => {
+      console.log("Favorite ID:", recipeIds);
+      res.json({ data: recipeIds });
+    })
+    .catch((error) => {
+      console.error("Error fetching favorite ID:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    });
+});
+
 
 module.exports = router;

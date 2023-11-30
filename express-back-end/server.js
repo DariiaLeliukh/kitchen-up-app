@@ -9,7 +9,6 @@ const usersQuery = require('./database/queries/users');
 const invitationsQuery = require("./database/queries/invitations");
 const recipeListQuery = require("./database/queries/recipe_lists");
 const groceryListQuery = require("./database/queries/grocery_list_items");
-const favoriteQuery = require("./database/queries/favorites");
 const recipeApiUrl = require("./routes/helper/api-routes");
 const axios = require("axios");
 
@@ -203,22 +202,6 @@ app.get("/grocery-list", (req, res) => {
     res.json({ data: grocery_list_items });
   });
 });
-
-app.get("/favorites/:userId", (req, res) => {
-  const userId = req.params.userId;
-
-  favoriteQuery.getFavoriteIdsByUserId(userId)
-    .then((recipeIds) => {
-      console.log("Favorite ID:", recipeIds);
-      res.json({ data: recipeIds });
-      
-    })
-    .catch((error) => {
-      console.error("Error fetching favorite ID:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-    });
-});
-
 
 app.listen(PORT, () => {
   console.log("Express seems to be listening on port " + PORT + " so that's pretty good 👍");
