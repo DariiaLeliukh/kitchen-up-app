@@ -13,6 +13,7 @@ import Dashboard from "./routes/Dashboard";
 import CookingSessionList from "./routes/CookingSessionList";
 import CookingSessionInfo from "./routes/CookingSessionInfo";
 import Recipe from './routes/Recipe';
+import CreateNewCookingSession from './routes/CreateNewCookingSession';
 
 const App = () => {
   return (
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/cooking-sessions" element={<CookingSessionList />} />
           <Route path="/cooking-sessions/:id" element={<CookingSessionInfo />} />
+          <Route path="/cooking-sessions/new" element={<CreateNewCookingSession />} />
         </Route>
       </Routes>
     </div>
