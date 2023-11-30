@@ -45,7 +45,7 @@ const CookingSessionInfo = () => {
               <button>Join Session</button>
             </Link>
           }
-          <Link to={`/recipe/${cookingSession.api_recipe_id}`}>
+          <Link to={`/recipes/${cookingSession.api_recipe_id}`}>
             <button>View Recipe</button>
           </Link>
           <button onClick={() => console.log("Add To Grocery List")}>

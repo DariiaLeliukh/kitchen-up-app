@@ -33,7 +33,7 @@ const HomeRoute = (props) => {
       <ul>
         {randomRecipes.map((recipe) => (
           <li key={recipe.id}>
-            <Link to={`/recipe/${recipe.id}`}>
+            <Link to={`/recipes/${recipe.id}`}>
               <img src={recipe.image} alt={recipe.title} />
               <p>{recipe.title}</p>
             </Link>

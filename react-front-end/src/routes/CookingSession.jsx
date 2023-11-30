@@ -9,12 +9,12 @@ const CookingSession = () => {
 
   useEffect(() => {
     // Fetch data for the specific cooking session using the id from the URL params
-    // axios
-    //   .get(`/api/recipes/${id}/cooking-session`)
-    //   .then((response) => setCookingSession(response.data))
-    //   .catch((error) =>
-    //     console.error("Error fetching cooking session details:", error)
-    //   );
+    axios
+      .get(`/api/recipes/${id}/cooking-session`)
+      .then((response) => setCookingSession(response.data))
+      .catch((error) =>
+        console.error("Error fetching cooking session details:", error)
+      );
   }, []);
 
   // Conditionally render based on whether cookingSession is available
@@ -23,7 +23,7 @@ const CookingSession = () => {
     return <p>Loading...</p>;
   }
 
-  return (<></>);
+  return (<p>{cookingSession.summary}</p>);
 };
 
 export default CookingSession;

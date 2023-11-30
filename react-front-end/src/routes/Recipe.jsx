@@ -3,13 +3,13 @@ import { useParams, Link } from "react-router-dom";
 import "../styles/css/forms.css";
 
 const Recipe = (props) => {
-  const { recipeId } = useParams();
+  const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
 
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
-        const response = await fetch(`/api/recipe/${recipeId}`);
+        const response = await fetch(`/api/recipes/${id}`);
         const data = await response.json();
         console.log("Data from backend:", data);
         setRecipe(data);
@@ -19,7 +19,7 @@ const Recipe = (props) => {
     };
 
     fetchRecipe();
-  }, [recipeId]);
+  }, [id]);
 
   const handleFavorites = () => {
     alert("Added to Favorites!");
@@ -42,7 +42,7 @@ const Recipe = (props) => {
             ))}
           </ul>
           <div>
-            <Link to="/cooking-sessions/new" state={{ recipeId, recipeTitle: recipe.title }} className="button">Cook with Friends</Link>
+            <Link to="/cooking-sessions/new" state={{ id, recipeTitle: recipe.title }} className="button">Cook with Friends</Link>
             <button onClick={handleFavorites}>Add Favorites</button>
             <button onClick={handleGroceriList}>Add to Grocery List</button>
           </div>
