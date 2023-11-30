@@ -25,7 +25,7 @@ const CreateNewCookingSession = (props) => {
     e.preventDefault();
 
     try {
-      await axios.post("/api/cooking-sessions/new", {
+      await axios.post("/api/cooking-sessions/", {
         emails,
         host_id: userId,
         api_recipe_id: recipeId,

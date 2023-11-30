@@ -60,7 +60,7 @@ router.get("/:id/invitations", async (req, res) => {
   });
 });
 
-router.post("/new", async (req, res) => {
+router.post("/", async (req, res) => {
 
   const { emails, host_id, api_recipe_id, api_recipe_name } = req.body;
 
