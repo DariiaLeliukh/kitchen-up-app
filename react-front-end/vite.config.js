@@ -13,7 +13,7 @@ export default defineConfig({
         secure: false,  
       },
       '/socket.io': {
-        target: 'http://localhost:8080', // Change this to your Express backend's URL
+        target: 'http://localhost:8080/', // Change this to your Express backend's URL
         changeOrigin: true,
         ws: true,
       },
