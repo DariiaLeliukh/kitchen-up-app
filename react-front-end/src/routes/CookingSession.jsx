@@ -10,9 +10,23 @@ import "../styles/css/forms.css";
 const CookingSession = () => {
   const { auth } = useAuth();
   const [socket, setSocket] = useState();
-  const [messages, setMessages] = useState([]);
+  //const [messages, setMessages] = useState([]); //TODO: Delete if not using messages or text/voice chat
   const [recipe, setRecipe] = useState(null);
+  // An object containing an array of users in each step, such as { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] }
+  const [positions, setPositions] = useState({}); 
   const { id } = useParams();
+
+  const setRecipeStepStructure = () => {
+    if (recipe.analyzedInstructions) {
+      const initialPositions = {};
+
+      for (let step of recipe.analyzedInstructions[0].steps) {
+        initialPositions[step.number] = [];
+      }
+
+      return initialPositions;
+    }
+  };
 
   useEffect(() => {
     // Fetch data for the specific cooking session using the id from the URL params
@@ -27,20 +41,35 @@ const CookingSession = () => {
       );
   }, []);
 
+  //TODO: Move the logic to RecipeInstructionList component if no other socket event is taking place, such as text/voice messages
   useEffect(() => {
     const socket = io();
     setSocket(socket);
-
+    
     socket.on("connect", () => {
-      setMessages((prev) => [...prev, "Connecting to the server"]);
+      // setMessages((prev) => [...prev, "Connecting to the server"]);
 
       //Request to joing the cooking session room
-      socket.emit('join session', { cookingSessionId: id, userId: auth.userId });
+      socket.emit("join session", {
+        cookingSessionId: id,
+        userId: auth.userId,
+        profilePictureUrl: auth.profilePictureUrl,
+      });
     });
 
-    socket.on("system", (data) => {
-      setMessages(prev => [data, ...prev]);
+    socket.on('positions', (connectedUsers) => {
+      const friendsPositions = setRecipeStepStructure();
+      
+      for (let user of Object.keys(connectedUsers)) {
+        friendsPositions[connectedUsers[user].step].push(connectedUsers[user].profilePictureUrl);        
+      }
+      
+      setPositions(friendsPositions);
     });
+
+    // socket.on("system", (data) => {
+    //   setMessages((prev) => [data, ...prev]);
+    // });
 
     return () => socket.disconnect(); // prevents memory leaks
   }, []);
@@ -67,9 +96,9 @@ const CookingSession = () => {
         <p>No instructions available.</p>
       )}
       <hr />
-      {messages.map((item, index) => (
+      {/*messages.map((item, index) => (
         <p key={index}>{item}</p>
-      ))}
+      ))*/}
     </div>
   );
 };

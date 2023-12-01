@@ -34,9 +34,10 @@ const Login = () => {
       const userAccessToken = response?.data?.result?.access_token || null;
       const userEmail = response?.data?.result?.email || null;
       const userId = response?.data?.result?.id || null;
+      const profilePictureUrl = response?.data?.result?.profile_picture_url || null;
 
 
-      setAuth({ userEmail, userAccessToken, userId });
+      setAuth({ userEmail, userAccessToken, userId, profilePictureUrl });
       setEmail('');
       setPassword('');
 
