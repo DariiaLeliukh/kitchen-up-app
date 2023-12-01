@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 import axios from "axios";
 import io from "socket.io-client";
 import RecipeHeader from "../components/RecipeHeader";
@@ -7,6 +8,7 @@ import RecipeInstructionList from "../components/RecipeInstructionList";
 import "../styles/css/forms.css";
 
 const CookingSession = () => {
+  const { auth } = useAuth();
   const [socket, setSocket] = useState();
   const [messages, setMessages] = useState([]);
   const [recipe, setRecipe] = useState(null);
@@ -28,9 +30,12 @@ const CookingSession = () => {
   useEffect(() => {
     const socket = io();
     setSocket(socket);
-console.log(`Inside sockets'useEffect: `, socket)
+
     socket.on("connect", () => {
       setMessages((prev) => [...prev, "Connecting to the server"]);
+
+      //Request to joing the cooking session room
+      socket.emit('join session', { cookingSessionId: id, userId: auth.userId });
     });
 
     socket.on("system", (data) => {

@@ -228,4 +228,4 @@ const httpServer = app.listen(PORT, () => {
   );
 });
 
-socketConfig.configureSocketConnections(app, httpServer);
+socketConfig.configureSocketConnections(httpServer);

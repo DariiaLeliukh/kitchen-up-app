@@ -1,38 +1,58 @@
 const { Server } = require("socket.io");
-
-//socketConfig.configureSocketConnections(app, httpServer);
 // require('dotenv').config();
 
-const configureSocketConnections = (app, httpServer) => {
+const configureSocketConnections = (httpServer) => {
   console.log(`Configuring the sockets`);
-  // // Enable Cookie Sessions
-  // const cookieSession = require("cookie-session"); // for Client Cookie Sessions
-  // const session = cookieSession({
-  //   name: "cookingSession",
-  //   keys: [process.env.ACCESS_TOKEN_SECRET],
-  //   sameSite: true,
-  // });
-  // app.use(session);
+
+  /*
+  Data structure to hold the different cooking sessions' information
+
+  const cookingSessions = {
+    cookingSessionId = {
+      userId: step
+    },
+  };
+  */
+  const cookingSessions = {};
 
   // Start WS Server
   const io = new Server(httpServer, {
     connectionStateRecovery: {}
   });
 
-  // // Allow socket.io to access session
-  // const wrap = (middleware) => (socket, next) =>
-  //   middleware(socket.request, {}, next);
-  // io.use(wrap(session));
-
-  //data structure to hold the different cooking sessions' information
-  const cookingSessions = {};
-
   io.on("connection", (client) => {
-    // const session = client.request.session;
-    // const name = session?.user?.name;
+    let userId, cookingSessionId;
 
-    console.log("Client Connected! : ", client.id);
-    io.emit("system", `A new user has just joined. Welcome! ${client.id}`);
+    console.log(`Client Connected: ${client.id}`);
+    
+    client.on("join session", (data) => {
+      // retrieve the user and the cooking session's id
+      ({ userId, cookingSessionId } = data);
+
+      if (!cookingSessions[cookingSessionId]) {
+        // initiate the cooking session with an empty room if it was not open
+        cookingSessions[cookingSessionId] = {};
+      }
+
+      // register the user in the room if they were not there before (just reconnecting)
+      if (!cookingSessions[cookingSessionId][userId]) {
+        // register the user in the cooking session data structure setting them at the first step
+        cookingSessions[cookingSessionId][userId] = 1;//start at Step: 1
+  
+        // joing the cooking session room
+        client.join(cookingSessionId);
+        // message everyone's positions to everyone in the room
+        io.to(cookingSessionId).emit("positions", cookingSessions[cookingSessionId]);
+
+        console.log(`User #${userId} joined the cooking session #${cookingSessionId}`);
+      }
+    });
+
+    client.on("disconnect", () => {
+      console.log(`Client Disconnected: ${client.id}`);
+      
+      delete cookingSessions[cookingSessionId][userId];
+    });
   });
 };
 
