@@ -12,10 +12,38 @@ import GroceryList from "./routes/GroceryList";
 import Dashboard from "./routes/Dashboard";
 import CookingSessionList from "./routes/CookingSessionList";
 import CookingSessionInfo from "./routes/CookingSessionInfo";
+import useAuth from './hooks/useAuth';
+import { useEffect } from 'react';
+import axios from 'axios';
 import Recipe from './routes/Recipe';
 import Favorites from './routes/Favorites';
+import CreateNewCookingSession from './routes/CreateNewCookingSession';
 
 const App = () => {
+  const { setAuth } = useAuth();
+
+  useEffect(() => {
+    async function checkJWTcookie() {
+      try {
+        await axios.post("/api/verifyJWT")
+          .then((response) => {
+            const userAccessToken = response?.data?.result?.access_token || null;
+            const userEmail = response?.data?.result?.email || null;
+            const userId = response?.data?.result?.id || null;
+            setAuth({ userEmail, userAccessToken, userId });
+          });
+
+      } catch (error) {
+        // If verify didn't work then user is not logged in
+        console.log(error.response.data.message);
+        setAuth({});
+      }
+    }
+    checkJWTcookie();
+
+
+  }, []);
+
   return (
     <div className="App">
       <TopNavigation />
@@ -36,6 +64,7 @@ const App = () => {
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/cooking-sessions" element={<CookingSessionList />} />
           <Route path="/cooking-sessions/:id" element={<CookingSessionInfo />} />
+          <Route path="/cooking-sessions/new" element={<CreateNewCookingSession />} />
         </Route>
       </Routes>
     </div>

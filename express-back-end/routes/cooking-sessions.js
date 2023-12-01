@@ -60,4 +60,36 @@ router.get("/:id/invitations", async (req, res) => {
   });
 });
 
+router.post("/", async (req, res) => {
+
+  const { emails, host_id, api_recipe_id, api_recipe_name } = req.body;
+
+  try {
+    const newCookingSession = await sessionsQuery.addCookingSession(host_id, api_recipe_id, api_recipe_name);
+
+    const newCookingSessionId = newCookingSession.id;
+    await invitationsQuery.addInvitation(host_id, newCookingSessionId, "Accepted");
+
+    const promises = emails.map(async (email) => {
+      const existingUser = await usersQuery.getUserByEmail(email);
+
+      if (existingUser) {
+        const guestInvitation = await invitationsQuery.addInvitation(existingUser.id, newCookingSessionId, "Pending");
+        return { email, status: "success" };
+
+      } else {
+        return { email, status: "fail" };
+      }
+    });
+
+    // Getting info on what invitations has been created 
+    // and which ones failed
+    const dataMessage = await Promise.all(promises);
+
+    return res.status(200).json({ dataMessage, newCookingSessionId });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = router;

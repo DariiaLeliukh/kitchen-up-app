@@ -38,8 +38,9 @@ const TopNavigation = () => {
               <li><Link to="/register">Register</Link></li>
             </>
             }
-            {auth.userId &&
+            {auth.userEmail &&
               <>
+                <li>{auth.userEmail}</li>
                 <li><Link to="/dashboard">Dashboard</Link></li>
                 <Logout />
               </>
