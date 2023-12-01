@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
 import io from "socket.io-client";
