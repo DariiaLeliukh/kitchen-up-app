@@ -28,11 +28,12 @@ const App = () => {
         <Route path="/recipe-list/:id" element={<RecipeListItem />} />
         <Route path="/recipe-list/:id/grocery-list" element={<GroceryList />} />
         <Route path="/recipe/:recipeId" element={<Recipe />} />
-        <Route path="/favorites" element={<Favorites />} />
+      
 
         {/* protected routes for logged in users */}
         <Route element={<RequireAuth />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/favorites" element={<Favorites />} />
           <Route path="/cooking-sessions" element={<CookingSessionList />} />
           <Route path="/cooking-sessions/:id" element={<CookingSessionInfo />} />
         </Route>

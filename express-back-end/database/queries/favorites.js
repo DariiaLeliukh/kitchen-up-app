@@ -7,7 +7,7 @@ const createFavorites = (user_id, api_recipe_id) => {
       [user_id, api_recipe_id]
     )
     .then((data) => {
-      console.log("Inserted data:", data.rows);
+      // console.log("Inserted data:", data.rows);
       return data.rows;
     })
     .catch((error) => {

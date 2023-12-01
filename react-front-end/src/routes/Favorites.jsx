@@ -1,49 +1,55 @@
 import React, { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
-
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 const Favorites = () => {
+
   const { auth } = useAuth();
   const [favorites, setFavorites] = useState([]);
   const [error, setError] = useState(null);
   const [detailedFavorites, setDetailedFavorites] = useState([]);
 
-  // Need to hide key
-  const recipeApiUrl = (recipeId) =>
-    `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=6d4b39f84f3548a3a9bc5061cd0a49b9&includeNutrition=false`;
+  const fetchRecipe = async (api_recipe_id) => {
+    try {
+      const response = await axios.get(`/api/recipe/${api_recipe_id}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };
 
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      try {
-        const response = await fetch(`/api/favorites/${auth.userId}`);
-        const responseData = await response.json();
+useEffect(() => {
+  const fetchFavorites = async () => {
+    try {
+      const response = await fetch(`/api/favorites/${auth.userId}`);
+      const responseData = await response.json();
 
-        if (responseData.data === null) {
-          console.log("No favorites found for the user.");
-        } else {
-          setFavorites(responseData.data);
+      if (responseData.data === null) {
+        // Handle the case when no favorites are found for the user
+      } else {
+        setFavorites(responseData.data);
 
-          const detailsPromises = responseData.data.map(async (favorite) => {
-            try {
-              const detailResponse = await axios.get(recipeApiUrl(favorite));
-              return detailResponse.data;
-            } catch (error) {
-              return null;
-            }
-          });
+        const detailsPromises = responseData.data.map(async (api_recipe_id) => {
+          try {
+            const detailResponse = await fetchRecipe(api_recipe_id);
+            return detailResponse;
+          } catch (error) {
+            return null;
+          }
+        });
 
-          const detailedFavoritesData = await Promise.all(detailsPromises);
-          const validDetailedFavorites = detailedFavoritesData.filter(Boolean);
-          setDetailedFavorites(validDetailedFavorites);
-        }
-      } catch (error) {
-        setError(error);
+        const detailedFavoritesData = await Promise.all(detailsPromises);
+        const validDetailedFavorites = detailedFavoritesData.filter(Boolean);
+        setDetailedFavorites(validDetailedFavorites);
       }
-    };
+    } catch (error) {
+      setError(error);
+    }
+  };
 
-    fetchFavorites();
-  }, [auth.userId]);
+  fetchFavorites();
+}, [auth.userId]);
 
   return (
     <div className="container">
@@ -54,8 +60,17 @@ const Favorites = () => {
           <div>
             {detailedFavorites.map((favorite, index) => (
               <div key={`${favorite.id}_${index}`}>
-                <h3>{favorite.title}</h3>
-                <img src={favorite.image} alt={favorite.title} />
+                <Link to={`/recipe/${favorite.id}`}>
+                  <img src={favorite.image} alt={favorite.title}
+                    
+                    style={{
+                    width: '295px',
+                    height: '253px',
+                    top: '580px',
+                    left: '93px',
+                  }} />
+                  <p>{favorite.title}</p>
+                </Link>
               </div>
             ))}
           </div>
@@ -68,3 +83,5 @@ const Favorites = () => {
 };
 
 export default Favorites;
+
+
