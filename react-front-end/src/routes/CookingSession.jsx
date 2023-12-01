@@ -13,11 +13,11 @@ const CookingSession = () => {
   //const [messages, setMessages] = useState([]); //TODO: Delete if not using messages or text/voice chat
   const [recipe, setRecipe] = useState(null);
   // An object containing an array of users in each step, such as { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] }
-  const [positions, setPositions] = useState({}); 
+  const [positions, setPositions] = useState({});
   const { id } = useParams();
 
   const setRecipeStepStructure = () => {
-    if (recipe.analyzedInstructions) {
+    if (recipe && recipe.analyzedInstructions) {
       const initialPositions = {};
 
       for (let step of recipe.analyzedInstructions[0].steps) {
@@ -45,7 +45,7 @@ const CookingSession = () => {
   useEffect(() => {
     const socket = io();
     setSocket(socket);
-    
+
     socket.on("connect", () => {
       // setMessages((prev) => [...prev, "Connecting to the server"]);
 
@@ -57,13 +57,15 @@ const CookingSession = () => {
       });
     });
 
-    socket.on('positions', (connectedUsers) => {
+    socket.on("positions", (connectedUsers) => {
       const friendsPositions = setRecipeStepStructure();
-      
+
       for (let user of Object.keys(connectedUsers)) {
-        friendsPositions[connectedUsers[user].step].push(connectedUsers[user].profilePictureUrl);        
+        friendsPositions[connectedUsers[user].step].push(
+          connectedUsers[user].profilePictureUrl
+        );
       }
-      
+
       setPositions(friendsPositions);
     });
 
@@ -91,6 +93,7 @@ const CookingSession = () => {
       {recipe.analyzedInstructions && recipe.analyzedInstructions.length > 0 ? (
         <RecipeInstructionList
           instructions={recipe.analyzedInstructions[0].steps}
+          positions={positions}
         />
       ) : (
         <p>No instructions available.</p>
