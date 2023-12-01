@@ -13,7 +13,7 @@ const Recipe = (props) => {
       try {
         const response = await fetch(`/api/recipes/${id}`);
         const data = await response.json();
-        console.log("Data from backend:", data);
+        
         setRecipe(data);
       } catch (error) {
         console.error("Error fetching recipe:", error);

@@ -17,7 +17,7 @@ const CookingSession = () => {
   const { id } = useParams();
 
   const setRecipeStepStructure = () => {
-    if (recipe && recipe.analyzedInstructions) {
+    if (recipe.analyzedInstructions) {
       const initialPositions = {};
 
       for (let step of recipe.analyzedInstructions[0].steps) {
@@ -26,10 +26,12 @@ const CookingSession = () => {
 
       return initialPositions;
     }
+
+    return null;
   };
 
-  useEffect(() => {
-    // Fetch data for the specific cooking session using the id from the URL params
+  // Fetch data for the specific cooking session using the id from the URL params
+  useEffect(() => {    
     axios
       .get(`/api/recipes/${id}/cooking-session`)
       .then((response) => setRecipe(response.data))
@@ -42,39 +44,50 @@ const CookingSession = () => {
   }, []);
 
   //TODO: Move the logic to RecipeInstructionList component if no other socket event is taking place, such as text/voice messages
+  // Create and connect the websockets to the server
   useEffect(() => {
-    const socket = io();
-    setSocket(socket);
+    // Ensure the recipe instructions are received and ready before prepare the positions structure and creating websockets
+    if (recipe) {
+      const socket = io();
+      setSocket(socket);
 
-    socket.on("connect", () => {
-      // setMessages((prev) => [...prev, "Connecting to the server"]);
+      socket.on("connect", () => {
+        // setMessages((prev) => [...prev, "Connecting to the server"]);
 
-      //Request to joing the cooking session room
-      socket.emit("join session", {
-        cookingSessionId: id,
-        userId: auth.userId,
-        profilePictureUrl: auth.profilePictureUrl,
+        //Request to joing the cooking session room
+        socket.emit("join session", {
+          cookingSessionId: id,
+          userId: auth.userId,
+          profilePictureUrl: auth.profilePictureUrl,
+        });
       });
-    });
 
-    socket.on("positions", (connectedUsers) => {
-      const friendsPositions = setRecipeStepStructure();
+      socket.on("positions", (connectedUsers) => {
+        
+        const friendsPositions = setRecipeStepStructure();
 
-      for (let user of Object.keys(connectedUsers)) {
-        friendsPositions[connectedUsers[user].step].push(
-          connectedUsers[user].profilePictureUrl
-        );
-      }
+        if (friendsPositions) {
+          console.log(friendsPositions, connectedUsers);
+          for (let user of Object.keys(connectedUsers)) {
+            console.log(connectedUsers[user]);
+            console.log(connectedUsers[user].step);
+            console.log(connectedUsers[user].profilePictureUrl);
+            friendsPositions[connectedUsers[user].step].push(
+              connectedUsers[user].profilePictureUrl
+            );
+          }
 
-      setPositions(friendsPositions);
-    });
+          setPositions(friendsPositions);
+        }
+      });
 
-    // socket.on("system", (data) => {
-    //   setMessages((prev) => [data, ...prev]);
-    // });
+      // socket.on("system", (data) => {
+      //   setMessages((prev) => [data, ...prev]);
+      // });
 
-    return () => socket.disconnect(); // prevents memory leaks
-  }, []);
+      return () => socket.disconnect(); // prevents memory leaks
+    }
+  }, [recipe]);
 
   // Conditionally render based on whether cookingSession is available
   if (recipe === null) {

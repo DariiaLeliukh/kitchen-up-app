@@ -10,7 +10,7 @@ const RecipeInstructionList = ({ instructions, positions }) => {
             key={instruction.number}
             number={instruction.number}
             description={instruction.step}
-            usersInStep={positions[instruction.number]}
+            usersInStep={positions ? positions[instruction.number] : null}
           />
         ))}
       </ol>
