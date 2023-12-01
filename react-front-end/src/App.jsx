@@ -50,9 +50,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/search" element={<SearchResults />} />
-        <Route path="/recipe-lists" element={<RecipeLists />} />
-        <Route path="/recipe-list/:id" element={<RecipeListItem />} />
-        <Route path="/recipe-list/:id/grocery-list" element={<GroceryList />} />
+
         <Route path="/recipe/:recipeId" element={<Recipe />} />
 
         {/* protected routes for logged in users */}
@@ -61,6 +59,9 @@ const App = () => {
           <Route path="/cooking-sessions" element={<CookingSessionList />} />
           <Route path="/cooking-sessions/:id" element={<CookingSessionInfo />} />
           <Route path="/cooking-sessions/new" element={<CreateNewCookingSession />} />
+          <Route path="/recipe-lists" element={<RecipeLists />} />
+          <Route path="/recipe-list/:id" element={<RecipeListItem />} />
+          {/* <Route path="/recipe-list/:id/grocery-list" element={<GroceryList />} /> */}
         </Route>
       </Routes>
     </div>

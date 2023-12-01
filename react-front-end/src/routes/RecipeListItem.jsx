@@ -1,40 +1,46 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import useAuth from "../hooks/useAuth";
+import { useParams } from "react-router";
 
-const RecipeListItem = ({ recipeList }) => {
-  // Hardcoded fake recipe data
-  const fakeRecipes = [
-    {
-      id: 1,
-      recipeName: "Fake Recipe 1",
-      ingredients: ["ingredient1", "ingredient2"]
-    },
-    {
-      id: 2,
-      recipeName: "Fake Recipe 2",
-      ingredients: ["ingredient3", "ingredient4"]
-    }
-  ];
+const RecipeListItem = () => {
+  const { id } = useParams();
+
+  const [recipeList, setRecipeList] = useState([]);
+  const [recipes, setRecipes] = useState([]);
+  const { auth } = useAuth();
+
+  useEffect(() => {
+    axios
+      .get("/api/recipe-lists", { params: { id } })
+      .then((response) => {
+        setRecipeList(response.data.data[0]);
+      })
+      .catch((error) => console.error("Error fetching recipe lists:", error));
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("/api/recipe-list-items", { params: { recipeListId: id } })
+      .then((response) => {
+        console.log(response);
+        setRecipes(response.data.items);
+      })
+      .catch((error) => console.error("Error fetching recipe items:", error));
+  }, []);
 
   return (
-    <div>
-      <h2>{recipeList && recipeList.name}</h2>
+    <div className="container">
+      <h1>{recipeList && recipeList.name}</h1>
       <p>
         Created on{" "}
         {recipeList && new Date(recipeList.created_at).toLocaleDateString()}
       </p>
 
-      <div>
-        <button>Edit List</button>
-        {/* <Link to={`/recipe-list/${recipeList.id}/grocery-list`}> */}
-        <button>Grocery List</button>
-        {/* </Link> */}
-      </div>
-
       <h3>Recipes:</h3>
       <ul>
-        {fakeRecipes.map((recipe) => (
-          <li key={recipe.id}>{recipe.recipeName}</li>
+        {recipes.map((recipe) => (
+          <li key={recipe.id}>{recipe.api_recipe_id}</li>
         ))}
       </ul>
     </div>

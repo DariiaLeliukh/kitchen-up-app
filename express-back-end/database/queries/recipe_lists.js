@@ -16,6 +16,14 @@ const getRecipeListsByUserId = (userId) => {
     });
 };
 
+const getRecipeListItemsByRecipeId = (recipeId) => {
+  return db
+    .query("SELECT * FROM recipe_list_items WHERE recipe_list_id=$1;", [recipeId])
+    .then((data) => {
+      return data.rows;
+    });
+};
+
 const addToRecipeList = (recipeListId, api_recipe_id) => {
   return db
     .query(`
@@ -30,4 +38,4 @@ const addToRecipeList = (recipeListId, api_recipe_id) => {
     });
 };
 
-module.exports = { getRecipeLists, getRecipeListsByUserId, addToRecipeList };
+module.exports = { getRecipeLists, getRecipeListsByUserId, addToRecipeList, getRecipeListItemsByRecipeId };

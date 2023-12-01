@@ -11,15 +11,14 @@ const RecipeLists = () => {
     axios
       .get("/api/recipe-lists", { params: { id: auth.userId } })
       .then((response) => {
-        console.log(response.data); //delete later
         setRecipeLists(response.data.data);
       })
       .catch((error) => console.error("Error fetching recipe lists:", error));
-  }, [auth.userId]);
+  }, []);
 
   return (
-    <div>
-      <h2>Recipe Lists</h2>
+    <div className="container">
+      <h1>Recipe Lists</h1>
       {recipeLists.length === 0 ? (
         <p>No recipe lists found.</p>
       ) : (

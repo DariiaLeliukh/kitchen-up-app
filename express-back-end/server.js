@@ -119,6 +119,23 @@ app.get("/recipe-lists", async (req, res) => {
   }
 });
 
+app.get("/recipe-list-items", async (req, res) => {
+
+  const { recipeListId } = req.query;
+  if (recipeListId) {
+
+    await recipeListQuery.getRecipeListItemsByRecipeId(recipeListId)
+      .then((items) => {
+        console.log(items);
+
+        return res.json({ items });
+      });
+  } else {
+    return res.sendStatus(500);
+  }
+
+});
+
 app.post("/recipe-list-items", async (req, res) => {
 
   const { recipeListId, recipeId } = req.body;
@@ -131,6 +148,7 @@ app.post("/recipe-list-items", async (req, res) => {
   }
 
 });
+
 // Registration endpoint
 app.post('/register', async (req, res) => {
   const { username, first_name, last_name, email, profile_picture_url, password } = req.body;
