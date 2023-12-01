@@ -12,21 +12,21 @@ const Search = (props) => {
       const data = await response.json();
       console.log("Data from backend:", data);
       setNameResults(Array.isArray(data.results) ? data.results : []);
-      } catch (error) {
+    } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
   const handleIngredientSearch = async (search) => {
-  try {
-    const response = await fetch(`/api/search?ingredients=${search}`);
-    const data = await response.json();
-    console.log("Data from backend:", data);
-    setIngredientResults(Array.isArray(data) ? data : []);
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
-};
+    try {
+      const response = await fetch(`/api/search?ingredients=${search}`);
+      const data = await response.json();
+      console.log("Data from backend:", data);
+      setIngredientResults(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   const handleSearchSubmit = (search, searchType) => {
     // Clear old results based on searchType
     if (searchType === "name") {
@@ -46,8 +46,8 @@ const Search = (props) => {
   const combinedResults = [...nameResults, ...ingredientResults];
 
   return (
-    <div className="home-route">
-      <div className="search-container">
+    <>
+      <div className="search-container row">
         <SearchBar
           onSearch={(search) => handleSearchSubmit(search, "name")}
           placeholder="Search by Name"
@@ -60,7 +60,8 @@ const Search = (props) => {
       <div className="results-container">
         <SearchResults combinedResults={combinedResults} />
       </div>
-    </div>
+    </>
+
   );
 };
 
