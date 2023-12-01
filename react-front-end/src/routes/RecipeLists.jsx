@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const RecipeLists = () => {
   const [recipeLists, setRecipeLists] = useState([]);
+  const { auth } = useAuth();
 
   useEffect(() => {
     axios
-      .get("/api/recipe-lists")
+      .get("/api/recipe-lists", { params: { id: auth.userId } })
       .then((response) => {
         console.log(response.data); //delete later
         setRecipeLists(response.data.data);
       })
       .catch((error) => console.error("Error fetching recipe lists:", error));
-  }, []);
+  }, [auth.userId]);
 
   return (
     <div>

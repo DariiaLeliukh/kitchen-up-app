@@ -34,7 +34,6 @@ const App = () => {
 
       } catch (error) {
         // If verify didn't work then user is not logged in
-        console.log(error.response.data.message);
         setAuth({});
       }
     }

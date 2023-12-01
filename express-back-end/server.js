@@ -35,9 +35,7 @@ app.use("/recipe", recipeRouter);
 
 async function findUserByJWTcookie(access_token) {
   const foundUser = await usersQuery.getUserByToken(access_token);
-  // console.log(foundUser);
   return foundUser || null;
-
 }
 
 app.post('/verifyJWT', async (req, res, next) => {
@@ -106,16 +104,32 @@ app.get('/', (req, res) => {
 
 app.get('/users', (req, res) => {
   usersQuery.getUsers().then((users) => {
-    console.log(users);
     res.json({ data: users });
   });
 });
 
-app.get("/recipe-lists", (req, res) => {
-  recipeListQuery.getRecipeLists().then((recipe_lists) => {
-    console.log(recipe_lists);
-    res.json({ data: recipe_lists });
-  });
+app.get("/recipe-lists", async (req, res) => {
+  const requestedUserId = req.query.id;
+  if (requestedUserId) {
+    recipeListQuery.getRecipeListsByUserId(requestedUserId).then((recipe_lists) => {
+      return res.json({ data: recipe_lists });
+    });
+  } else {
+    return res.json({ data: [] });
+  }
+});
+
+app.post("/recipe-list-items", async (req, res) => {
+
+  const { recipeListId, recipeId } = req.body;
+
+  if (recipeListId && recipeId) {
+    const addedRecipeToList = await recipeListQuery.addToRecipeList(recipeListId, recipeId);
+    return res.sendStatus(200);
+  } else {
+    return res.sendStatus(500);
+  }
+
 });
 // Registration endpoint
 app.post('/register', async (req, res) => {
@@ -227,7 +241,6 @@ app.post('/login', async (req, res) => {
 
 app.get("/grocery-list", (req, res) => {
   groceryListQuery.getGroceryListItems().then((grocery_list_items) => {
-    console.log(grocery_list_items);
     res.json({ data: grocery_list_items });
   });
 });

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import "../styles/css/forms.css";
+import AddToRecipeList from "../components/AddToRecipeList";
 
 const Recipe = (props) => {
   const { recipeId } = useParams();
@@ -11,7 +12,6 @@ const Recipe = (props) => {
       try {
         const response = await fetch(`/api/recipe/${recipeId}`);
         const data = await response.json();
-        console.log("Data from backend:", data);
         setRecipe(data);
       } catch (error) {
         console.error("Error fetching recipe:", error);
@@ -23,10 +23,6 @@ const Recipe = (props) => {
 
   const handleFavorites = () => {
     alert("Added to Favorites!");
-  };
-
-  const handleGroceriList = () => {
-    alert("Added to Grocery list");
   };
 
   return (
@@ -44,7 +40,7 @@ const Recipe = (props) => {
           <div>
             <Link to="/cooking-sessions/new" state={{ recipeId, recipeTitle: recipe.title }} className="button">Cook with Friends</Link>
             <button onClick={handleFavorites}>Add Favorites</button>
-            <button onClick={handleGroceriList}>Add to Grocery List</button>
+            <AddToRecipeList recipeId={recipe.id} />
           </div>
           <hr />
           {recipe.analyzedInstructions &&

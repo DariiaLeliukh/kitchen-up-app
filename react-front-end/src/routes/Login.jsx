@@ -11,8 +11,6 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/dashboard";
-  console.log('here test');
-
 
   const emailRef = useRef();
 
@@ -36,7 +34,6 @@ const Login = () => {
       const userAccessToken = response?.data?.result?.access_token || null;
       const userEmail = response?.data?.result?.email || null;
       const userId = response?.data?.result?.id || null;
-
 
       setAuth({ userEmail, userAccessToken, userId });
       setEmail('');
