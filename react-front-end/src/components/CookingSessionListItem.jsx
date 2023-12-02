@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
+import "../styles/css/cooking-sessions.css";
 
 const CookingSessionListItem = ({ cookingSession, showInfoButton }) => (
-  <li>
+  <div className="single-session-card col-12 col-md-6 col-lg-4">
     <h2>{cookingSession.is_host ? "Hosting" : cookingSession.host_name}</h2>
     <strong>Recipe: {cookingSession.api_recipe_name}</strong>
     <br />
@@ -24,8 +25,7 @@ const CookingSessionListItem = ({ cookingSession, showInfoButton }) => (
         </Link>
       </>
     )}
-    <hr />
-  </li>
+  </div>
 );
 
 export default CookingSessionListItem;

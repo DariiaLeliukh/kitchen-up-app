@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CookingSessionListItem from "../components/CookingSessionListItem";
+import "../styles/css/cooking-sessions.css";
 
 const CookingSessionList = () => {
   const [cookingSessions, setCookingSessions] = useState(null);
@@ -33,27 +34,27 @@ const CookingSessionList = () => {
 
 
   return (
-    <div>
+    <div className="container cooking-session-list">
       <h1>Cooking Sessions</h1>
       <h2>Upcoming Sessions</h2>
       {upcomingSessions.length === 0 ?
         <div><p>You don&apost have an upcoming cooking session, yet! Invite your friends!!</p></div>
         :
-        <ul style={{ display: "flex" }}>
+        <div className="upcoming-sessions sessions-container row">
           {upcomingSessions.map((cookingSession) => (
             <CookingSessionListItem key={cookingSession.id} cookingSession={cookingSession} showInfoButton={true} />
           ))}
-        </ul>
+        </div>
       }
       <h2>Expired Sessions</h2>
       {expiredSessions.length === 0 ?
         <div><p>Have you never cooked with your friends before? Invite them!!</p></div>
         :
-        <ul style={{ display: "flex" }}>
+        <div className="expired-sessions sessions-container row">
           {expiredSessions.map((cookingSession) => (
             <CookingSessionListItem key={cookingSession.id} cookingSession={cookingSession} showInfoButton={true} />
           ))}
-        </ul>
+        </div>
       }
     </div>
   );
