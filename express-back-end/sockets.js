@@ -36,8 +36,9 @@ const configureSocketConnections = (httpServer) => {
         cookingSessions[cookingSessionId] = {};
       }
 
+      //TODO: uncomment the validation below if removing a user from the cooking session when they disconnect is the desired behavior
       // register the user in the room if they were not there before (just reconnecting)
-      if (!cookingSessions[cookingSessionId][userId]) {
+      //if (!cookingSessions[cookingSessionId][userId]) {
         // register the user in the cooking session data structure setting them at the first step
         cookingSessions[cookingSessionId] = {
           [userId]: { profilePictureUrl: profilePictureUrl, step: "1" }, //start at Step: 1
@@ -55,7 +56,7 @@ const configureSocketConnections = (httpServer) => {
         console.log(
           `User #${userId} joined the cooking session #${cookingSessionId}`
         );
-      }
+      //}
     });
 
     client.on("cooking progress", (currentStep) => {
@@ -69,7 +70,8 @@ const configureSocketConnections = (httpServer) => {
     client.on("disconnect", () => {
       console.log(`Client Disconnected: ${client.id}`);
 
-      delete cookingSessions[cookingSessionId][userId];
+      //TODO: uncomment the command below if removing a user from the cooking session when they disconnect is the desired behavior
+      //delete cookingSessions[cookingSessionId][userId];
     });
   });
 };
