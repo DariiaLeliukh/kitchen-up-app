@@ -24,6 +24,15 @@ body {
   margin: 50px auto;
 }
 
+.home-route.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 50px auto;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
 button,
 .button {
   border-radius: 700px;
@@ -36,4 +45,8 @@ button,
 
 a {
   color: #084F20;
+}
+
+.search-container {
+  margin-bottom: 50px;
 }
