@@ -31,7 +31,7 @@ const CookingSession = () => {
   };
 
   // Fetch data for the specific cooking session using the id from the URL params
-  useEffect(() => {    
+  useEffect(() => {
     axios
       .get(`/api/recipes/${id}/cooking-session`)
       .then((response) => setRecipe(response.data))
@@ -63,7 +63,6 @@ const CookingSession = () => {
       });
 
       socket.on("positions", (connectedUsers) => {
-        
         const friendsPositions = setRecipeStepStructure();
 
         if (friendsPositions) {
@@ -89,6 +88,11 @@ const CookingSession = () => {
     }
   }, [recipe]);
 
+  // send the next
+  const setCurrentStep = function (currentStep) {
+    socket.emit("cooking progress", currentStep);
+  };
+
   // Conditionally render based on whether cookingSession is available
   if (recipe === null) {
     // If cookingSession is still null, you can render a loading state or return null
@@ -107,6 +111,7 @@ const CookingSession = () => {
         <RecipeInstructionList
           instructions={recipe.analyzedInstructions[0].steps}
           positions={positions}
+          onClickHandler={setCurrentStep}
         />
       ) : (
         <p>No instructions available.</p>

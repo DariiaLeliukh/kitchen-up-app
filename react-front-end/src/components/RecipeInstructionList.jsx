@@ -1,7 +1,7 @@
 import React from "react";
 import RecipeInstructionListItem from "./RecipeInstructionListItem";
 
-const RecipeInstructionList = ({ instructions, positions }) => {
+const RecipeInstructionList = ({ instructions, positions, onClickHandler }) => {
   return (
     <section className="form">
       <ol>
@@ -11,6 +11,7 @@ const RecipeInstructionList = ({ instructions, positions }) => {
             number={instruction.number}
             description={instruction.step}
             usersInStep={positions ? positions[instruction.number] : null}
+            onClickHandler={onClickHandler}
           />
         ))}
       </ol>

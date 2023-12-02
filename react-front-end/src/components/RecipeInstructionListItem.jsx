@@ -1,6 +1,11 @@
 import React from "react";
 
-const RecipeInstructionListItem = ({ number, description, usersInStep }) => {
+const RecipeInstructionListItem = ({
+  number,
+  description,
+  usersInStep,
+  onClickHandler,
+}) => {
   const profileImageStyle = {
     width: "40px", // Set your desired width
     height: "40px", // Set your desired height
@@ -13,9 +18,12 @@ const RecipeInstructionListItem = ({ number, description, usersInStep }) => {
   };
 
   return (
-    <li style={{ display: "flex", flexDirection: "row" }}>
+    <li
+      style={{ display: "flex", flexDirection: "row" }}
+      onClick={onClickHandler && (() => onClickHandler(number))}
+    >
       {usersInStep && (
-        <div>
+        <div style={{ display: "flex", flexDirection: "row" }}>
           {usersInStep.map((profilePicture, index) =>
             profilePicture.length !== 3 ? (
               //An URL is set as the user's profile picture

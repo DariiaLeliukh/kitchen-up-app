@@ -1,8 +1,7 @@
 const { Server } = require("socket.io");
-// require('dotenv').config();
 
 const configureSocketConnections = (httpServer) => {
-  console.log(`Configuring the sockets`);
+  console.log(`Configuring web sockets`);
 
   /*
   Data structure to hold the different cooking sessions' information
@@ -57,6 +56,14 @@ const configureSocketConnections = (httpServer) => {
           `User #${userId} joined the cooking session #${cookingSessionId}`
         );
       }
+    });
+
+    client.on("cooking progress", (currentStep) => {
+      console.log(`Cooking session #${cookingSessionId}: User #${userId} is now in step ${currentStep}.`);
+      
+      cookingSessions[cookingSessionId][userId].step = currentStep;
+      
+      io.to(cookingSessionId).emit("positions", cookingSessions[cookingSessionId]);
     });
 
     client.on("disconnect", () => {
