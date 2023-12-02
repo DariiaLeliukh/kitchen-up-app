@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import "../styles/css/forms.css";
+import "../styles/css/styles.css";
+import "../styles/css/recipe.css";
 import AddToRecipeList from "../components/AddToRecipeList";
 
 const Recipe = (props) => {
@@ -26,42 +28,59 @@ const Recipe = (props) => {
   };
 
   return (
-    <div className="container">
-      {recipe ? (
-        <div>
-          <h2>{recipe.title}</h2>
-          <img src={recipe.image} alt={recipe.title} />
-          <h3>Ingredients</h3>
-          <ul>
-            {recipe.extendedIngredients.map((ingredient, index) => (
-              <li key={index}>{ingredient.original}</li>
-            ))}
-          </ul>
-          <div>
-            <Link to="/cooking-sessions/new" state={{ recipeId, recipeTitle: recipe.title }} className="button">Cook with Friends</Link>
-            <button onClick={handleFavorites}>Add Favorites</button>
-            <AddToRecipeList recipeId={recipe.id} />
+    <>
+      {
+        recipe ? (
+          <>
+            <img className="recipe-img" src={recipe.image} alt={recipe.title} />
+            <div className="recipe-info">
+              <div className="container">
+                <div className="row">
+                  <div className="col-12 col-md-8">
+                    <h1>{recipe.title}</h1>
+                    <h3 className="ingredients-heading" >Ingredients</h3>
+                    <ul className="ingredient-list">
+                      {recipe.extendedIngredients.map((ingredient, index) => (
+                        <li key={index}>{ingredient.original}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="col-12 col-md-4">
+                    <Link to="/cooking-sessions/new" state={{ recipeId, recipeTitle: recipe.title }} className="button">Cook with Friends</Link>
+                    <button onClick={handleFavorites}>Add Favorites</button>
+                    <AddToRecipeList recipeId={recipe.id} />
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div className="container" >
+              <div>
+                {recipe.analyzedInstructions &&
+                  recipe.analyzedInstructions.length > 0 ? (
+                  <section className="form">
+                    <ol>
+                      {recipe.analyzedInstructions[0].steps.map((step) => (
+                        <li key={step.number}>
+                          <p>{`STEP ${step.number}: ${step.step}`}</p>
+                        </li>
+                      ))}
+                    </ol>
+                  </section>
+                ) : (
+                  <p>No instructions available.</p>
+                )}
+              </div>
+            </div >
+
+          </>
+        ) : (
+          <div className="container">
+            <p>Loading...</p>
           </div>
-          <hr />
-          {recipe.analyzedInstructions &&
-            recipe.analyzedInstructions.length > 0 ? (
-            <section className="form">
-              <ol>
-                {recipe.analyzedInstructions[0].steps.map((step) => (
-                  <li key={step.number}>
-                    <p>{`STEP ${step.number}: ${step.step}`}</p>
-                  </li>
-                ))}
-              </ol>
-            </section>
-          ) : (
-            <p>No instructions available.</p>
-          )}
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
-    </div>
+        )}
+    </>
   );
 };
 
