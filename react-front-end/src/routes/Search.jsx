@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import SearchBar from '../components/SearchBar';
-import SearchResults from '../components/SearchResult';
 import RecipeCardItem from '../components/RecipeCardItem';
 
 const Search = (props) => {
@@ -47,13 +46,10 @@ const Search = (props) => {
   };
 
   const combinedResults = [...nameResults, ...ingredientResults];
-  console.log(combinedResults);
-
 
   return (
     <>
       <div className="search-container row">
-
         <div className="col-12 col-md-6">
           <SearchBar
             onSearch={(search) => handleSearchSubmit(search, "name")}
@@ -66,13 +62,8 @@ const Search = (props) => {
             placeholder="Search by Ingredient"
           />
         </div>
-
-
-
-
       </div>
       <div className="results-container">
-        {/* <SearchResults combinedResults={combinedResults} /> */}
         <div className="row">
           {combinedResults.map((recipe) => (
             <RecipeCardItem key={recipe.id} id={recipe.id} imageUrl={recipe.image} title={recipe.title} />

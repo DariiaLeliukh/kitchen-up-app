@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Search from "./Search";
-import { Link } from "react-router-dom";
 import RecipeCardItem from "../components/RecipeCardItem";
 
-const HomeRoute = (props) => {
+const HomeRoute = () => {
   const [randomRecipes, setRandomRecipes] = useState([]);
 
   useEffect(() => {
@@ -27,11 +26,6 @@ const HomeRoute = (props) => {
 
     fetchRandomRecipes();
   }, []);
-
-  // if (randomRecipes.length === 0) {
-  //   // If cookingSession is still null, you can render a loading state or return null
-  //   return <p>Loading...</p>;
-  // }
 
   const removeDefaultRecipes = () => {
     setRandomRecipes([]);
