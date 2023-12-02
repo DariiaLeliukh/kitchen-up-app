@@ -24,10 +24,13 @@ body {
   margin: 50px auto;
 }
 
-.home-route {
+.home-route.container {
   width: 100%;
   max-width: 1200px;
   margin: 50px auto;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
 }
 
 button,

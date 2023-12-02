@@ -17,7 +17,7 @@ const SearchBar = ({ onSearch, placeholder }) => {
   };
 
   return (
-    <form className="col-12 col-md-6" onSubmit={handleSearchSubmit}>
+    <form onSubmit={handleSearchSubmit}>
       <input
         className="form-control"
         type="text"
