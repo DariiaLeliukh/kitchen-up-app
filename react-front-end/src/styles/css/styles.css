@@ -35,7 +35,14 @@ button,
   padding: 15px 30px;
   margin: 0 auto;
   display: flex;
-  color: #FFF; }
+  color: #FFF;
+  border: 0; }
+  button:hover,
+  .button:hover {
+    background: #E7B401;
+    color: #FFF;
+    text-decoration: none;
+    cursor: pointer; }
 
 a {
   color: #084F20; }

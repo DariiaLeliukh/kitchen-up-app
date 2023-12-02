@@ -40,7 +40,7 @@ const CookingSessionList = () => {
       {upcomingSessions.length === 0 ?
         <div><p>You don&apost have an upcoming cooking session, yet! Invite your friends!!</p></div>
         :
-        <div className="upcoming-sessions sessions-container row">
+        <div className="upcoming-sessions sessions-container row ">
           {upcomingSessions.map((cookingSession) => (
             <CookingSessionListItem key={cookingSession.id} cookingSession={cookingSession} showInfoButton={true} />
           ))}
