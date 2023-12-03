@@ -8,6 +8,8 @@ import Logout from './Logout';
 
 const TopNavigation = () => {
   const { auth } = useAuth();
+  console.log('auth', auth);
+
 
   return (
     <div className="top-nav-container">
