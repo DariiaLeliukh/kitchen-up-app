@@ -1,30 +1,28 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import useAuth from "../hooks/useAuth";
 import { useParams } from "react-router";
 
 const RecipeListItem = () => {
-  const { id } = useParams();
+  const { id } = useParams();  //recipe list id
 
   const [recipeList, setRecipeList] = useState([]);
   const [recipes, setRecipes] = useState([]);
-  const { auth } = useAuth();
 
   useEffect(() => {
     axios
-      .get("/api/recipe-lists", { params: { id } })
+      .get("/api/recipe-list", { params: { id } })
       .then((response) => {
         setRecipeList(response.data.data[0]);
       })
       .catch((error) => console.error("Error fetching recipe lists:", error));
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     axios
       .get("/api/recipe-list-items", { params: { recipeListId: id } })
       .then((response) => {
         console.log(response);
-        setRecipes(response.data.items);
+        setRecipes(response.data.data);
       })
       .catch((error) => console.error("Error fetching recipe items:", error));
   }, []);
@@ -40,7 +38,11 @@ const RecipeListItem = () => {
       <h3>Recipes:</h3>
       <ul>
         {recipes.map((recipe) => (
-          <li key={recipe.id}>{recipe.api_recipe_id}</li>
+          <li key={recipe.apiRecipeId}>
+            ID: {recipe.apiRecipeId}
+            Title : {recipe.recipeTitle}
+            Image: {recipe.recipeImage}
+          </li>
         ))}
       </ul>
     </div>

@@ -119,6 +119,18 @@ app.get("/recipe-lists", async (req, res) => {
   }
 });
 
+app.get("/recipe-list", async (req, res) => {
+  const requestedListId = req.query.id;
+
+  if (requestedListId) {
+    recipeListQuery.getRecipeListById(requestedListId).then((recipe_list) => {
+      return res.json({ data: recipe_list });
+    });
+  } else {
+    return res.json({ data: [] });
+  }
+});
+
 app.get("/recipe-list-items", async (req, res) => {
 
   const { recipeListId } = req.query;
@@ -126,9 +138,24 @@ app.get("/recipe-list-items", async (req, res) => {
 
     await recipeListQuery.getRecipeListItemsByRecipeId(recipeListId)
       .then((items) => {
-        console.log(items);
+        const recipeIds = items.map((item) => {
+          return item.api_recipe_id;
+        });
 
-        return res.json({ items });
+        axios.get(recipeApiUrl.getRecipeInformationBulk(recipeIds))
+          .then(apiData => {
+            const dataRecipes = [];
+            apiData.data.forEach((recipe) => {
+              dataRecipes.push({
+                apiRecipeId: recipe.id,
+                recipeTitle: recipe.title,
+                recipeImage: recipe.image
+              });
+            });
+            return res.json({ data: dataRecipes });
+          }).catch((error) => {
+            console.error(error);
+          });
       });
   } else {
     return res.sendStatus(500);

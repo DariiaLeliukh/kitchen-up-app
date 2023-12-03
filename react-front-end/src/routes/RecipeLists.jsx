@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
@@ -31,7 +31,7 @@ const RecipeLists = () => {
                 <button>Grocery List</button>
               </Link>
               <Link to={`/recipe-list/${list.id}`}>
-                <button>View List</button>{" "}
+                <button>View List</button>
               </Link>
             </li>
           ))}
