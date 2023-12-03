@@ -9,7 +9,23 @@ router.post("/add", async (req, res) => {
   const { user_id, api_recipe_id } = req.body;
 
   try {
-    // add to favorites in the database
+    // Validate that user_id is not null or undefined
+    if (!user_id) {
+      return res.status(400).json({ error: "Please login!" });
+    }
+    // Check if the recipe already exists in favorites
+    const existingFavorites = await favoriteQuery.getFavoriteIdsByUserId(
+      user_id
+    );
+    const isRecipeAlreadyAdded = existingFavorites.some(
+      (favorite) => favorite.api_recipe_id === api_recipe_id
+    );
+
+    if (isRecipeAlreadyAdded) {
+      return res.status(400).json({ error: "Recipe already in favorites." });
+    }
+
+    // If the recipe doesn't exist, add it to favorites in the database
     const result = await favoriteQuery.createFavorites(user_id, api_recipe_id);
 
     // Send the added favorite as a response
@@ -20,46 +36,38 @@ router.post("/add", async (req, res) => {
   }
 });
 
-// Returns a Promise that resolves after "ms" Milliseconds
-const timer = (ms) => new Promise((res) => setTimeout(res, ms));
-
 // Endpoint to get favorite recipe IDs by user ID
 router.get("/", async (req, res) => {
   const userId = req.query.id;
-  // console.log(userId);
 
   try {
     const api_recipe_ids = await favoriteQuery.getFavoriteIdsByUserId(userId);
-    console.log("Favorite ID:", api_recipe_ids);
-    const dataFavorites = [];
-
-    async function load() {
-      for (let i = 0; i < api_recipe_ids.length; i++) {
-        // console.log("index before try", i);
-        const recipeInformation = recipeApiUrl.getRecipeInformation(
-          api_recipe_ids[i].api_recipe_id
-        );
-
-        try {
-          // console.log("index", i);
-          const apiDataByRecipe = await axios.get(recipeInformation);
-          console.log(apiDataByRecipe.data.title);
-          dataFavorites.push(apiDataByRecipe.data); // Add data to the array
-        } catch (error) {
-          console.error(error);
-        }
-
-        await timer(i *1);
-      }
-
-      res.json({ dataFavorites });
-      // console.log(dataFavorites);
+    if (api_recipe_ids.length === 0) {
+      return res.json({ dataFavorites: [] });
     }
 
-    await load(); // Wait for the entire loop to finish before sending the response
+    const recipeIdsArray = api_recipe_ids.map((item) => item.api_recipe_id);
+
+    const requestUrl = recipeApiUrl.getRecipeInformationBulk(recipeIdsArray);
+    axios
+      .get(requestUrl)
+      .then((apiData) => {
+        const dataFavorites = [];
+        apiData.data.forEach((recipe) => {
+          dataFavorites.push({
+            apiRecipeId: recipe.id,
+            recipeTitle: recipe.title,
+            recipeImage: recipe.image
+          });
+        });
+        return res.json({ data: dataFavorites });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   } catch (error) {
-    // Handle errors here
     console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
