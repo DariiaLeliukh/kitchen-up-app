@@ -20,7 +20,7 @@ const getFavoriteIdsByUserId = (user_id) => {
   return db
     .query("SELECT api_recipe_id FROM favorites WHERE user_id = $1", [user_id])
     .then((data) => {
-      return data.rows.map((row) => row.api_recipe_id);
+      return data.rows;
     });
 };
 

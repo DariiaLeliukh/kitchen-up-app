@@ -4,52 +4,31 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 const Favorites = () => {
-
   const { auth } = useAuth();
   const [favorites, setFavorites] = useState([]);
   const [error, setError] = useState(null);
   const [detailedFavorites, setDetailedFavorites] = useState([]);
 
-  const fetchRecipe = async (api_recipe_id) => {
-    try {
-      const response = await axios.get(`/api/recipe/${api_recipe_id}`);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  };
-
-useEffect(() => {
-  const fetchFavorites = async () => {
-    try {
-      const response = await fetch(`/api/favorites/${auth.userId}`);
-      const responseData = await response.json();
-
-      if (responseData.data === null) {
-        // Handle the case when no favorites are found for the user
-      } else {
-        setFavorites(responseData.data);
-
-        const detailsPromises = responseData.data.map(async (api_recipe_id) => {
-          try {
-            const detailResponse = await fetchRecipe(api_recipe_id);
-            return detailResponse;
-          } catch (error) {
-            return null;
-          }
+  useEffect(() => {
+    console.log("useEffect triggered");
+    const fetchFavorites = async () => {
+      try {
+        const response = await axios.get("/api/favorites", {
+          params: { id: auth.userId }
         });
 
-        const detailedFavoritesData = await Promise.all(detailsPromises);
-        const validDetailedFavorites = detailedFavoritesData.filter(Boolean);
-        setDetailedFavorites(validDetailedFavorites);
-      }
-    } catch (error) {
-      setError(error);
-    }
-  };
+        if (response.data && response.data.dataFavorites) {
+          setFavorites(response.data.dataFavorites);
 
-  fetchFavorites();
-}, [auth.userId]);
+        setDetailedFavorites(response.data.dataFavorites);
+        }
+      } catch (error) {
+        setError(error);
+      }
+    };
+
+    fetchFavorites();
+  }, []);
 
   return (
     <div className="container">
@@ -58,21 +37,28 @@ useEffect(() => {
         {error && <p>Error fetching favorites: {error.message}</p>}
         {detailedFavorites.length > 0 ? (
           <div>
-            {detailedFavorites.map((favorite, index) => (
-              <div key={`${favorite.id}_${index}`}>
-                <Link to={`/recipe/${favorite.id}`}>
-                  <img src={favorite.image} alt={favorite.title}
-                    
-                    style={{
-                    width: '295px',
-                    height: '253px',
-                    top: '580px',
-                    left: '93px',
-                  }} />
-                  <p>{favorite.title}</p>
-                </Link>
-              </div>
-            ))}
+            {detailedFavorites.map((favorite) => {
+              console.log("Favorite ID:", favorite.id);
+              console.log("Favorite Title:", favorite.title);
+              console.log("Favorite Image:", favorite.image);
+              return (
+                <div key={favorite.id}>
+                  <Link to={`/recipe/${favorite.id}`}>
+                    <img
+                      src={favorite.image}
+                      alt={favorite.title}
+                      style={{
+                        width: "295px",
+                        height: "253px",
+                        top: "580px",
+                        left: "93px"
+                      }}
+                    />
+                    <p>{favorite.title}</p>
+                  </Link>
+                </div>
+              );
+            })}
           </div>
         ) : (
           <p>Loading favorites...</p>
