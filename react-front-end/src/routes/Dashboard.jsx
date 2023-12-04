@@ -7,7 +7,7 @@ const Dashboard = () => {
         Cooking Sessons
       </Link>
       <Link to="/recipe-lists" className="button">
-        REcipe Lists
+        Recipe Lists
       </Link>
       <Link to="/favorites">
         <button>Favorites</button>

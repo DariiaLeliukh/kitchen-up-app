@@ -6,7 +6,7 @@ const getGroceryListItemsByRecipeId = (recipeId) => {
   });
 };
 
-const addIngedient = (api_ingredient_id, recipe_list_id, api_image, api_nameClean, api_amount, api_unit) => {
+const addIngredient = (api_ingredient_id, recipe_list_id, api_image, api_nameClean, api_amount, api_unit) => {
 
   return db
     .query(`
@@ -28,7 +28,7 @@ const addIngedient = (api_ingredient_id, recipe_list_id, api_image, api_nameClea
     });
 };
 
-const updateIngedient = (ingredientId) => {
+const togglePurchasedStatus = (ingredientId) => {
 
   return db
     .query(`
@@ -42,4 +42,4 @@ const updateIngedient = (ingredientId) => {
     });
 };
 
-module.exports = { getGroceryListItemsByRecipeId, addIngedient, updateIngedient };
+module.exports = { getGroceryListItemsByRecipeId, addIngredient, togglePurchasedStatus };

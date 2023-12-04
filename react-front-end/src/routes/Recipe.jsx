@@ -3,9 +3,8 @@ import { useParams } from "react-router-dom";
 import RecipeHeader from "../components/RecipeHeader";
 import RecipeInstructionList from "../components/RecipeInstructionList";
 import "../styles/css/styles.css";
-import AddToRecipeList from "../components/AddToRecipeList";
 
-const Recipe = (props) => {
+const Recipe = () => {
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
 

@@ -26,6 +26,8 @@ const searchRouter = require("./routes/search");
 const invitationsRouter = require("./routes/invitations");
 const recipesRouter = require("./routes/recipes");
 const favoritesRouter = require("./routes/favorites");
+const recipeListsRouter = require("./routes/recipe-lists");
+const groceryListRouter = require("./routes/grocery-list");
 // Mount all resource routes
 // Note: Feel free to add routes below with your own
 // Note: Endpoints that return data (eg. JSON) usually start with `/api`
@@ -34,6 +36,8 @@ app.use("/search", searchRouter);
 app.use("/invitations", invitationsRouter);
 app.use("/recipes", recipesRouter);
 app.use("/favorites", favoritesRouter);
+app.use("/recipe-lists", recipeListsRouter);
+app.use("/grocery-list", groceryListRouter);
 
 async function findUserByJWTcookie(access_token) {
   const foundUser = await usersQuery.getUserByToken(access_token);
@@ -64,29 +68,6 @@ app.post('/verifyJWT', async (req, res, next) => {
         });
     }
   );
-
-  // const authHeader = req.headers['authorization'];
-
-  // if (!authHeader) {
-  //   return res.sendStatus(401);
-  // }
-
-  // const token = authHeader.split(' ')[1];
-
-  // jwt.verify(
-  //   token,
-  //   process.env.ACCESS_TOKEN_SECRET,
-  //   (err, decoded) => {
-  //     if (err) {
-  //       console.log(err);
-
-  //       return res.sendStatus(403);
-  //     }
-  //     req.user = decoded.username;
-  //     next();
-  //   }
-  // );
-
 });
 
 app.get("/data", (req, res) => {
@@ -107,74 +88,6 @@ app.get("/users", (req, res) => {
   usersQuery.getUsers().then((users) => {
     res.json({ data: users });
   });
-});
-
-app.get("/recipe-lists", async (req, res) => {
-  const requestedUserId = req.query.id;
-  if (requestedUserId) {
-    recipeListQuery.getRecipeListsByUserId(requestedUserId).then((recipe_lists) => {
-      return res.json({ data: recipe_lists });
-    });
-  } else {
-    return res.json({ data: [] });
-  }
-});
-
-app.get("/recipe-list", async (req, res) => {
-  const requestedListId = req.query.id;
-
-  if (requestedListId) {
-    recipeListQuery.getRecipeListById(requestedListId).then((recipe_list) => {
-      return res.json({ data: recipe_list });
-    });
-  } else {
-    return res.json({ data: [] });
-  }
-});
-
-app.get("/recipe-list-items", async (req, res) => {
-
-  const { recipeListId } = req.query;
-  if (recipeListId) {
-
-    await recipeListQuery.getRecipeListItemsByRecipeId(recipeListId)
-      .then((items) => {
-        const recipeIds = items.map((item) => {
-          return item.api_recipe_id;
-        });
-
-        axios.get(recipeApiUrl.getRecipeInformationBulk(recipeIds))
-          .then(apiData => {
-            const dataRecipes = [];
-            apiData.data.forEach((recipe) => {
-              dataRecipes.push({
-                apiRecipeId: recipe.id,
-                recipeTitle: recipe.title,
-                recipeImage: recipe.image
-              });
-            });
-            return res.json({ data: dataRecipes });
-          }).catch((error) => {
-            console.error(error);
-          });
-      });
-  } else {
-    return res.sendStatus(500);
-  }
-
-});
-
-app.post("/recipe-list-items", async (req, res) => {
-
-  const { recipeListId, recipeId } = req.body;
-
-  if (recipeListId && recipeId) {
-    const addedRecipeToList = await recipeListQuery.addToRecipeList(recipeListId, recipeId);
-    return res.sendStatus(200);
-  } else {
-    return res.sendStatus(500);
-  }
-
 });
 
 // Registration endpoint
@@ -307,67 +220,11 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/grocery-list", async (req, res) => {
-  const requestedListId = req.query.id;
-  if (!requestedListId) {
-    return res.sendStatus(400);
-  }
-
-  try {
-    const items = await recipeListQuery.getRecipeListItemsByRecipeId(requestedListId);
-    const recipeIds = items.map(item => item.api_recipe_id);
-    //at this moment the query will insert only non-existing values in the db, when in fact we need to check if the recipe has already been added before and only then insert new ones without checking if it exists (or combine those duplicating products summing the amounts)
-    const arrayOfPromises = [];
-    const apiData = await axios.get(recipeApiUrl.getRecipeInformationBulk(recipeIds));
-    apiData.data.forEach((recipe) => {
-      recipe.extendedIngredients.forEach((ingredientList) => {
-        arrayOfPromises.push(
-          groceryListQuery.addIngedient(
-            ingredientList.id,
-            requestedListId,
-            ingredientList.image,
-            ingredientList.nameClean,
-            ingredientList.amount,
-            ingredientList.unit
-          )
-        );
-      });
-    });
-
-    let addedIngredients = await Promise.all(arrayOfPromises);
-    addedIngredients = addedIngredients.flat();
-
-    const fullIngredientList = await groceryListQuery.getGroceryListItemsByRecipeId(requestedListId);
-    res.json({ fullIngredientList });
-
-
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
-
-app.post("/grocery-list", async (req, res) => {
-  const { ingredientId } = req.body;
-
-  if (!ingredientId) {
-    return res.sendStatus(400);
-  }
-
-  try {
-    const updatedIngredient = await groceryListQuery.updateIngedient(ingredientId);
-    res.sendStatus(200);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
-
 const httpServer = app.listen(PORT, () => {
   console.log(
     "Express seems to be listening on port " +
-      PORT +
-      " so that's pretty good 👍"
+    PORT +
+    " so that's pretty good 👍"
   );
 });
 

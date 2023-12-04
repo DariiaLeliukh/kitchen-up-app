@@ -11,7 +11,7 @@ const RecipeListItem = () => {
 
   useEffect(() => {
     axios
-      .get("/api/recipe-list", { params: { id } })
+      .get(`/api/recipe-lists/${id}`)
       .then((response) => {
         setRecipeList(response.data.data[0]);
       })
@@ -20,7 +20,7 @@ const RecipeListItem = () => {
 
   useEffect(() => {
     axios
-      .get("/api/recipe-list-items", { params: { recipeListId: id } })
+      .get(`/api/recipe-lists/${id}/items`)
       .then((response) => {
         console.log(response);
         setRecipes(response.data.data);

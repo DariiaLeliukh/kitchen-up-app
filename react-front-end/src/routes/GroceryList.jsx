@@ -10,7 +10,7 @@ const GroceryList = () => {
 
   useEffect(() => {
     axios
-      .get("/api/recipe-list", { params: { id } })
+      .get(`/api/recipe-lists/${id}`)
       .then((response) => {
         setRecipeList(response.data.data[0]);
       })
@@ -19,7 +19,7 @@ const GroceryList = () => {
 
   useEffect(() => {
     axios
-      .get("/api/grocery-list", { params: { id } })
+      .get(`/api/grocery-list/${id}`)
       .then((response) => {
         setGroceryList(response.data.fullIngredientList);
       })
@@ -30,7 +30,7 @@ const GroceryList = () => {
     const ingredientId = e.target.closest(".grocery-item").id;
 
     axios
-      .post("/api/grocery-list", { ingredientId })
+      .post(`/api/grocery-list/${ingredientId}`)
       .then((response) => {
         if (response.status === 200) {
           const newArray = groceryList.map((element) => {
@@ -59,7 +59,7 @@ const GroceryList = () => {
           {groceryList.map((groceryItem) => (
             <div className={(groceryItem.is_purchased ? 'purchased ' : '') + "grocery-item col-12 col-md-6 col-lg-3 col-xl-4 mb-5"} key={groceryItem.id} id={groceryItem.id}>
               <div className="card h-100" onClick={updatePurchaseStatus} id={groceryItem.id}>
-                <img className="card-img-top" src={`https://spoonacular.com/cdn/ingredients_100x100/${groceryItem.api_image}`} alt="Card image cap" />
+                <img className="card-img-top" src={`https://spoonacular.com/cdn/ingredients_250x250/${groceryItem.api_image}`} alt="Card image cap" />
                 <div className="card-body">
                   <h5 className="card-title">{groceryItem.api_nameclean}</h5>
                   <p className="card-text">{groceryItem.api_amount} {groceryItem.api_unit}</p>

@@ -15,7 +15,7 @@ const AddToRecipeList = (props) => {
     const recipeId = props.recipeId;
 
     try {
-      await axios.post("/api/recipe-list-items", { recipeListId, recipeId })
+      await axios.post(`/api/recipe-lists/${recipeListId}/item/${recipeId}`)
         .then(() => {
           navigate(`/recipe-list/${recipeListId}`);
         });
