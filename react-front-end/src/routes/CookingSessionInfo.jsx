@@ -4,6 +4,7 @@ import DOMPurify from "dompurify";
 import axios from "axios";
 import CookingSessionListItem from "../components/CookingSessionListItem";
 import InvitationList from "../components/InvitationList";
+import Loading from "../components/Loading";
 
 const CookingSessionInfo = () => {
   const [cookingSession, setCookingSession] = useState(null);
@@ -22,7 +23,7 @@ const CookingSessionInfo = () => {
   // Conditionally render based on whether cookingSession is available
   if (cookingSession === null) {
     // If cookingSession is still null, you can render a loading state or return null
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   // Get the current date

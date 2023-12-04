@@ -10,7 +10,6 @@ const Search = (props) => {
     try {
       const response = await fetch(`/api/search?name=${search}`);
       const data = await response.json();
-      // console.log("Data from backend:", data);
       setNameResults(Array.isArray(data.results) ? data.results : []);
       props.removeDefaultRecipes();
     } catch (error) {

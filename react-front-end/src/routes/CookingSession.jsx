@@ -5,12 +5,14 @@ import axios from "axios";
 import RecipeHeader from "../components/RecipeHeader";
 import RecipeInstructionList from "../components/RecipeInstructionList";
 import "../styles/css/styles.css";
+import Loading from "../components/Loading";
+
 
 const CookingSession = () => {
   const [recipe, setRecipe] = useState(null);
   const { id } = useParams();
   //TODO: Move the useSockets hook to the RecipeInstructionList component if no other socket event is taking place, such as text/voice messages
-  const {setCookingInstructions, setCurrentStep, positions} = useSockets(id);
+  const { setCookingInstructions, setCurrentStep, positions } = useSockets(id);
 
   // Fetch data for the specific cooking session using the id from the URL params
   useEffect(() => {
@@ -30,7 +32,7 @@ const CookingSession = () => {
 
   // Conditional render based on whether the cookingSession is available
   if (recipe === null) {
-    return <p>Loading...</p>;    
+    return <Loading />;
   }
 
   return (
@@ -42,15 +44,15 @@ const CookingSession = () => {
         ingredients={recipe.extendedIngredients}
         showButtons={false}
       />
-        <RecipeInstructionList
-          instructions={recipe.analyzedInstructions}
-          positions={positions}
-          onClickHandler={setCurrentStep}
-        />
+      <RecipeInstructionList
+        instructions={recipe.analyzedInstructions}
+        positions={positions}
+        onClickHandler={setCurrentStep}
+      />
       {/*messages.map((item, index) => (
         <p key={index}>{item}</p>
       ))*/}
-      </>      
+    </>
   );
 };
 

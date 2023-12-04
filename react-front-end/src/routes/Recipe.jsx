@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import RecipeHeader from "../components/RecipeHeader";
 import RecipeInstructionList from "../components/RecipeInstructionList";
 import "../styles/css/styles.css";
+import Loading from "../components/Loading";
 
-const Recipe = (props) => {
+const Recipe = () => {
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
 
@@ -13,7 +14,6 @@ const Recipe = (props) => {
       try {
         const response = await fetch(`/api/recipes/${id}`);
         const data = await response.json();
-        // console.log("Data from backend:", data);
         setRecipe(data);
       } catch (error) {
         console.error("Error fetching recipe:", error);
@@ -38,7 +38,7 @@ const Recipe = (props) => {
         </>
       ) : (
         <div className="container">
-          <p>Loading...</p>
+          <Loading />
         </div>
       )}
     </>
