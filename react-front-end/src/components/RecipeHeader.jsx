@@ -1,16 +1,37 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 import IngredientList from "./IngredientList";
 import "../styles/css/styles.css";
 import "../styles/css/recipe.css";
 
 
 const RecipeHeader = ({ recipeId, title, imageUrl, ingredients, showButtons }) => {
-  const handleFavorites = () => {
-    alert("Added to Favorites!");
+  const { auth } = useAuth();
+
+  const handleFavorites = async () => {
+    try {
+      
+      const response = await fetch("/api/favorites/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_id: auth.userId, api_recipe_id: recipeId }),
+      });
+
+      if (response.ok) {
+        alert("Added to Favorites!");
+      } else {
+        alert("Please login!");
+      }
+    } catch (error) {
+      console.error("Error adding to Favorites:", error);
+      alert("Error adding to Favorites!");
+    }
   };
 
-  const handleGroceriList = () => {
+  const handleGroceryList = () => {
     alert("Added to Grocery list");
   };
 
@@ -29,13 +50,13 @@ const RecipeHeader = ({ recipeId, title, imageUrl, ingredients, showButtons }) =
               <div className="col-12 col-md-4">
                 <Link
                   to="/cooking-sessions/new"
-                  state={{ recipeId: recipeId, recipeTitle: title }}
+                  state={{ recipeId, recipeTitle: title }}
                   className="button"
                 >
                   Cook with Friends
                 </Link>
                 <button onClick={handleFavorites}>Add Favorites</button>
-                <button onClick={handleGroceriList}>Add to Grocery List</button>
+                <button onClick={handleGroceryList}>Add to Grocery List</button>
               </div>
             }
           </div>

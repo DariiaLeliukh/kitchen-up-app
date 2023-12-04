@@ -53,11 +53,11 @@ const CookingSessionList = () => {
             plannedDateTime >= lateAtttendance && plannedDateTime <= earlyAttendance
           );
         });
-        
+  
   return (
     <div className="container cooking-session-list">
       <h1>Cooking Sessions</h1>
-      {upcomingSessions.length > 0 && (
+      {availableSessions.length > 0 && (
         <>
           <h2>Available Sessions to Join</h2>
           <div className="available-sessions sessions-container row ">

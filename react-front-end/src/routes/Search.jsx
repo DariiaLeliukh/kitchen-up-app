@@ -10,7 +10,7 @@ const Search = (props) => {
     try {
       const response = await fetch(`/api/search?name=${search}`);
       const data = await response.json();
-      console.log("Data from backend:", data);
+      // console.log("Data from backend:", data);
       setNameResults(Array.isArray(data.results) ? data.results : []);
       props.removeDefaultRecipes();
     } catch (error) {
@@ -22,7 +22,7 @@ const Search = (props) => {
     try {
       const response = await fetch(`/api/search?ingredients=${search}`);
       const data = await response.json();
-      console.log("Data from backend:", data);
+      // console.log("Data from backend:", data);
       setIngredientResults(Array.isArray(data) ? data : []);
       props.removeDefaultRecipes();
     } catch (error) {
