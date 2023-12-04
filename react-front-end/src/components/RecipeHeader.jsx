@@ -1,17 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import IngredientList from "./IngredientList";
 import "../styles/css/styles.css";
 import "../styles/css/recipe.css";
+import AddToRecipeList from "./AddToRecipeList";
 
 
 const RecipeHeader = ({ recipeId, title, imageUrl, ingredients, showButtons }) => {
   const { auth } = useAuth();
+  const [loginMessage, setLoginMessage] = useState('');
 
   const handleFavorites = async () => {
     try {
-      
+
       const response = await fetch("/api/favorites/add", {
         method: "POST",
         headers: {
@@ -31,8 +33,8 @@ const RecipeHeader = ({ recipeId, title, imageUrl, ingredients, showButtons }) =
     }
   };
 
-  const handleGroceryList = () => {
-    alert("Added to Grocery list");
+  const showLoginTip = () => {
+    setLoginMessage("You need to login to add this recipe to the recipe list");
   };
 
   return (
@@ -56,8 +58,15 @@ const RecipeHeader = ({ recipeId, title, imageUrl, ingredients, showButtons }) =
                   Cook with Friends
                 </Link>
                 <button onClick={handleFavorites}>Add Favorites</button>
-                <button onClick={handleGroceryList}>Add to Grocery List</button>
+                <AddToRecipeList recipeId={recipeId} notAuthorized={showLoginTip} />
+                {loginMessage && (
+                  <>
+                    <p className='my-3' style={{ color: "red" }}>{loginMessage}</p>
+                    <Link to="/login">Login</Link>
+                  </>
+                )}
               </div>
+
             }
           </div>
         </div>

@@ -7,7 +7,6 @@ const AddToRecipeList = (props) => {
 
   const [recipeLists, setRecipeLists] = useState([]);
   const { auth } = useAuth();
-  const [loginMessage, setLoginMessage] = useState('');
   const navigate = useNavigate();
 
   const addToRecipeList = async (e) => {
@@ -24,10 +23,6 @@ const AddToRecipeList = (props) => {
       console.error("Error adding recipe to the list:", error);
     }
 
-  };
-
-  const showLoginTip = () => {
-    setLoginMessage("You need to login to add this recipe to the recipe list");
   };
 
   useEffect(() => {
@@ -55,13 +50,7 @@ const AddToRecipeList = (props) => {
       }
       {
         !auth.userId && <>
-          <button onClick={showLoginTip}>Add to recipe list</button>
-          {loginMessage && (
-            <>
-              <p className='my-3' style={{ color: "red" }}>{loginMessage}</p>
-              <Link to="/login">Login</Link>
-            </>
-          )}
+          <button onClick={props.notAuthorized}>Add to recipe list</button>
         </>
       }
     </>
