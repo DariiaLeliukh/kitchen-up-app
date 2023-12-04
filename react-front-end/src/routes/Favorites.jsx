@@ -32,6 +32,18 @@ const Favorites = () => {
     return <Loading />;
   }
 
+  const handleDeleteFavorite = async (apiRecipeId) => {
+    try {
+      const response = await axios.delete(`/api/favorites/delete/${apiRecipeId}?user_id=${auth.userId}`);
+
+      setDetailedFavorites((prevFavorites) =>
+        prevFavorites.filter((favorite) => favorite.apiRecipeId !== apiRecipeId)
+      );
+    } catch (error) {
+      console.error("Error deleting favorite:", error);
+    }
+  };
+
   return (
     <div className="container">
       <div>
@@ -55,6 +67,7 @@ const Favorites = () => {
                     />
                     <p>{favorite.recipeTitle}</p>
                   </Link>
+                  <button onClick={() => handleDeleteFavorite(favorite.apiRecipeId)}>Delete</button>
                 </div>
               );
             })}
