@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -10,12 +10,13 @@ const Favorites = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log("useEffect triggered");
     const fetchFavorites = async () => {
       try {
         const response = await axios.get("/api/favorites", {
           params: { id: auth.userId }
         });
+
+        setDetailedFavorites(response.data);
 
         setDetailedFavorites(response.data);
       } catch (error) {
@@ -25,7 +26,7 @@ const Favorites = () => {
 
     fetchFavorites();
   }, []);
-  console.log(detailedFavorites);
+
   // Conditional render based on whether the recipe is available
   if (detailedFavorites === null) {
     return <Loading />;
