@@ -43,7 +43,7 @@ router.get("/", async (req, res) => {
   try {
     const api_recipe_ids = await favoriteQuery.getFavoriteIdsByUserId(userId);
     if (api_recipe_ids.length === 0) {
-      return res.json({ dataFavorites: [] });
+      return res.json([]);
     }
 
     const recipeIdsArray = api_recipe_ids.map((item) => item.api_recipe_id);
@@ -60,7 +60,7 @@ router.get("/", async (req, res) => {
             recipeImage: recipe.image
           });
         });
-        return res.json({ data: dataFavorites });
+        return res.json(dataFavorites);
       })
       .catch((error) => {
         console.error(error);

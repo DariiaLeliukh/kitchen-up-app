@@ -11,7 +11,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/dashboard";
-  console.log('here test');
+  // console.log('here test');
 
 
   const emailRef = useRef();
@@ -36,9 +36,10 @@ const Login = () => {
       const userAccessToken = response?.data?.result?.access_token || null;
       const userEmail = response?.data?.result?.email || null;
       const userId = response?.data?.result?.id || null;
+      const profilePictureUrl = response?.data?.result?.profile_picture_url || `${response?.data?.result?.first_name[0]} ${response?.data?.result?.last_name[0]}`;
 
 
-      setAuth({ userEmail, userAccessToken, userId });
+      setAuth({ userEmail, userAccessToken, userId, profilePictureUrl });
       setEmail('');
       setPassword('');
 

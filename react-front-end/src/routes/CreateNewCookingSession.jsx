@@ -71,7 +71,7 @@ const CreateNewCookingSession = (props) => {
         (
           <form>
             <h1>Create a cooking session with your friend!</h1>
-            Recipe: <Link to={`/recipe/${recipeId}`}>
+            Recipe: <Link to={`/recipes/${recipeId}`}>
               {recipeTitle}</Link>
 
             <ReactMultiEmail
