@@ -24,6 +24,15 @@ body {
   margin: 50px auto;
 }
 
+.home-route.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 50px auto;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
 button,
 .button {
   border-radius: 700px;
@@ -32,8 +41,20 @@ button,
   margin: 0 auto;
   display: flex;
   color: #FFF;
+  border: 0;
+
+  &:hover {
+    background: #E7B401;
+    color: #FFF;
+    text-decoration: none;
+    cursor: pointer;
+  }
 }
 
 a {
   color: #084F20;
+}
+
+.search-container {
+  margin-bottom: 50px;
 }
