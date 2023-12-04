@@ -9,14 +9,13 @@ const Favorites = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log("useEffect triggered");
     const fetchFavorites = async () => {
       try {
         const response = await axios.get("/api/favorites", {
           params: { id: auth.userId }
         });
-        
-        setDetailedFavorites(response.data);        
+
+        setDetailedFavorites(response.data);
       } catch (error) {
         setError(error);
       }
@@ -24,12 +23,12 @@ const Favorites = () => {
 
     fetchFavorites();
   }, []);
-  console.log(detailedFavorites);
+
   // Conditional render based on whether the recipe is available
   if (detailedFavorites === null) {
-    return <p>Loading favorites...</p>;    
+    return <p>Loading favorites...</p>;
   }
-  
+
   return (
     <div className="container">
       <div>
