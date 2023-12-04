@@ -18,7 +18,7 @@ const createFavorites = (user_id, api_recipe_id) => {
 
 const getFavoriteIdsByUserId = (user_id) => {
   return db
-    .query("SELECT DISTINCT api_recipe_id FROM favorites WHERE user_id = $1", [
+    .query("SELECT DISTINCT api_recipe_id, created_at FROM favorites WHERE user_id = $1 ORDER BY created_at DESC;", [
       user_id
     ])
     .then((data) => {
@@ -29,7 +29,7 @@ const getFavoriteIdsByUserId = (user_id) => {
 const deleteFavorite = async (user_id, api_recipe_id) => {
   return db
   .query(
-    "DELETE FROM favorites WHERE user_id = $1 AND api_recipe_id = $2 RETURNING *;",
+    "DELETE FROM favorites WHERE user_id = $1 AND api_recipe_id = $2;",
     [user_id, api_recipe_id]
   )
   .then((data) => {
