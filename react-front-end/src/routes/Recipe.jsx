@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import RecipeHeader from "../components/RecipeHeader";
 import RecipeInstructionList from "../components/RecipeInstructionList";
 import "../styles/css/styles.css";
+import Loading from "../components/Loading";
 
 const Recipe = (props) => {
   const { id } = useParams();
@@ -38,7 +39,7 @@ const Recipe = (props) => {
         </>
       ) : (
         <div className="container">
-          <p>Loading...</p>
+          <Loading />
         </div>
       )}
     </>

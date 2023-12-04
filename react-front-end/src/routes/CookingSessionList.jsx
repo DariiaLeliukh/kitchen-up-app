@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CookingSessionListItem from "../components/CookingSessionListItem";
 import "../styles/css/cooking-sessions.css";
+import Loading from "../components/Loading";
 
 const CookingSessionList = () => {
   const [cookingSessions, setCookingSessions] = useState(null);
@@ -22,7 +23,7 @@ const CookingSessionList = () => {
   // Conditionally render based on whether cookingSession is available
   if (cookingSessions === null) {
     // If cookingSession is still null, you can render a loading state or return null
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   // Get the current date
@@ -36,24 +37,24 @@ const CookingSessionList = () => {
     cookingSessions.length === 0
       ? []
       : cookingSessions.filter(
-          (session) => new Date(session.session_datetime) > earlyAttendance
-        );
+        (session) => new Date(session.session_datetime) > earlyAttendance
+      );
   const expiredSessions =
     cookingSessions.length === 0
       ? []
       : cookingSessions.filter(
-          (session) => new Date(session.session_datetime) < lateAtttendance
-        );
+        (session) => new Date(session.session_datetime) < lateAtttendance
+      );
   const availableSessions =
     cookingSessions.length === 0
       ? []
       : cookingSessions.filter((session) => {
-          const plannedDateTime = new Date(session.session_datetime);
-          return (
-            plannedDateTime >= lateAtttendance && plannedDateTime <= earlyAttendance
-          );
-        });
-  
+        const plannedDateTime = new Date(session.session_datetime);
+        return (
+          plannedDateTime >= lateAtttendance && plannedDateTime <= earlyAttendance
+        );
+      });
+
   return (
     <div className="container cooking-session-list">
       <h1>Cooking Sessions</h1>
