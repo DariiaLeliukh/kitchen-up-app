@@ -25,6 +25,7 @@ const cookingSessionRouter = require("./routes/cooking-sessions");
 const searchRouter = require("./routes/search");
 const invitationsRouter = require("./routes/invitations");
 const recipeRouter = require("./routes/recipe");
+const favoritesRouter = require("./routes/favorites");
 // Mount all resource routes
 // Note: Feel free to add routes below with your own
 // Note: Endpoints that return data (eg. JSON) usually start with `/api`
@@ -32,6 +33,7 @@ app.use("/cooking-sessions", cookingSessionRouter);
 app.use("/search", searchRouter);
 app.use("/invitations", invitationsRouter);
 app.use("/recipe", recipeRouter);
+app.use("/favorites", favoritesRouter);
 
 async function findUserByJWTcookie(access_token) {
   const foundUser = await usersQuery.getUserByToken(access_token);
@@ -231,8 +233,6 @@ app.get("/grocery-list", (req, res) => {
     res.json({ data: grocery_list_items });
   });
 });
-
-
 
 app.listen(PORT, () => {
   console.log("Express seems to be listening on port " + PORT + " so that's pretty good 👍");

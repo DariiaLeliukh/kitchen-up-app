@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 import "../styles/css/forms.css";
 import "../styles/css/styles.css";
 import "../styles/css/recipe.css";
@@ -7,13 +8,14 @@ import "../styles/css/recipe.css";
 const Recipe = (props) => {
   const { recipeId } = useParams();
   const [recipe, setRecipe] = useState(null);
+  const { auth } = useAuth();
 
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
         const response = await fetch(`/api/recipe/${recipeId}`);
         const data = await response.json();
-        console.log("Data from backend:", data);
+        // console.log("Data from backend:", data);
         setRecipe(data);
       } catch (error) {
         console.error("Error fetching recipe:", error);
@@ -23,8 +25,30 @@ const Recipe = (props) => {
     fetchRecipe();
   }, [recipeId]);
 
-  const handleFavorites = () => {
-    alert("Added to Favorites!");
+  const handleCookSession = () => {
+    alert("Opened Cooking Session!");
+  };
+
+  const handleFavorites = async () => {
+    try {
+      
+      const response = await fetch("/api/favorites/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_id: auth.userId, api_recipe_id: recipeId }),
+      });
+
+      if (response.ok) {
+        alert("Added to Favorites!");
+      } else {
+        alert("Please login!");
+      }
+    } catch (error) {
+      console.error("Error adding to Favorites:", error);
+      alert("Error adding to Favorites!");
+    }
   };
 
   const handleGroceriList = () => {

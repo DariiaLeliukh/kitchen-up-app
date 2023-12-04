@@ -41,3 +41,16 @@
   .top-nav-bar__avatar svg {
     width: 24px;
     height: 24px; }
+
+.top-nav-bar__favorites {
+  margin-right: 10px; }
+  .top-nav-bar__favorites svg {
+    width: 24px;
+    height: 24px;
+    color: #084f20;}
+
+.top-nav-bar__search {
+  margin-right: 10px; }
+  .top-nav-bar__search svg {
+    width: 24px;
+    height: 24px;}
