@@ -26,4 +26,19 @@ const getFavoriteIdsByUserId = (user_id) => {
     });
 };
 
-module.exports = { createFavorites, getFavoriteIdsByUserId };
+const deleteFavorite = async (user_id, api_recipe_id) => {
+  return db
+  .query(
+    "DELETE FROM favorites WHERE user_id = $1 AND api_recipe_id = $2 RETURNING *;",
+    [user_id, api_recipe_id]
+  )
+  .then((data) => {
+    return data.rows;
+  })
+  .catch((error) => {
+    console.error("Error deleting from favorites:", error);
+    throw error;
+  });
+};
+
+module.exports = { createFavorites, getFavoriteIdsByUserId, deleteFavorite };
