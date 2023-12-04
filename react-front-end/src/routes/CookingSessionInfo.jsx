@@ -4,6 +4,7 @@ import DOMPurify from "dompurify";
 import axios from "axios";
 import CookingSessionListItem from "../components/CookingSessionListItem";
 import InvitationList from "../components/InvitationList";
+import Loading from "../components/Loading";
 
 const CookingSessionInfo = () => {
   const [cookingSession, setCookingSession] = useState(null);
@@ -22,7 +23,7 @@ const CookingSessionInfo = () => {
   // Conditionally render based on whether cookingSession is available
   if (cookingSession === null) {
     // If cookingSession is still null, you can render a loading state or return null
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   // Get the current date
@@ -30,7 +31,7 @@ const CookingSessionInfo = () => {
   // A cooking session is available if it's schedule for the next 30 minutes or for the last two hours
   const earlyAttendance = new Date(currentDate.getTime() + 30 * 60000); // 30 minutes in milliseconds
   const lateAtttendance = new Date(currentDate.getTime() - 2 * 3600000); // 2 hours in milliseconds
-  
+
   // check if the cooking session is in the available time window
   const plannedDateTime = new Date(cookingSession.session_datetime);
   const isAvailableToJoin = plannedDateTime >= lateAtttendance && plannedDateTime <= earlyAttendance;
