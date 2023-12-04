@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import "../styles/css/cooking-sessions.css";
 
-const CookingSessionListItem = ({ cookingSession, showInfoButton }) => (
-  <div className="col-12 col-md-6 col-lg-4">
+const CookingSessionListItem = ({ cookingSession, showInfoButton, styleClasses }) => (
+  <div className={styleClasses}>
     <div className="single-session-card h-100">
       <div className="">
         <p className="hosted-by">

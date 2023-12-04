@@ -49,3 +49,37 @@
     display: inline-block;
     margin-top: 20px;
     padding: 10px 25px; }
+
+.cooking-session-page .single-session-card {
+  background: none;
+  padding: 0; }
+
+.cooking-session-page .guest-list {
+  margin-bottom: 50px; }
+  .cooking-session-page .guest-list h3 {
+    color: #084F20;
+    font-family: Roboto;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 50px;
+    /* 125% */
+    text-transform: capitalize;
+    margin-bottom: 5px; }
+  .cooking-session-page .guest-list .guest {
+    display: flex;
+    flex-direction: row;
+    align-items: center; }
+    .cooking-session-page .guest-list .guest button {
+      margin-left: 0;
+      display: inline-block;
+      margin-right: 10px; }
+
+.cooking-session-page .recipe-summary {
+  color: #000;
+  font-family: Roboto;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 32px;
+  text-transform: capitalize; }

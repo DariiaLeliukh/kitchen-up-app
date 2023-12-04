@@ -67,6 +67,7 @@ const CookingSessionList = () => {
                 key={cookingSession.id}
                 cookingSession={cookingSession}
                 showInfoButton={true}
+                styleClasses="col-12 col-md-6 col-lg-4 mb-3"
               />
             ))}
           </div>
@@ -88,6 +89,7 @@ const CookingSessionList = () => {
               key={cookingSession.id}
               cookingSession={cookingSession}
               showInfoButton={true}
+              styleClasses="col-12 col-md-6 col-lg-4 mb-3"
             />
           ))}
         </div>
@@ -104,6 +106,7 @@ const CookingSessionList = () => {
               key={cookingSession.id}
               cookingSession={cookingSession}
               showInfoButton={true}
+              styleClasses="col-12 col-md-6 col-lg-4 mb-3"
             />
           ))}
         </div>
