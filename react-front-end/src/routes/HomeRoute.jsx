@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Search from "./Search";
-import { Link } from "react-router-dom";
+import RecipeCardItem from "../components/RecipeCardItem";
 
-const HomeRoute = (props) => {
+const HomeRoute = () => {
   const [randomRecipes, setRandomRecipes] = useState([]);
 
   useEffect(() => {
@@ -27,19 +27,22 @@ const HomeRoute = (props) => {
     fetchRandomRecipes();
   }, []);
 
+  const removeDefaultRecipes = () => {
+    setRandomRecipes([]);
+  };
+
   return (
-    <div className="home-route">
-      <Search />
-      <ul>
-        {randomRecipes.map((recipe) => (
-          <li key={recipe.id}>
-            <Link to={`/recipes/${recipe.id}`}>
-              <img src={recipe.image} alt={recipe.title} />
-              <p>{recipe.title}</p>
-            </Link>
-          </li>
-        ))}
-      </ul>
+    <div className="home-route container">
+      <Search removeDefaultRecipes={removeDefaultRecipes} />
+      {randomRecipes &&
+        <div className="row random-recipes">
+          {randomRecipes.map((recipe) => (
+            <RecipeCardItem key={recipe.id} id={recipe.id} imageUrl={recipe.image} title={recipe.title} />
+          ))}
+        </div>
+      }
+
+
     </div>
   );
 };

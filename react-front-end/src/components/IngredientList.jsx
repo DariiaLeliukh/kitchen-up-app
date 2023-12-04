@@ -1,11 +1,10 @@
 import React from "react";
-import IngredientListItem from "./IngredientListItem";
 
 const IngredientList = ({ ingredients }) => {
   return (
-    <ul>
+    <ul className="ingredient-list">
       {ingredients.map((ingredient, index) => (
-        <IngredientListItem key={index} ingredient={ingredient.original}/>
+        <li key={index}>{ingredient.original}</li>
       ))}
     </ul>
   );

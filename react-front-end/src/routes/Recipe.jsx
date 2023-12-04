@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import "../styles/css/forms.css";
+import { useParams} from "react-router-dom";
 import RecipeHeader from "../components/RecipeHeader";
 import RecipeInstructionList from "../components/RecipeInstructionList";
+import "../styles/css/styles.css";
 
 const Recipe = (props) => {
   const { id } = useParams();
@@ -13,7 +13,7 @@ const Recipe = (props) => {
       try {
         const response = await fetch(`/api/recipes/${id}`);
         const data = await response.json();
-        
+        console.log("Data from backend:", data);
         setRecipe(data);
       } catch (error) {
         console.error("Error fetching recipe:", error);
@@ -23,48 +23,25 @@ const Recipe = (props) => {
     fetchRecipe();
   }, [id]);
 
-  const handleFavorites = () => {
-    alert("Added to Favorites!");
-  };
-
-  const handleGroceriList = () => {
-    alert("Added to Grocery list");
-  };
-
   return (
-    <div className="container">
+    <>
       {recipe ? (
-        <div>
+        <>
           <RecipeHeader
+            recipeId={id}
             title={recipe.title}
             imageUrl={recipe.image}
             ingredients={recipe.extendedIngredients}
+            showButtons={true}
           />
-          <div>
-            <Link
-              to="/cooking-sessions/new"
-              state={{ id, recipeTitle: recipe.title }}
-              className="button"
-            >
-              Cook with Friends
-            </Link>
-            <button onClick={handleFavorites}>Add Favorites</button>
-            <button onClick={handleGroceriList}>Add to Grocery List</button>
-          </div>
-          <hr />
-          {recipe.analyzedInstructions &&
-          recipe.analyzedInstructions.length > 0 ? (
-            <RecipeInstructionList
-              instructions={recipe.analyzedInstructions[0].steps}
-            />
-          ) : (
-            <p>No instructions available.</p>
-          )}
-        </div>
+          <RecipeInstructionList instructions={recipe.analyzedInstructions} />
+        </>
       ) : (
-        <p>Loading...</p>
+        <div className="container">
+          <p>Loading...</p>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

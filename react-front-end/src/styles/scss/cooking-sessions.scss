@@ -1,0 +1,61 @@
+.cooking-session-list {
+
+  h1 {
+    color: #084F20;
+    font-family: Roboto;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    /* 60% */
+    text-transform: capitalize;
+    margin: 50px 0;
+  }
+
+  h2 {
+    color: #084F20;
+    font-family: Roboto;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    /* 60% */
+    text-transform: capitalize;
+    margin: 30px 0;
+  }
+}
+
+.single-session-card {
+  border-radius: 8px;
+  background: #F8F8F8;
+  padding: 30px 15px;
+  color: #000;
+  font-family: Roboto;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  /* 171.429% */
+  text-transform: capitalize;
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+
+  .hosted-by {
+    color: #242E30;
+    font-family: Roboto;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    /* 100% */
+    margin-bottom: 18px;
+  }
+
+  a {
+    width: auto;
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 25px;
+  }
+}

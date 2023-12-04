@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CookingSessionListItem from "../components/CookingSessionListItem";
+import "../styles/css/cooking-sessions.css";
 
 const CookingSessionList = () => {
   const [cookingSessions, setCookingSessions] = useState(null);
@@ -9,7 +10,8 @@ const CookingSessionList = () => {
     // Fetch data from the API endpoint using Axios
     // console.log('useEffect in action');
 
-    axios.get("/api/cooking-sessions")
+    axios
+      .get("/api/cooking-sessions")
       .then((response) => {
         // console.log(`Chegou!`);
         setCookingSessions(response.data);
@@ -25,36 +27,86 @@ const CookingSessionList = () => {
 
   // Get the current date
   const currentDate = new Date();
+  // A cooking session is available if it's schedule for the next 30 minutes or for the last two hours
+  const earlyAttendance = new Date(currentDate.getTime() + 30 * 60000); // 30 minutes in milliseconds
+  const lateAtttendance = new Date(currentDate.getTime() - 2 * 3600000); // 2 hours in milliseconds
 
-  // Filter upcoming and expired sessions
-  const upcomingSessions = cookingSessions.length === 0 ? [] : cookingSessions.filter((session) => new Date(session.session_datetime) >= currentDate);
-  const expiredSessions = cookingSessions.length === 0 ? [] : cookingSessions.filter((session) => new Date(session.session_datetime) < currentDate);
-
-
-
+  // Filter upcoming, expired, and sessions that are available to join
+  const upcomingSessions =
+    cookingSessions.length === 0
+      ? []
+      : cookingSessions.filter(
+          (session) => new Date(session.session_datetime) > earlyAttendance
+        );
+  const expiredSessions =
+    cookingSessions.length === 0
+      ? []
+      : cookingSessions.filter(
+          (session) => new Date(session.session_datetime) < lateAtttendance
+        );
+  const availableSessions =
+    cookingSessions.length === 0
+      ? []
+      : cookingSessions.filter((session) => {
+          const plannedDateTime = new Date(session.session_datetime);
+          return (
+            plannedDateTime >= lateAtttendance && plannedDateTime <= earlyAttendance
+          );
+        });
+        
   return (
-    <div>
+    <div className="container cooking-session-list">
       <h1>Cooking Sessions</h1>
+      {upcomingSessions.length > 0 && (
+        <>
+          <h2>Available Sessions to Join</h2>
+          <div className="available-sessions sessions-container row ">
+            {availableSessions.map((cookingSession) => (
+              <CookingSessionListItem
+                key={cookingSession.id}
+                cookingSession={cookingSession}
+                showInfoButton={true}
+              />
+            ))}
+          </div>
+        </>
+      )}
+
       <h2>Upcoming Sessions</h2>
-      {upcomingSessions.length === 0 ?
-        <div><p>You don&apost have an upcoming cooking session, yet! Invite your friends!!</p></div>
-        :
-        <ul style={{ display: "flex" }}>
+      {upcomingSessions.length === 0 ? (
+        <div>
+          <p>
+            You don&apost have an upcoming cooking session, yet! Invite your
+            friends!!
+          </p>
+        </div>
+      ) : (
+        <div className="upcoming-sessions sessions-container row ">
           {upcomingSessions.map((cookingSession) => (
-            <CookingSessionListItem key={cookingSession.id} cookingSession={cookingSession} showInfoButton={true} />
+            <CookingSessionListItem
+              key={cookingSession.id}
+              cookingSession={cookingSession}
+              showInfoButton={true}
+            />
           ))}
-        </ul>
-      }
+        </div>
+      )}
       <h2>Expired Sessions</h2>
-      {expiredSessions.length === 0 ?
-        <div><p>Have you never cooked with your friends before? Invite them!!</p></div>
-        :
-        <ul style={{ display: "flex" }}>
+      {expiredSessions.length === 0 ? (
+        <div>
+          <p>Have you never cooked with your friends before? You&aposre missing all the fun!!</p>
+        </div>
+      ) : (
+        <div className="expired-sessions sessions-container row">
           {expiredSessions.map((cookingSession) => (
-            <CookingSessionListItem key={cookingSession.id} cookingSession={cookingSession} showInfoButton={true} />
+            <CookingSessionListItem
+              key={cookingSession.id}
+              cookingSession={cookingSession}
+              showInfoButton={true}
+            />
           ))}
-        </ul>
-      }
+        </div>
+      )}
     </div>
   );
 };

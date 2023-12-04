@@ -11,6 +11,8 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/dashboard";
+  console.log('here test');
+
 
   const emailRef = useRef();
 

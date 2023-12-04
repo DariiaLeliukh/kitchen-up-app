@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import useSockets from "../hooks/useSockets";
 import axios from "axios";
 import RecipeHeader from "../components/RecipeHeader";
 import RecipeInstructionList from "../components/RecipeInstructionList";
-import "../styles/css/forms.css";
-import useSockets from "../hooks/useSockets";
+import "../styles/css/styles.css";
 
 const CookingSession = () => {
   const [recipe, setRecipe] = useState(null);
@@ -34,27 +34,23 @@ const CookingSession = () => {
   }
 
   return (
-    <div className="container">
+    <>
       <RecipeHeader
+        recipeId={id}
         title={recipe.title}
         imageUrl={recipe.image}
         ingredients={recipe.extendedIngredients}
+        showButtons={false}
       />
-      <hr />
-      {recipe.analyzedInstructions && recipe.analyzedInstructions.length > 0 ? (
         <RecipeInstructionList
-          instructions={recipe.analyzedInstructions[0].steps}
+          instructions={recipe.analyzedInstructions}
           positions={positions}
           onClickHandler={setCurrentStep}
         />
-      ) : (
-        <p>No instructions available.</p>
-      )}
-      <hr />
       {/*messages.map((item, index) => (
         <p key={index}>{item}</p>
       ))*/}
-    </div>
+      </>      
   );
 };
 

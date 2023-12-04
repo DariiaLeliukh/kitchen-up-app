@@ -27,9 +27,17 @@ const CookingSessionInfo = () => {
 
   // Get the current date
   const currentDate = new Date();
-  //check if the cooking session scheduled time has passed
-  const isNotExpired = (new Date(cookingSession.session_datetime) >= currentDate);
+  // A cooking session is available if it's schedule for the next 30 minutes or for the last two hours
+  const earlyAttendance = new Date(currentDate.getTime() + 30 * 60000); // 30 minutes in milliseconds
+  const lateAtttendance = new Date(currentDate.getTime() - 2 * 3600000); // 2 hours in milliseconds
   
+  // check if the cooking session is in the available time window
+  const plannedDateTime = new Date(cookingSession.session_datetime);
+  const isAvailableToJoin = plannedDateTime >= lateAtttendance && plannedDateTime <= earlyAttendance;
+
+  // check if the cooking session scheduled time has passed
+  const isNotExpired = plannedDateTime >= lateAtttendance;
+
   return (
     <div>
       <div style={{ display: "flex" }}>
@@ -40,11 +48,11 @@ const CookingSessionInfo = () => {
           />
         </div>
         <div style={{ flex: 1 }}>
-          {isNotExpired &&
+          {isAvailableToJoin && (
             <Link to={`/cooking-sessions/${id}/join`}>
               <button>Join Session</button>
             </Link>
-          }
+          )}
           <Link to={`/recipes/${cookingSession.api_recipe_id}`}>
             <button>View Recipe</button>
           </Link>
@@ -56,15 +64,18 @@ const CookingSessionInfo = () => {
       <div style={{ display: "flex" }}>
         <div
           style={{ flex: 1, marginRight: "20px" }}
-          //injecting the HTML coming from the string 
+          //injecting the HTML coming from the string
           dangerouslySetInnerHTML={{
             //cleaning any possible malicious code
             __html: DOMPurify.sanitize(cookingSession.api_recipe_summary),
           }}
         ></div>
         <div style={{ flex: 1 }}>
-          <h3>Who {isNotExpired ? 'is coming' : 'was invited'}</h3>
-          <InvitationList cookingSessionId={id} isNotExpired={isNotExpired}></InvitationList>
+          <h3>Who {isNotExpired ? "is coming" : "was invited"}</h3>
+          <InvitationList
+            cookingSessionId={id}
+            isNotExpired={isNotExpired}
+          ></InvitationList>
         </div>
       </div>
     </div>
