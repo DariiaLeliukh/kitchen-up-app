@@ -35,8 +35,8 @@ const InvitationListItem = ({ invitation, isNotExpired }) => {
   };
 
   return (
-    <li style={{ display: "flex", flexDirection: "row" }}>
-      <div>
+    <li className="guest row">
+      <div className="col-12 col-md-1">
         {invitation.profile_picture_url ? (
           <img
             style={profileImageStyle}
@@ -49,13 +49,13 @@ const InvitationListItem = ({ invitation, isNotExpired }) => {
           >{`${invitation.first_name[0]} ${invitation.last_name[0]}`}</div>
         )}
       </div>
-      <div>
+      <div className="col-12 col-md-3">
         {invitation.first_name} {invitation.last_name}
         {invitation.is_host && " (host)"}
       </div>
-      <div>{status} </div>
+      <div className="col-12 col-md-1">{status} </div>
       {isNotExpired && (
-        <div>
+        <div className="col-12 col-md-7 flex-row">
           {auth.userId === invitation.guest_id && status !== "Accepted" && (
             <button onClick={() => handleStatusClick("Accepted")}>
               Accept

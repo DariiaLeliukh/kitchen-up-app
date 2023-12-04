@@ -36,24 +36,24 @@ const CookingSessionList = () => {
     cookingSessions.length === 0
       ? []
       : cookingSessions.filter(
-          (session) => new Date(session.session_datetime) > earlyAttendance
-        );
+        (session) => new Date(session.session_datetime) > earlyAttendance
+      );
   const expiredSessions =
     cookingSessions.length === 0
       ? []
       : cookingSessions.filter(
-          (session) => new Date(session.session_datetime) < lateAtttendance
-        );
+        (session) => new Date(session.session_datetime) < lateAtttendance
+      );
   const availableSessions =
     cookingSessions.length === 0
       ? []
       : cookingSessions.filter((session) => {
-          const plannedDateTime = new Date(session.session_datetime);
-          return (
-            plannedDateTime >= lateAtttendance && plannedDateTime <= earlyAttendance
-          );
-        });
-  
+        const plannedDateTime = new Date(session.session_datetime);
+        return (
+          plannedDateTime >= lateAtttendance && plannedDateTime <= earlyAttendance
+        );
+      });
+
   return (
     <div className="container cooking-session-list">
       <h1>Cooking Sessions</h1>
@@ -66,6 +66,7 @@ const CookingSessionList = () => {
                 key={cookingSession.id}
                 cookingSession={cookingSession}
                 showInfoButton={true}
+                styleClasses="col-12 col-md-6 col-lg-4 mb-3"
               />
             ))}
           </div>
@@ -87,6 +88,7 @@ const CookingSessionList = () => {
               key={cookingSession.id}
               cookingSession={cookingSession}
               showInfoButton={true}
+              styleClasses="col-12 col-md-6 col-lg-4 mb-3"
             />
           ))}
         </div>
@@ -103,6 +105,7 @@ const CookingSessionList = () => {
               key={cookingSession.id}
               cookingSession={cookingSession}
               showInfoButton={true}
+              styleClasses="col-12 col-md-6 col-lg-4 mb-3"
             />
           ))}
         </div>
