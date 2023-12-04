@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import RecipeHeader from "../components/RecipeHeader";
 import RecipeInstructionList from "../components/RecipeInstructionList";
 import "../styles/css/styles.css";
+import Loading from "../components/Loading";
 
 const Recipe = () => {
   const { id } = useParams();
@@ -37,7 +38,7 @@ const Recipe = () => {
         </>
       ) : (
         <div className="container">
-          <p>Loading...</p>
+          <Loading />
         </div>
       )}
     </>
