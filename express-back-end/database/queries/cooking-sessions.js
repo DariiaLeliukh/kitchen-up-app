@@ -15,7 +15,7 @@ const getCookingSessionsByGuestId = (guestId) => {
 
 const addCookingSession = (host_id, api_recipe_id, api_recipe_name) => {
   return db.query(`INSERT INTO cooking_sessions (host_id, api_recipe_id, api_recipe_name, session_datetime) VALUES
-  ($1, $2, $3, '2023-12-05 12:00:00') RETURNING *;`, [host_id, api_recipe_id, api_recipe_name])
+  ($1, $2, $3, NOW()- interval '1 hour') RETURNING *;`, [host_id, api_recipe_id, api_recipe_name])
     .then((data) => {
       return data.rows[0];
     });
@@ -27,9 +27,9 @@ const getCookingSession = (cookingSessionId) => {
                   FROM cooking_sessions
                   JOIN users ON cooking_sessions.host_id = users.id
                   WHERE cooking_sessions.id = $1`,
-      [cookingSessionId]).then((data) => {
-    return data.rows;
-  });
+    [cookingSessionId]).then((data) => {
+      return data.rows;
+    });
 };
 
-module.exports = { getCookingSessionsByGuestId, getCookingSession, addCookingSession};
+module.exports = { getCookingSessionsByGuestId, getCookingSession, addCookingSession };

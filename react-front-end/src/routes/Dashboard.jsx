@@ -9,6 +9,9 @@ const Dashboard = () => {
       <Link to="/recipe-lists" className="button">
         REcipe Lists
       </Link>
+      <Link to="/favorites">
+        <button>Favorites</button>
+      </Link>
     </div>
   );
 };

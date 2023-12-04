@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from "react-router-dom";
 import RequireAuth from "./components/RequireAuth";
 import TopNavigation from "./components/TopNavigation";
 import HomeRoute from "./routes/HomeRoute";
@@ -11,11 +11,13 @@ import GroceryList from "./routes/GroceryList";
 import Dashboard from "./routes/Dashboard";
 import CookingSessionList from "./routes/CookingSessionList";
 import CookingSessionInfo from "./routes/CookingSessionInfo";
+import CookingSession from "./routes/CookingSession";
 import useAuth from './hooks/useAuth';
 import { useEffect } from 'react';
 import axios from 'axios';
-import Recipe from './routes/Recipe';
-import CreateNewCookingSession from './routes/CreateNewCookingSession';
+import Recipe from "./routes/Recipe";
+import Favorites from './routes/Favorites';
+import CreateNewCookingSession from "./routes/CreateNewCookingSession";
 
 const App = () => {
   const { auth, setAuth } = useAuth(null);
@@ -49,14 +51,25 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/search" element={<SearchResults />} />
 
-            <Route path="/recipe/:recipeId" element={<Recipe />} />
+            <Route path="/recipes/:id" element={<Recipe />} />
 
             {/* protected routes for logged in users */}
             <Route element={<RequireAuth />}>
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/favorites" element={<Favorites />} />
               <Route path="/cooking-sessions" element={<CookingSessionList />} />
-              <Route path="/cooking-sessions/:id" element={<CookingSessionInfo />} />
-              <Route path="/cooking-sessions/new" element={<CreateNewCookingSession />} />
+              <Route
+                path="/cooking-sessions/:id"
+                element={<CookingSessionInfo />}
+              />
+              <Route
+                path="/cooking-sessions/new"
+                element={<CreateNewCookingSession />}
+              />
+              <Route
+                path="/cooking-sessions/:id/join"
+                element={<CookingSession />}
+              />
               <Route path="/recipe-lists" element={<RecipeLists />} />
               <Route path="/recipe-list/:id" element={<RecipeListItem />} />
               <Route path="/recipe-list/:id/grocery-list" element={<GroceryList />} />

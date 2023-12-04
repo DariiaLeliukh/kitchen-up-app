@@ -16,7 +16,7 @@ const InvitationListItem = ({ invitation, isNotExpired }) => {
       setStatus(newStatus);
 
       // Handle success, e.g., show a message or update the UI
-      console.log(`Invitation status changed to: ${newStatus}`);
+      //console.log(`Invitation status changed to: ${newStatus}`);
     } catch (error) {
       // Handle error, e.g., show an error message
       console.error("Error updating the invitation status:", error.message);
