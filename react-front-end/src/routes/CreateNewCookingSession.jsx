@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
-import { ReactMultiEmail, isEmail } from 'react-multi-email';
+import { ReactMultiEmail } from 'react-multi-email';
 import 'react-multi-email/dist/style.css';
 import axios from 'axios';
 
-const CreateNewCookingSession = (props) => {
+const CreateNewCookingSession = () => {
   const { auth } = useAuth();
   const { userId } = auth;
 
@@ -38,7 +38,7 @@ const CreateNewCookingSession = (props) => {
         let sucessUserEmails = [];
         response.data.dataMessage.forEach((el) => {
           if (el.status === "fail") failedUserEmails.push(el.email);
-          sucessUserEmails.push(el.email);
+          else sucessUserEmails.push(el.email);
         });
 
         setSuccess(true);
@@ -60,12 +60,16 @@ const CreateNewCookingSession = (props) => {
           <h1>The invitations has been sent.</h1>
           <p>Emails were sent successfully to:</p>
           <p>{successEmails.join(", ")}</p>
+          {failedEmails.length > 0 ? (
+            <>
+              <p>Failed Emails:</p>
+              <p>{failedEmails.join(", ")}</p>
+            </>
+          ) : (<></>)}
 
-          <p>Failed Emails:</p>
-          <p>{failedEmails.join(", ")}</p>
           {successEmails.length > 0 &&
             // need to correct URL to the one with parameters (?)
-            <Link to={`/cooking-sessions/${newCookingSessionId}`} >Coocking Session Info</Link>}
+            <Link to={`/cooking-sessions/${newCookingSessionId}`} >Cooking Session Info</Link>}
         </>
       ) :
         (

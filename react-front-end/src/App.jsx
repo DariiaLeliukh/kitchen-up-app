@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import RequireAuth from "./components/RequireAuth";
 import TopNavigation from "./components/TopNavigation";
-
 import HomeRoute from "./routes/HomeRoute";
 import Login from "./routes/Login";
 import Register from "./routes/Register";
@@ -21,7 +20,7 @@ import Favorites from './routes/Favorites';
 import CreateNewCookingSession from "./routes/CreateNewCookingSession";
 
 const App = () => {
-  const { setAuth } = useAuth();
+  const { auth, setAuth } = useAuth(null);
 
   useEffect(() => {
     async function checkJWTcookie() {
@@ -33,50 +32,51 @@ const App = () => {
             const userId = response?.data?.result?.id || null;
             setAuth({ userEmail, userAccessToken, userId });
           });
-
       } catch (error) {
         // If verify didn't work then user is not logged in
-        console.log(error.response.data.message);
         setAuth({});
       }
     }
     checkJWTcookie();
-
-
   }, []);
 
   return (
     <div className="App">
-      <TopNavigation />
-      <Routes>
-        <Route path="/" element={<HomeRoute />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/search" element={<SearchResults />} />
-        <Route path="/recipe-lists" element={<RecipeLists />} />
-        <Route path="/recipe-list/:id" element={<RecipeListItem />} />
-        <Route path="/recipe-list/:id/grocery-list" element={<GroceryList />} />
-        <Route path="/recipes/:id" element={<Recipe />} />
+      {auth !== null &&
+        <>
+          <TopNavigation />
+          <Routes>
+            <Route path="/" element={<HomeRoute />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/search" element={<SearchResults />} />
 
-        {/* protected routes for logged in users */}
-        <Route element={<RequireAuth />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/favorites" element={<Favorites />} />
-          <Route path="/cooking-sessions" element={<CookingSessionList />} />
-          <Route
-            path="/cooking-sessions/:id"
-            element={<CookingSessionInfo />}
-          />
-          <Route
-            path="/cooking-sessions/new"
-            element={<CreateNewCookingSession />}
-          />
-          <Route
-            path="/cooking-sessions/:id/join"
-            element={<CookingSession />}
-          />
-        </Route>
-      </Routes>
+            <Route path="/recipes/:id" element={<Recipe />} />
+
+            {/* protected routes for logged in users */}
+            <Route element={<RequireAuth />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/favorites" element={<Favorites />} />
+              <Route path="/cooking-sessions" element={<CookingSessionList />} />
+              <Route
+                path="/cooking-sessions/:id"
+                element={<CookingSessionInfo />}
+              />
+              <Route
+                path="/cooking-sessions/new"
+                element={<CreateNewCookingSession />}
+              />
+              <Route
+                path="/cooking-sessions/:id/join"
+                element={<CookingSession />}
+              />
+              <Route path="/recipe-lists" element={<RecipeLists />} />
+              <Route path="/recipe-list/:id" element={<RecipeListItem />} />
+              <Route path="/recipe-list/:id/grocery-list" element={<GroceryList />} />
+            </Route>
+          </Routes>
+        </>
+      }
     </div>
   );
 };

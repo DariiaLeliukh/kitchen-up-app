@@ -1,0 +1,15 @@
+.grocery-list {
+  .card {
+    background: #ffc1c1;
+
+    img {
+      background: white;
+      height: 150px;
+      object-fit: contain;
+    }
+  }
+
+  .purchased .card {
+    background: #98c598;
+  }
+}

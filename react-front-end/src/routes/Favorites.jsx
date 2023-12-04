@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Loading from "../components/Loading";
 
 const Favorites = () => {
   const { auth } = useAuth();
@@ -9,14 +10,15 @@ const Favorites = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log("useEffect triggered");
     const fetchFavorites = async () => {
       try {
         const response = await axios.get("/api/favorites", {
           params: { id: auth.userId }
         });
-        
-        setDetailedFavorites(response.data);        
+
+        setDetailedFavorites(response.data);
+
+        setDetailedFavorites(response.data);
       } catch (error) {
         setError(error);
       }
@@ -24,22 +26,22 @@ const Favorites = () => {
 
     fetchFavorites();
   }, []);
-  console.log(detailedFavorites);
+
   // Conditional render based on whether the recipe is available
   if (detailedFavorites === null) {
-    return <p>Loading favorites...</p>;    
+    return <Loading />;
   }
-  
+
   const handleDeleteFavorite = async (apiRecipeId) => {
-  try {
-    const response = await axios.delete(`/api/favorites/delete/${apiRecipeId}?user_id=${auth.userId}`);
-    
-    setDetailedFavorites((prevFavorites) =>
-      prevFavorites.filter((favorite) => favorite.apiRecipeId !== apiRecipeId)
-    );
-  } catch (error) {
-    console.error("Error deleting favorite:", error);
-  }
+    try {
+      const response = await axios.delete(`/api/favorites/delete/${apiRecipeId}?user_id=${auth.userId}`);
+
+      setDetailedFavorites((prevFavorites) =>
+        prevFavorites.filter((favorite) => favorite.apiRecipeId !== apiRecipeId)
+      );
+    } catch (error) {
+      console.error("Error deleting favorite:", error);
+    }
   };
 
   return (

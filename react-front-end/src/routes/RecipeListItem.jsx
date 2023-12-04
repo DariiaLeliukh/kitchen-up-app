@@ -1,40 +1,52 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 
-const RecipeListItem = ({ recipeList }) => {
-  // Hardcoded fake recipe data
-  const fakeRecipes = [
-    {
-      id: 1,
-      recipeName: "Fake Recipe 1",
-      ingredients: ["ingredient1", "ingredient2"]
-    },
-    {
-      id: 2,
-      recipeName: "Fake Recipe 2",
-      ingredients: ["ingredient3", "ingredient4"]
-    }
-  ];
+const RecipeListItem = () => {
+  const { id } = useParams();  //recipe list id
+
+  const [recipeList, setRecipeList] = useState([]);
+  const [recipes, setRecipes] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`/api/recipe-lists/${id}`)
+      .then((response) => {
+        setRecipeList(response.data.data[0]);
+      })
+      .catch((error) => console.error("Error fetching recipe lists:", error));
+  }, [id]);
+
+  useEffect(() => {
+    axios
+      .get(`/api/recipe-lists/${id}/items`)
+      .then((response) => {
+        console.log(response);
+        setRecipes(response.data.data);
+      })
+      .catch((error) => console.error("Error fetching recipe items:", error));
+  }, []);
 
   return (
-    <div>
-      <h2>{recipeList && recipeList.name}</h2>
+    <div className="container">
+      <h1>{recipeList && recipeList.name}</h1>
+      <Link to={`/recipe-list/${id}/grocery-list`}>
+        <button>Grocery List</button>
+      </Link>
       <p>
         Created on{" "}
         {recipeList && new Date(recipeList.created_at).toLocaleDateString()}
       </p>
 
-      <div>
-        <button>Edit List</button>
-        {/* <Link to={`/recipe-list/${recipeList.id}/grocery-list`}> */}
-        <button>Grocery List</button>
-        {/* </Link> */}
-      </div>
-
       <h3>Recipes:</h3>
       <ul>
-        {fakeRecipes.map((recipe) => (
-          <li key={recipe.id}>{recipe.recipeName}</li>
+        {recipes.map((recipe) => (
+          <li key={recipe.apiRecipeId}>
+            ID: {recipe.apiRecipeId}
+            Title : {recipe.recipeTitle}
+            Image: {recipe.recipeImage}
+          </li>
         ))}
       </ul>
     </div>
