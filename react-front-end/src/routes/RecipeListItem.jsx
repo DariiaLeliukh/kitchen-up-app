@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import Loading from "../components/Loading";
+import useAuth from "../hooks/useAuth";
 
 const RecipeListItem = () => {
+  const { auth } = useAuth();
+  const navigate = useNavigate();
   const { id } = useParams();  //recipe list id
 
   const [recipeList, setRecipeList] = useState([]);
@@ -23,42 +26,56 @@ const RecipeListItem = () => {
     axios
       .get(`/api/recipe-lists/${id}/items`)
       .then((response) => {
-        console.log(response);
         setRecipes(response.data.data);
       })
       .catch((error) => console.error("Error fetching recipe items:", error));
   }, []);
 
+  const deleteList = () => {
+    axios
+      .delete(`/api/recipe-lists/${id}`)
+      .then(() => {
+        navigate(`/recipe-lists`);
+      })
+      .catch((error) => console.error("Error fetching recipe items:", error));
+
+  };
+
   return (
-    <div className="container">
-      <h1>{recipeList && recipeList.name}</h1>
-      <Link to={`/recipe-list/${id}/grocery-list`}>
-        <button>Grocery List</button>
-      </Link>
-      <p>
-        Created on{" "}
-        {recipeList && new Date(recipeList.created_at).toLocaleDateString()}
-      </p>
+    <>
+      {recipeList && (
+        <div className="container">
+          <h1>{recipeList && recipeList.name}</h1>
+          <Link to={`/recipe-list/${id}/grocery-list`}>
+            <button>Grocery List</button>
+          </Link>
+          <button onClick={deleteList}>Delete</button>
+          <p>
+            Created on{" "}
+            {recipeList && new Date(recipeList.created_at).toLocaleDateString()}
+          </p>
 
-      {
-        recipes.length > 0 ? (
-          <>
-            <h3>Recipes:</h3>
-            <ul>
-              {recipes.map((recipe) => (
-                <li key={recipe.apiRecipeId}>
-                  ID: {recipe.apiRecipeId}
-                  Title : {recipe.recipeTitle}
-                  Image: {recipe.recipeImage}
-                </li>
-              ))}
-            </ul>
-          </>
-        ) : (<Loading />)
+          {
+            recipes.length > 0 ? (
+              <>
+                <h3>Recipes:</h3>
+                <ul>
+                  {recipes.map((recipe) => (
+                    <li key={recipe.apiRecipeId}>
+                      ID: {recipe.apiRecipeId}
+                      Title : {recipe.recipeTitle}
+                      Image: {recipe.recipeImage}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (<Loading />)
+          }
+
+        </div>
+      )
       }
-
-    </div>
+    </>
   );
 };
-
 export default RecipeListItem;

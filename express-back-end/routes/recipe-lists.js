@@ -59,6 +59,34 @@ router.post("/:recipeListId/item/:recipeId", async (req, res) => {
 
 });
 
+router.post("/", async (req, res) => {
+  const { newListName, recipeId, userId } = req.query;
+
+  if (newListName && recipeId) {
+    const createdRecipeList = await recipeListQuery.createRecipeList(userId, newListName);
+
+    if (createdRecipeList.id) {
+      const addedRecipeToList = await recipeListQuery.addToRecipeList(createdRecipeList.id, recipeId);
+      return res.json({ newRecipeId: createdRecipeList.id });
+    }
+  } else {
+    return res.sendStatus(500);
+  }
+});
+
+router.delete("/:recipeListId", async (req, res) => {
+  const { recipeListId } = req.params;
+
+  try {
+    await recipeListQuery.deleteRecipeList(recipeListId);
+
+    res.status(200).json({ message: "Recipe List deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting recipe list:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 router.get("/:id", async (req, res) => {
   const requestedListId = req.params.id;
 

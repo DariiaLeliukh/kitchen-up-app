@@ -52,15 +52,15 @@ const RecipeHeader = ({ recipeId, title, imageUrl, ingredients, showButtons }) =
               <div className="col-12 col-md-4">
                 {
                   auth.userId ? (
-                    <>
+                    <p>
                       <Link
                         to="/cooking-sessions/new"
                         state={{ recipeId, recipeTitle: title }}
-                        className="button"
+                        className="button text-center"
                       >
                         Cook with Friends
                       </Link>
-                    </>) : (
+                    </p>) : (
                     <>
                       <button onClick={showLoginTip}>Cook with Friends</button>
                     </>)
