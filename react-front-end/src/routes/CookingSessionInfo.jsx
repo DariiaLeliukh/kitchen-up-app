@@ -49,7 +49,7 @@ const CookingSessionInfo = () => {
             styleClasses=""
           />
         </div>
-        <div className="col-12 col-md-4 align-self-center">
+        <div className="col-12 col-md-4 align-self-center session-actions">
           {isAvailableToJoin && (
             <Link to={`/cooking-sessions/${id}/join`}>
               <button>Join Session</button>
