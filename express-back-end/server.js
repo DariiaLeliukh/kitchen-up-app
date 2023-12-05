@@ -74,7 +74,7 @@ app.get("/data", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  const url = recipeApiUrl.getRandomRecipes({ number: 10 });
+  const url = recipeApiUrl.getRandomRecipes({ number: 20 });
 
   // Make a GET request using axios
   axios.get(url).then((apiData) => {
@@ -132,7 +132,7 @@ app.post("/register", async (req, res) => {
     const accessToken = jwt.sign(
       { username: userId.username },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "600s" } //TODO: change later for something longer
+      { expiresIn: "6000s" } //TODO: change later for something longer
     );
 
     userId.access_token = accessToken;

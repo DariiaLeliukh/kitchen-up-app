@@ -73,7 +73,8 @@
     .cooking-session-page .guest-list .guest button {
       margin-left: 0;
       display: inline-block;
-      margin-right: 10px; }
+      margin-right: 10px;
+      min-width: auto; }
 
 .cooking-session-page .recipe-summary {
   color: #000;

@@ -58,7 +58,11 @@ const AddToRecipeList = (props) => {
     <>
       {
         auth.userId &&
-        <CreatableSelect isClearable options={options} onChange={addToRecipeList} />
+        <CreatableSelect
+          isClearable
+          options={options}
+          onChange={addToRecipeList}
+        />
       }
       {
         !auth.userId && <>

@@ -13,19 +13,26 @@ body {
 
 .container {
   background-color: #ffffff;
-  padding: 20px;
+  padding: 50px 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 1200px;
-  margin: 50px auto; }
+  max-width: 960px;
+  margin: 50px auto;
+  min-height: 100vh; }
 
 .home-route.container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 960px;
   margin: 50px auto;
   background: transparent;
   box-shadow: none;
+  padding: 0; }
+
+.home-route .search-container {
+  background: transparent;
+  box-shadow: none;
+  margin-bottom: 0;
   padding: 0; }
 
 button,
@@ -45,8 +52,89 @@ button,
     text-decoration: none;
     cursor: pointer; }
 
+.secondary-button {
+  background: #E7B401;
+  color: #FFF;
+  border-radius: 8px;
+  padding: 15px 30px;
+  margin: 0 auto;
+  display: inline-block;
+  color: #FFF;
+  border: 0;
+  min-width: 200px; }
+  .secondary-button:hover {
+    background: #084F20;
+    color: #FFF;
+    text-decoration: none;
+    cursor: pointer; }
+
+.button-tile {
+  border-radius: 8px;
+  background: transparent;
+  border: 2px solid #084F20;
+  margin: 0 auto;
+  display: inline-block;
+  color: #084F20;
+  min-width: 200px;
+  width: 100%;
+  padding: 50px 15px;
+  text-align: center;
+  font-family: Roboto;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px; }
+  .button-tile:hover {
+    background: #E7B401;
+    color: #084F20;
+    text-decoration: none;
+    cursor: pointer; }
+
 a {
   color: #084F20; }
+  a:hover {
+    text-decoration: none;
+    cursor: pointer;
+    color: #E7B401; }
 
 .search-container {
+  margin-bottom: 50px;
+  min-height: auto; }
+  .search-container .search-fields {
+    margin-bottom: 50px; }
+
+.favorites-page h1 {
+  color: #084F20;
+  font-family: Roboto;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  text-transform: capitalize;
   margin-bottom: 50px; }
+
+.new-cooking-session h1 {
+  color: #084F20;
+  font-family: Roboto;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  text-transform: capitalize;
+  margin-bottom: 50px; }
+
+.new-cooking-session p {
+  font-family: Roboto;
+  font-size: 18px;
+  margin-bottom: 15px; }
+
+.new-cooking-session .react-multi-email {
+  margin-bottom: 10px; }
+
+.new-cooking-session .successEmails {
+  color: #084F20;
+  margin-bottom: 20px; }
+
+.new-cooking-session .failedEmails {
+  color: #E7B401;
+  margin-bottom: 20px; }

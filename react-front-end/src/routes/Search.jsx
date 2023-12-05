@@ -11,7 +11,12 @@ const Search = (props) => {
       const response = await fetch(`/api/search?name=${search}`);
       const data = await response.json();
       setNameResults(Array.isArray(data.results) ? data.results : []);
-      props.removeDefaultRecipes();
+      // quick fix for now
+      // TODO: fix properly later
+      if (typeof props.removeDefaultRecipes !== "undefined") {
+        props.removeDefaultRecipes();
+      }
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -21,9 +26,8 @@ const Search = (props) => {
     try {
       const response = await fetch(`/api/search?ingredients=${search}`);
       const data = await response.json();
-      // console.log("Data from backend:", data);
       setIngredientResults(Array.isArray(data) ? data : []);
-      props.removeDefaultRecipes();
+      props.removeDefaultRecipes;
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -47,8 +51,8 @@ const Search = (props) => {
   const combinedResults = [...nameResults, ...ingredientResults];
 
   return (
-    <>
-      <div className="search-container row">
+    <div className='search-container container'>
+      <div className="row search-fields">
         <div className="col-12 col-md-6">
           <SearchBar
             onSearch={(search) => handleSearchSubmit(search, "name")}
@@ -69,7 +73,7 @@ const Search = (props) => {
           ))}
         </div>
       </div>
-    </>
+    </div>
 
   );
 };

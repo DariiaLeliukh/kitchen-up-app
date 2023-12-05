@@ -7,3 +7,13 @@
 
 .grocery-list .purchased .card {
   background: #98c598; }
+
+.grocery-list h1 {
+  color: #084F20;
+  font-family: Roboto;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  text-transform: capitalize;
+  margin-bottom: 50px; }

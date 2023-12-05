@@ -29,9 +29,6 @@ const TopNavigation = () => {
             </Link>
           </div>
 
-          <div className="top-nav-bar__avatar">
-            <FontAwesomeIcon icon={faUser} />
-          </div>
           <ul>
             {!auth.userId && <>
               <li><Link to="/login">Login</Link></li>
@@ -40,9 +37,32 @@ const TopNavigation = () => {
             }
             {auth.userEmail &&
               <>
-                <li>{auth.userEmail}</li>
-                <li><Link to="/dashboard">Dashboard</Link></li>
-                <Logout />
+                <div className="nav-item dropdown">
+                  <div className="align-items-center d-flex top-nav-bar__avatar">
+                    <FontAwesomeIcon icon={faUser} />
+                  </div>
+                  <a className="nav-link dropdown-toggle dropup" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {auth.userEmail.split("@")[0]}
+                  </a>
+                  <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <Link
+                      to="/dashboard"
+                      className="dropdown-item">
+                      Dashboard
+                    </Link>
+                    <Link
+                      to="/cooking-sessions"
+                      className="dropdown-item">
+                      Cooking Sessons
+                    </Link>
+                    <Link
+                      to="/recipe-lists"
+                      className="dropdown-item">
+                      Recipe Lists
+                    </Link>
+                    <Logout className="dropdown-item" />
+                  </div>
+                </div>
               </>
             }
           </ul>

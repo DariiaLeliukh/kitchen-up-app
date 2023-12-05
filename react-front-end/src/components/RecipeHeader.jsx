@@ -39,54 +39,68 @@ const RecipeHeader = ({ recipeId, title, imageUrl, ingredients, showButtons }) =
 
   return (
     <>
-      <img className="recipe-img" src={imageUrl} alt={title} />
+
       <div className="recipe-info">
         <div className="container">
           <div className="row">
-            <div className="col-12 col-md-8">
+            <div className="col-12 col-md-6">
+              <img className="recipe-img" src={imageUrl} alt={title} />
+            </div>
+            <div className="col-12 col-md-6">
               <h1>{title}</h1>
               <h3 className="ingredients-heading">Ingredients</h3>
               <IngredientList ingredients={ingredients} />
             </div>
-            {showButtons &&
-              <div className="col-12 col-md-4">
-                {
-                  auth.userId ? (
-                    <p>
-                      <Link
-                        to="/cooking-sessions/new"
-                        state={{ recipeId, recipeTitle: title }}
-                        className="button text-center"
-                      >
-                        Cook with Friends
-                      </Link>
-                    </p>) : (
-                    <>
-                      <button onClick={showLoginTip}>Cook with Friends</button>
-                    </>)
-                }
-                {
-                  auth.userId ? (
-                    <>
-                      <button onClick={handleFavorites}>Add Favorites</button>
-                    </>) : (
-                    <>
-                      <button onClick={showLoginTip}>Add Favorites</button>
-                    </>)
-                }
-                <AddToRecipeList recipeId={recipeId} notAuthorized={showLoginTip} />
-                {showLoginMessage && (
-                  <>
-                    <p className='my-3' style={{ color: "red" }}>You need to login to use these features</p>
-                    <Link to="/login">Login</Link>
-                  </>
-                )}
-              </div>
-
-            }
+          </div>
+          <div className="row recipe-actions">
+            {showButtons && (
+              <>
+                <div className="col">
+                  {
+                    auth.userId ? (
+                      <p>
+                        <Link
+                          to="/cooking-sessions/new"
+                          state={{ recipeId, recipeTitle: title }}
+                          className="button text-center"
+                        >
+                          Cook with Friends
+                        </Link>
+                      </p>) : (
+                      <>
+                        <button onClick={showLoginTip}>Cook with Friends</button>
+                      </>)
+                  }
+                </div>
+                <div className="col">
+                  {
+                    auth.userId ? (
+                      <>
+                        <button onClick={handleFavorites}>Add To Favorites</button>
+                      </>) : (
+                      <>
+                        <button onClick={showLoginTip}>Add To Favorites</button>
+                      </>)
+                  }
+                </div>
+                <div className="col">
+                  < AddToRecipeList recipeId={recipeId} notAuthorized={showLoginTip} />
+                </div>
+              </>
+            )}
+          </div>
+          <div className="row">
+            <div className="col-12">
+              {showLoginMessage && (
+                <div className="warning-message">
+                  <p>You need to <Link to="/login">login</Link> to use these features</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      </div >
+
     </>
   );
 };

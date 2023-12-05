@@ -21,6 +21,7 @@ router.get("/:requestedListId", async (req, res) => {
   try {
     const items = await recipeListQuery.getRecipeListItemsByRecipeId(requestedListId);
     const recipeIds = items.map(item => item.api_recipe_id);
+
     //at this moment the query will insert only non-existing values in the db, when in fact we need to check if the recipe has already been added before and only then insert new ones without checking if it exists (or combine those duplicating products summing the amounts)
     const arrayOfPromises = [];
     const apiData = await axios.get(recipeApiUrl.getRecipeInformationBulk(recipeIds));
@@ -31,7 +32,7 @@ router.get("/:requestedListId", async (req, res) => {
             ingredientList.id,
             requestedListId,
             ingredientList.image,
-            ingredientList.nameClean,
+            ingredientList.nameClean ? ingredientList.nameClean : ingredientList.name,
             ingredientList.amount,
             ingredientList.unit
           )

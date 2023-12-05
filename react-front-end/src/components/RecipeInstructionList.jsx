@@ -15,7 +15,7 @@ const RecipeInstructionList = ({ instructions, positions, onClickHandler }) => {
     <div className="container">
       <div>
         {instructions && instructions.length > 0 ? (
-          <section className="form">
+          <section className="recipe-instructions">
             <div>
               {instructions[0].steps.map((instruction) => (
                 <RecipeInstructionListItem
