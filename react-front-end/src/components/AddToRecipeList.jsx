@@ -18,7 +18,7 @@ const AddToRecipeList = (props) => {
         const newListName = e.value.replace(/[\W_]+/g, " ");
 
         try {
-          await axios.post(`/api/recipe-lists/new/?newListName=${newListName}&recipeId=${recipeId}&userId=${auth.userId}`)
+          await axios.post(`/api/recipe-lists/?newListName=${newListName}&recipeId=${recipeId}&userId=${auth.userId}`)
             .then((response) => {
               const newRecipeId = response.data.newRecipeId;
               navigate(`/recipe-list/${newRecipeId}`);

@@ -59,11 +59,8 @@ router.post("/:recipeListId/item/:recipeId", async (req, res) => {
 
 });
 
-router.post("/new/", async (req, res) => {
+router.post("/", async (req, res) => {
   const { newListName, recipeId, userId } = req.query;
-  console.log('newListName', newListName);
-  console.log('recipeId', recipeId);
-  console.log('userId', userId);
 
   if (newListName && recipeId) {
     const createdRecipeList = await recipeListQuery.createRecipeList(userId, newListName);
@@ -78,11 +75,10 @@ router.post("/new/", async (req, res) => {
 });
 
 router.delete("/:recipeListId", async (req, res) => {
-  const user_id = req.query.user_id;
   const { recipeListId } = req.params;
 
   try {
-    await recipeListQuery.deleteRecipeList(user_id, recipeListId);
+    await recipeListQuery.deleteRecipeList(recipeListId);
 
     res.status(200).json({ message: "Recipe List deleted successfully" });
   } catch (error) {

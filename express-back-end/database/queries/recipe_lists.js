@@ -26,11 +26,11 @@ const createRecipeList = (userId, name) => {
     });
 };
 
-const deleteRecipeList = async (userId, recipeListId) => {
+const deleteRecipeList = async (recipeListId) => {
   return db
     .query(
-      "DELETE FROM recipe_lists WHERE user_id = $1 AND id = $2;",
-      [userId, recipeListId]
+      "DELETE FROM recipe_lists WHERE id = $1;",
+      [recipeListId]
     )
     .then((data) => {
       return data.rows;

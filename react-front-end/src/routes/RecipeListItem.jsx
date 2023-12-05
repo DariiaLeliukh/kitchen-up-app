@@ -33,7 +33,7 @@ const RecipeListItem = () => {
 
   const deleteList = () => {
     axios
-      .delete(`/api/recipe-lists/${id}?user_id=${auth.userId}`)
+      .delete(`/api/recipe-lists/${id}`)
       .then(() => {
         navigate(`/recipe-lists`);
       })
@@ -73,7 +73,9 @@ const RecipeListItem = () => {
           }
 
         </div>
-      );
+      )
+      }
+    </>
+  );
 };
-
-      export default RecipeListItem;
+export default RecipeListItem;
