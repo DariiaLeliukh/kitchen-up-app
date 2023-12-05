@@ -9,7 +9,7 @@ const RecipeInstructionList = ({ instructions, positions, onClickHandler }) => {
       <div>
         {instructions && instructions.length > 0 ? (
           <section className="form">
-            <ol>
+            <div>
               {instructions[0].steps.map((instruction) => (
                 <RecipeInstructionListItem
                   key={instruction.number}
@@ -19,7 +19,7 @@ const RecipeInstructionList = ({ instructions, positions, onClickHandler }) => {
                   onClickHandler={onClickHandler}
                 />
               ))}
-            </ol>
+            </div>
           </section>
         ) : (
           <p>No instructions available.</p>

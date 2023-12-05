@@ -1,0 +1,36 @@
+.session-step {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 60px;
+  background: #f5f5f5;
+  padding: 25px 60px;
+  border-radius: 8px; }
+  .session-step.active {
+    background: rgba(231, 180, 1, 0.56); }
+  .session-step img,
+  .session-step .img-replacement {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+  .session-step .step-number {
+    align-items: center;
+    color: #222;
+    font-family: Roboto;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 60px;
+    /* 187.5% */ }
+  .session-step .step-action p {
+    color: #222;
+    font-family: Roboto;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 60px;
+    /* 187.5% */ }
