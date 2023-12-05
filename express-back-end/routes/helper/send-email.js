@@ -8,7 +8,7 @@ const sendInvitation = (recipientEmail, recipientFirstName, senderFullName, api_
     from: 'kitchenup.lhl@gmail.com', // Change to your verified sender
     subject: `You were invited for a cooking session at Kitchen-Up!`,
     text: `Hello ${recipientFirstName}. ${senderFullName} is inviting you to cook ${api_recipe_name} in a fun cooking session at Kitchen-up!`,
-    html: `Hello ${recipientFirstName}. <strong>${senderFullName}</strong> is inviting you <strong>${api_recipe_name}</strong> in a fun cooking session at Kitchen-up!`,
+    html: `Hello ${recipientFirstName}. <strong>${senderFullName}</strong> is inviting you to cook <strong>${api_recipe_name}</strong> in a fun cooking session at Kitchen-up!`,
   };
 
   sgMail
