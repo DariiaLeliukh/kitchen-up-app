@@ -38,11 +38,11 @@ const TopNavigation = () => {
             {auth.userEmail &&
               <>
                 <div className="nav-item dropdown">
-                  <div className="top-nav-bar__avatar">
+                  <div className="align-items-center d-flex top-nav-bar__avatar">
                     <FontAwesomeIcon icon={faUser} />
                   </div>
                   <a className="nav-link dropdown-toggle dropup" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Account
+                    {auth.userEmail.split("@")[0]}
                   </a>
                   <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     <Link
