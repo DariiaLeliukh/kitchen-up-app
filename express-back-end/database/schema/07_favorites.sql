@@ -3,5 +3,6 @@ DROP TABLE IF EXISTS favorites CASCADE;
 CREATE TABLE favorites (
     id SERIAL PRIMARY KEY NOT NULL,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE NOT NULL,
-    api_recipe_id INTEGER NOT NULL
+    api_recipe_id INTEGER NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
   );

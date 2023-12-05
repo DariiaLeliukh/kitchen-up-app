@@ -40,15 +40,16 @@ const CookingSessionInfo = () => {
   const isNotExpired = plannedDateTime >= lateAtttendance;
 
   return (
-    <div>
-      <div style={{ display: "flex" }}>
-        <div style={{ flex: 1, marginRight: "20px" }}>
+    <div className="container cooking-session-page">
+      <div className="row mb-5">
+        <div className="col-12 col-md-8">
           <CookingSessionListItem
             cookingSession={cookingSession}
             showInfoButton={false}
+            styleClasses=""
           />
         </div>
-        <div style={{ flex: 1 }}>
+        <div className="col-12 col-md-4 align-self-center">
           {isAvailableToJoin && (
             <Link to={`/cooking-sessions/${id}/join`}>
               <button>Join Session</button>
@@ -57,27 +58,26 @@ const CookingSessionInfo = () => {
           <Link to={`/recipes/${cookingSession.api_recipe_id}`}>
             <button>View Recipe</button>
           </Link>
-          <button onClick={() => console.log("Add To Grocery List")}>
+          {/* <button onClick={() => console.log("Add To Grocery List")}>
             Add To Grocery List
-          </button>
+          </button> */}
         </div>
       </div>
-      <div style={{ display: "flex" }}>
-        <div
-          style={{ flex: 1, marginRight: "20px" }}
-          //injecting the HTML coming from the string
-          dangerouslySetInnerHTML={{
-            //cleaning any possible malicious code
-            __html: DOMPurify.sanitize(cookingSession.api_recipe_summary),
-          }}
-        ></div>
-        <div style={{ flex: 1 }}>
+      <div>
+        <div className="guest-list">
           <h3>Who {isNotExpired ? "is coming" : "was invited"}</h3>
           <InvitationList
             cookingSessionId={id}
             isNotExpired={isNotExpired}
           ></InvitationList>
         </div>
+        <div className="recipe-summary"
+          //injecting the HTML coming from the string
+          dangerouslySetInnerHTML={{
+            //cleaning any possible malicious code
+            __html: DOMPurify.sanitize(cookingSession.api_recipe_summary),
+          }}
+        ></div>
       </div>
     </div>
   );

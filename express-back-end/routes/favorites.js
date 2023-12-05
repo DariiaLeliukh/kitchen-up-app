@@ -71,4 +71,18 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.delete("/delete/:apiRecipeId", async (req, res) => {
+  const user_id  = req.query.user_id;
+  const { apiRecipeId } = req.params;
+
+  try {
+    await favoriteQuery.deleteFavorite(user_id, apiRecipeId);
+
+    res.status(200).json({ message: "Favorite deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting favorite:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

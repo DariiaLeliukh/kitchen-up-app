@@ -26,6 +26,8 @@ const searchRouter = require("./routes/search");
 const invitationsRouter = require("./routes/invitations");
 const recipesRouter = require("./routes/recipes");
 const favoritesRouter = require("./routes/favorites");
+const recipeListsRouter = require("./routes/recipe-lists");
+const groceryListRouter = require("./routes/grocery-list");
 // Mount all resource routes
 // Note: Feel free to add routes below with your own
 // Note: Endpoints that return data (eg. JSON) usually start with `/api`
@@ -34,12 +36,12 @@ app.use("/search", searchRouter);
 app.use("/invitations", invitationsRouter);
 app.use("/recipes", recipesRouter);
 app.use("/favorites", favoritesRouter);
+app.use("/recipe-lists", recipeListsRouter);
+app.use("/grocery-list", groceryListRouter);
 
 async function findUserByJWTcookie(access_token) {
   const foundUser = await usersQuery.getUserByToken(access_token);
-  // console.log(foundUser);
   return foundUser || null;
-
 }
 
 app.post('/verifyJWT', async (req, res, next) => {
@@ -66,29 +68,6 @@ app.post('/verifyJWT', async (req, res, next) => {
         });
     }
   );
-
-  // const authHeader = req.headers['authorization'];
-
-  // if (!authHeader) {
-  //   return res.sendStatus(401);
-  // }
-
-  // const token = authHeader.split(' ')[1];
-
-  // jwt.verify(
-  //   token,
-  //   process.env.ACCESS_TOKEN_SECRET,
-  //   (err, decoded) => {
-  //     if (err) {
-  //       console.log(err);
-
-  //       return res.sendStatus(403);
-  //     }
-  //     req.user = decoded.username;
-  //     next();
-  //   }
-  // );
-
 });
 
 app.get("/data", (req, res) => {
@@ -107,17 +86,10 @@ app.get("/", (req, res) => {
 
 app.get("/users", (req, res) => {
   usersQuery.getUsers().then((users) => {
-    console.log(users);
     res.json({ data: users });
   });
 });
 
-app.get("/recipe-lists", (req, res) => {
-  recipeListQuery.getRecipeLists().then((recipe_lists) => {
-    console.log(recipe_lists);
-    res.json({ data: recipe_lists });
-  });
-});
 // Registration endpoint
 app.post("/register", async (req, res) => {
   const {
@@ -248,21 +220,11 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// Next line specifies that anything bellow `app.use(verifyJWT)` requires to be authorized
-// app.use(verifyJWT);
-
-app.get("/grocery-list", (req, res) => {
-  groceryListQuery.getGroceryListItems().then((grocery_list_items) => {
-    console.log(grocery_list_items);
-    res.json({ data: grocery_list_items });
-  });
-});
-
 const httpServer = app.listen(PORT, () => {
   console.log(
     "Express seems to be listening on port " +
-      PORT +
-      " so that's pretty good 👍"
+    PORT +
+    " so that's pretty good 👍"
   );
 });
 
