@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import useAuth from '../hooks/useAuth';
 import axios from 'axios';
+import CreatableSelect from 'react-select/creatable';
 
 const AddToRecipeList = (props) => {
 
@@ -10,19 +11,34 @@ const AddToRecipeList = (props) => {
   const navigate = useNavigate();
 
   const addToRecipeList = async (e) => {
-    e.preventDefault();
-    const recipeListId = e.target.value;
-    const recipeId = props.recipeId;
+    if (e) {
+      const recipeId = props.recipeId;
 
-    try {
-      await axios.post(`/api/recipe-lists/${recipeListId}/item/${recipeId}`)
-        .then(() => {
-          navigate(`/recipe-list/${recipeListId}`);
-        });
-    } catch (error) {
-      console.error("Error adding recipe to the list:", error);
+      if (e.__isNew__) {       // New List is created
+        const newListName = e.value.replace(/[\W_]+/g, " ");
+
+        try {
+          await axios.post(`/api/recipe-lists/new/?newListName=${newListName}&recipeId=${recipeId}&userId=${auth.userId}`)
+            .then((response) => {
+              const newRecipeId = response.data.newRecipeId;
+              navigate(`/recipe-list/${newRecipeId}`);
+            });
+        } catch (error) {
+          console.error("Error adding recipe to the list:", error);
+        }
+      }
+      else {
+        const recipeListId = e.value;
+        try {
+          await axios.post(`/api/recipe-lists/${recipeListId}/item/${recipeId}`)
+            .then(() => {
+              navigate(`/recipe-list/${recipeListId}`);
+            });
+        } catch (error) {
+          console.error("Error adding recipe to the list:", error);
+        }
+      }
     }
-
   };
 
   useEffect(() => {
@@ -34,19 +50,15 @@ const AddToRecipeList = (props) => {
       .catch((error) => console.error("Error fetching recipe lists:", error));
   }, [auth.userId]);
 
+  const options = recipeLists.map((list) => (
+    { value: list.id, label: list.name }
+  ));
+
   return (
     <>
       {
-        auth.userId && <div>
-          <label htmlFor="recipe-lists">Add to recipe list:</label>
-
-          <select name="recipe-lists" id="recipe-lists" onChange={addToRecipeList}>
-            <option value={"placeholder"}>Select list</option>
-            {recipeLists.map((list) => (
-              <option key={list.id} value={list.id}>{list.name}</option>
-            ))}
-          </select>
-        </div>
+        auth.userId &&
+        <CreatableSelect isClearable options={options} onChange={addToRecipeList} />
       }
       {
         !auth.userId && <>

@@ -16,6 +16,31 @@ const getRecipeListsByUserId = (userId) => {
     });
 };
 
+const createRecipeList = (userId, name) => {
+  return db
+    .query(`
+    INSERT INTO recipe_lists (user_id, name) VALUES
+    ($1, $2) RETURNING *;`, [userId, name])
+    .then((data) => {
+      return data.rows[0];
+    });
+};
+
+const deleteRecipeList = async (userId, recipeListId) => {
+  return db
+    .query(
+      "DELETE FROM recipe_lists WHERE user_id = $1 AND id = $2;",
+      [userId, recipeListId]
+    )
+    .then((data) => {
+      return data.rows;
+    })
+    .catch((error) => {
+      console.error("Error deleting from recipe lists:", error);
+      throw error;
+    });
+};
+
 const getRecipeListById = (recipeListId) => {
   return db
     .query("SELECT * FROM recipe_lists WHERE id=$1 ORDER BY modified_at DESC;", [recipeListId])
@@ -58,4 +83,4 @@ const updateModifyDate = (recipeListId) => {
     });
 };
 
-module.exports = { getRecipeLists, getRecipeListsByUserId, addToRecipeList, getRecipeListItemsByRecipeId, getRecipeListById, updateModifyDate };
+module.exports = { getRecipeLists, getRecipeListsByUserId, createRecipeList, deleteRecipeList, addToRecipeList, getRecipeListItemsByRecipeId, getRecipeListById, updateModifyDate };

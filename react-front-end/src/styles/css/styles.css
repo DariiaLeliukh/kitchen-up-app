@@ -30,13 +30,14 @@ body {
 
 button,
 .button {
-  border-radius: 700px;
+  border-radius: 8px;
   background: #084F20;
   padding: 15px 30px;
   margin: 0 auto;
-  display: flex;
+  display: inline-block;
   color: #FFF;
-  border: 0; }
+  border: 0;
+  min-width: 200px; }
   button:hover,
   .button:hover {
     background: #E7B401;

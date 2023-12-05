@@ -34,3 +34,6 @@
     font-weight: 400;
     line-height: 20px;
     /* 142.857% */ }
+  .recipe-info button,
+  .recipe-info .button {
+    margin-bottom: 10px; }
