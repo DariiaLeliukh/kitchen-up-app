@@ -51,11 +51,14 @@ const GroceryList = () => {
 
   return (
     <div className="container grocery-list">
-      <div className="row">
-        <div className="col-12">
-          <h1>Grocery List for {recipeList.name}</h1>
+      {recipeList && (
+        <div className="row">
+          <div className="col-12">
+            <h1>Grocery List for {recipeList.name}</h1>
+          </div>
         </div>
-      </div>
+      )}
+
 
       {groceryList.length === 0 ? (
         <Loading />
@@ -64,7 +67,13 @@ const GroceryList = () => {
           {groceryList.map((groceryItem) => (
             <div className={(groceryItem.is_purchased ? 'purchased ' : '') + "grocery-item col-12 col-md-6 col-lg-3 col-xl-4 mb-5"} key={groceryItem.id} id={groceryItem.id}>
               <div className="card h-100" onClick={updatePurchaseStatus} id={groceryItem.id}>
-                <img className="card-img-top" src={`https://spoonacular.com/cdn/ingredients_250x250/${groceryItem.api_image}`} alt="Card image cap" />
+                {groceryItem.api_image && (
+                  <img src={`https://spoonacular.com/cdn/ingredients_250x250/${groceryItem.api_image}`} className="card-img-top" alt="..." />
+                )}
+                {!groceryItem.api_image && (
+                  <img src="/src/assets/recipe-demo-card.jpg" className="card-img-top" alt="Image Demo" />
+                )}
+
                 <div className="card-body">
                   <h5 className="card-title">{groceryItem.api_nameclean}</h5>
                   <p className="card-text">{groceryItem.api_amount} {groceryItem.api_unit}</p>

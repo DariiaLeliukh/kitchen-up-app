@@ -112,3 +112,29 @@ a {
   line-height: 24px;
   text-transform: capitalize;
   margin-bottom: 50px; }
+
+.new-cooking-session h1 {
+  color: #084F20;
+  font-family: Roboto;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  text-transform: capitalize;
+  margin-bottom: 50px; }
+
+.new-cooking-session p {
+  font-family: Roboto;
+  font-size: 18px;
+  margin-bottom: 15px; }
+
+.new-cooking-session .react-multi-email {
+  margin-bottom: 10px; }
+
+.new-cooking-session .successEmails {
+  color: #084F20;
+  margin-bottom: 20px; }
+
+.new-cooking-session .failedEmails {
+  color: #E7B401;
+  margin-bottom: 20px; }

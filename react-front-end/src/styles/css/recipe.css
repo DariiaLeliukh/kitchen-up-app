@@ -10,7 +10,8 @@
   .recipe-info .container {
     margin: 0 auto;
     box-shadow: none;
-    padding: 50px 0; }
+    padding: 50px 0;
+    min-height: auto; }
   .recipe-info h1 {
     color: #0C151D;
     font-family: Roboto;

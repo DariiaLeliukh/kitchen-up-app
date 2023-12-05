@@ -53,58 +53,75 @@ const CreateNewCookingSession = () => {
 
 
   return (
-    <div className='container'>
+    <div className='container new-cooking-session'>
       {success ? (
 
         <>
           <h1>The invitations has been sent.</h1>
-          <p>Emails were sent successfully to:</p>
-          <p>{successEmails.join(", ")}</p>
+          {
+            successEmails.length > 0 && (
+              <div className='successEmails'>
+                <p>Emails were sent successfully to:</p>
+                <p>{successEmails.join(", ")}</p>
+              </div>
+            )
+          }
+
           {failedEmails.length > 0 ? (
-            <>
-              <p>Failed Emails:</p>
+            <div className='failedEmails'>
+              <p>These users were not found in database. Invite could not be sent:</p>
               <p>{failedEmails.join(", ")}</p>
-            </>
+            </div>
           ) : (<></>)}
 
           {successEmails.length > 0 &&
             // need to correct URL to the one with parameters (?)
-            <Link to={`/cooking-sessions/${newCookingSessionId}`} >Cooking Session Info</Link>}
+            <Link to={`/cooking-sessions/${newCookingSessionId}`} className='button mt-2'>Cooking Session Info</Link>}
         </>
       ) :
         (
-          <form>
-            <h1>Create a cooking session with your friend!</h1>
-            Recipe: <Link to={`/recipes/${recipeId}`}>
-              {recipeTitle}</Link>
+          <div className="row">
+            <div className="col-12">
+              <h1>Create a cooking session with your friend!</h1>
+              <p>
+                Recipe: <Link to={`/recipes/${recipeId}`}>
+                  {recipeTitle}</Link>
+              </p>
+              <form>
 
-            <ReactMultiEmail
-              placeholder='Input your email'
-              emails={emails}
-              onChange={(_emails) => {
-                setEmails(_emails);
-              }}
-              autoFocus={true}
-              onFocus={() => setFocused(true)}
-              onBlur={() => setFocused(false)}
-              getLabel={(email, index, removeEmail) => {
-                return (
-                  <div data-tag key={index}>
-                    <div data-tag-item>{email}</div>
-                    <span data-tag-handle onClick={() => removeEmail(index)}>
-                      ×
-                    </span>
-                  </div>
-                );
-              }}
-            />
-            <small
-              id="emailHelp"
-              className="form-text text-muted">
-              We will never share your email with anyone else.
-            </small>
-            <button onClick={createNewSession}>Submit</button>
-          </form>
+
+
+                <ReactMultiEmail
+                  placeholder='Input your email'
+                  emails={emails}
+                  onChange={(_emails) => {
+                    setEmails(_emails);
+                  }}
+                  autoFocus={true}
+                  onFocus={() => setFocused(true)}
+                  onBlur={() => setFocused(false)}
+                  getLabel={(email, index, removeEmail) => {
+                    return (
+                      <div data-tag key={index}>
+                        <div data-tag-item>{email}</div>
+                        <span data-tag-handle onClick={() => removeEmail(index)}>
+                          ×
+                        </span>
+                      </div>
+                    );
+                  }}
+                />
+                <small
+                  id="emailHelp"
+                  className="form-text text-muted mb-2">
+                  We will never share your email with anyone else.
+                </small>
+                <button onClick={createNewSession}>Submit</button>
+              </form>
+            </div>
+
+          </div>
+
         )
       }
 

@@ -139,3 +139,37 @@ a {
     margin-bottom: 50px;
   }
 }
+
+.new-cooking-session {
+  h1 {
+    color: #084F20;
+    font-family: Roboto;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    text-transform: capitalize;
+    margin-bottom: 50px;
+  }
+
+  p {
+    font-family: Roboto;
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .react-multi-email {
+    margin-bottom: 10px;
+  }
+
+  .successEmails {
+    color: #084F20;
+    margin-bottom: 20px;
+  }
+
+  .failedEmails {
+    color: #E7B401;
+    margin-bottom: 20px;
+  }
+
+}

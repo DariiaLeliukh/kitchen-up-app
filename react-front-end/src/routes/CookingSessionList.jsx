@@ -23,7 +23,11 @@ const CookingSessionList = () => {
   // Conditionally render based on whether cookingSession is available
   if (cookingSessions === null) {
     // If cookingSession is still null, you can render a loading state or return null
-    return <Loading />;
+    return (
+      <div className="container">
+        <Loading />
+      </div>
+    );
   }
 
   // Get the current date

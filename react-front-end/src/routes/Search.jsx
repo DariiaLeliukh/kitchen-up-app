@@ -11,7 +11,12 @@ const Search = (props) => {
       const response = await fetch(`/api/search?name=${search}`);
       const data = await response.json();
       setNameResults(Array.isArray(data.results) ? data.results : []);
-      props.removeDefaultRecipes();
+      // quick fix for now
+      // TODO: fix properly later
+      if (typeof props.removeDefaultRecipes !== "undefined") {
+        props.removeDefaultRecipes();
+      }
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }
