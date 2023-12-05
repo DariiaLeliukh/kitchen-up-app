@@ -1,7 +1,8 @@
 .recipe-img {
   width: 100%;
-  height: 256px;
+  height: 100%;
   object-fit: cover;
+  border-radius: 8px;
 }
 
 .recipe-info {
@@ -47,5 +48,99 @@
   button,
   .button {
     margin-bottom: 10px;
+    width: 100%;
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+  }
+
+  .recipe-actions {
+    display: flex;
+    margin-top: 50px;
+  }
+
+  .warning-message {
+    border: 1px solid red;
+    border-radius: 8px;
+    padding: 15px;
+    color: #242E30;
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+
+    a {
+      font-weight: bold;
+    }
+  }
+}
+
+.recipe-instructions {
+  padding-top: 50px;
+}
+
+.recipe-lists-page {
+
+  h1 {
+    color: #084F20;
+    font-family: Roboto;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    text-transform: capitalize;
+    margin: 50px 0;
+  }
+
+  .recipe-list-container {
+    .recipe-item {
+      border-radius: 8px;
+      background: #F8F8F8;
+      padding: 15px 30px;
+      margin-bottom: 30px;
+      min-height: 150px;
+
+      .recipe-title {
+        color: #242E30;
+        font-family: Roboto;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 24px;
+        margin-bottom: 25px;
+      }
+
+      .button {
+        min-width: auto;
+        background: transparent;
+        color: #084F20;
+        border: 2px solid #084F20;
+        font-size: 18px;
+        font-weight: 500;
+        font-family: Roboto;
+      }
+
+      .secondary-button {
+        min-width: auto;
+        background: transparent;
+        color: #E7B401;
+        border: 2px solid #E7B401;
+      }
+    }
+  }
+}
+
+.recipe-list-single-page {
+  h1 {
+    color: #084F20;
+    font-family: Roboto;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    text-transform: capitalize;
   }
 }

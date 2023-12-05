@@ -17,25 +17,38 @@ const RecipeLists = () => {
   }, []);
 
   return (
-    <div className="container">
+    <div className="container recipe-lists-page">
       <h1>Recipe Lists</h1>
       {recipeLists.length === 0 ? (
         <p>No recipe lists found.</p>
       ) : (
-        <ul>
+        <div className="recipe-list-container row">
           {recipeLists.map((list) => (
-            <li key={list.id}>
-              <strong>{list.name}</strong> - Created on{" "}
-              {new Date(list.created_at).toLocaleDateString()}
-              <Link to={`/recipe-list/${list.id}/grocery-list`}>
-                <button>Grocery List</button>
-              </Link>
-              <Link to={`/recipe-list/${list.id}`}>
-                <button>View List</button>
-              </Link>
-            </li>
+            <div key={list.id} className="col-6">
+              <div className="recipe-item">
+                <div className="recipe-title">
+                  {list.name}
+                </div>
+                <div className="row">
+                  <div className="col">
+                    <Link to={`/recipe-list/${list.id}/grocery-list`} className="button text-center">
+                      Grocery List
+                    </Link>
+                  </div>
+                  <div className="col">
+                    <Link to={`/recipe-list/${list.id}`} className="button secondary-button text-center">
+                      View List
+                    </Link>
+                  </div>
+                </div>
+
+
+
+              </div>
+
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

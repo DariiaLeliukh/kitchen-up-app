@@ -74,7 +74,7 @@ app.get("/data", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  const url = recipeApiUrl.getRandomRecipes({ number: 10 });
+  const url = recipeApiUrl.getRandomRecipes({ number: 20 });
 
   // Make a GET request using axios
   axios.get(url).then((apiData) => {

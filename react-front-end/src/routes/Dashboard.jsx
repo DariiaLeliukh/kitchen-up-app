@@ -3,15 +3,26 @@ import { Link } from "react-router-dom";
 const Dashboard = () => {
   return (
     <div className="container">
-      <Link to="/cooking-sessions" className="button">
-        Cooking Sessons
-      </Link>
-      <Link to="/recipe-lists" className="button">
-        Recipe Lists
-      </Link>
-      <Link to="/favorites">
-        <button>Favorites</button>
-      </Link>
+      <div className="row">
+        <div className="col">
+          <Link to="/cooking-sessions" className="button-tile">
+            Cooking Sessons
+          </Link>
+        </div>
+        <div className="col">
+          <Link to="/recipe-lists" className="button-tile">
+            Recipe Lists
+          </Link>
+        </div>
+        <div className="col">
+          <Link to="/favorites" className="button-tile">
+            Favorites
+          </Link>
+        </div>
+      </div>
+
+
+
     </div>
   );
 };

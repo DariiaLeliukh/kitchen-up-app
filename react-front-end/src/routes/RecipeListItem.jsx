@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import Loading from "../components/Loading";
 import useAuth from "../hooks/useAuth";
+import RecipeCardItem from "../components/RecipeCardItem";
 
 const RecipeListItem = () => {
   const { auth } = useAuth();
@@ -44,30 +45,26 @@ const RecipeListItem = () => {
   return (
     <>
       {recipeList && (
-        <div className="container">
-          <h1>{recipeList && recipeList.name}</h1>
-          <Link to={`/recipe-list/${id}/grocery-list`}>
-            <button>Grocery List</button>
-          </Link>
-          <button onClick={deleteList}>Delete</button>
-          <p>
-            Created on{" "}
-            {recipeList && new Date(recipeList.created_at).toLocaleDateString()}
-          </p>
-
+        <div className="container recipe-list-single-page">
+          <div className="row align-items-center">
+            <div className="col-6">
+              <h1>{recipeList.name}</h1>
+            </div>
+            <div className="col-6">
+              <Link to={`/recipe-list/${id}/grocery-list`} className="button text-center mr-2">
+                Grocery List
+              </Link>
+              <button onClick={deleteList}>Delete</button>
+            </div>
+          </div>
           {
             recipes.length > 0 ? (
               <>
-                <h3>Recipes:</h3>
-                <ul>
+                <div className="row mt-5">
                   {recipes.map((recipe) => (
-                    <li key={recipe.apiRecipeId}>
-                      ID: {recipe.apiRecipeId}
-                      Title : {recipe.recipeTitle}
-                      Image: {recipe.recipeImage}
-                    </li>
+                    <RecipeCardItem key={recipe.apiRecipeId} id={recipe.apiRecipeId} imageUrl={recipe.recipeImage} title={recipe.recipeTitle} />
                   ))}
-                </ul>
+                </div>
               </>
             ) : (<Loading />)
           }

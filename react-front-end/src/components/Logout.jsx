@@ -2,7 +2,7 @@ import axios from 'axios';
 import useAuth from '../hooks/useAuth';
 
 
-const Logout = () => {
+const Logout = (props) => {
   const { setAuth } = useAuth();
   const logout = async () => {
     try {
@@ -13,9 +13,9 @@ const Logout = () => {
     }
   };
   return (
-    <div>
-      <button onClick={logout}>Logout</button>
-    </div>
+
+    <a onClick={logout} className={props.className}>Logout</a>
+
   );
 };
 

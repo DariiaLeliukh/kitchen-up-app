@@ -51,12 +51,16 @@ const GroceryList = () => {
 
   return (
     <div className="container grocery-list">
-      <h2>Grocery List for {recipeList.name}</h2>
+      <div className="row">
+        <div className="col-12">
+          <h1>Grocery List for {recipeList.name}</h1>
+        </div>
+      </div>
 
       {groceryList.length === 0 ? (
         <Loading />
       ) : (
-        <div className="card-group">
+        <div className="card-group row">
           {groceryList.map((groceryItem) => (
             <div className={(groceryItem.is_purchased ? 'purchased ' : '') + "grocery-item col-12 col-md-6 col-lg-3 col-xl-4 mb-5"} key={groceryItem.id} id={groceryItem.id}>
               <div className="card h-100" onClick={updatePurchaseStatus} id={groceryItem.id}>

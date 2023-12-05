@@ -11,7 +11,7 @@
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 1200px;
+  max-width: 960px;
   margin: 15px auto;
 }
 
@@ -32,11 +32,26 @@
     margin-left: 15px;
   }
 
-  a {
+  a,
+  a .nav-link {
     text-decoration: none;
     color: #333;
-    font-weight: bold;
+    border-bottom: 1px solid transparent;
   }
+
+  .dropdown {
+    display: flex;
+    align-items: center;
+  }
+
+  .dropdown-item {
+    margin-bottom: 5px;
+  }
+
+  .dropdown-toggle {
+    padding: 0;
+  }
+
 }
 
 .top-nav-bar__logo a {
@@ -46,11 +61,17 @@
   margin-right: auto;
 }
 
+.top-nav-bar__favorites,
+.top-nav-bar__search,
 .top-nav-bar__avatar {
-  margin-right: 10px;
-
   svg {
     width: 24px;
     height: 24px;
   }
+}
+
+.top-nav-bar__favorites,
+.top-nav-bar__search,
+.top-nav-bar__avatar {
+  margin-right: 15px;
 }
