@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import "../styles/css/grocery-card.css";
+import Loading from "../components/Loading";
 
 const GroceryList = () => {
   const { id } = useParams();  //recipe list id
@@ -53,7 +54,7 @@ const GroceryList = () => {
       <h2>Grocery List for {recipeList.name}</h2>
 
       {groceryList.length === 0 ? (
-        <p>Loading</p>
+        <Loading />
       ) : (
         <div className="card-group">
           {groceryList.map((groceryItem) => (

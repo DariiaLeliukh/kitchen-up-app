@@ -7,7 +7,6 @@
 
 const express = require("express");
 const router = express.Router();
-// const { Server } = require("socket.io");
 const axios = require('axios');
 const recipeApiUrl = require('../routes/helper/api-routes');
 const sessionsQuery = require('../database/queries/cooking-sessions');
@@ -63,6 +62,10 @@ router.get("/:id/invitations", async (req, res) => {
 router.post("/", async (req, res) => {
 
   const { emails, host_id, api_recipe_id, api_recipe_name } = req.body;
+  const emailServer = require('../routes/helper/send-email');
+
+  const access_token = req.cookies.jwt;
+  const hostUser = await usersQuery.getUserByToken(access_token);
 
   try {
     const newCookingSession = await sessionsQuery.addCookingSession(host_id, api_recipe_id, api_recipe_name);
@@ -75,6 +78,9 @@ router.post("/", async (req, res) => {
 
       if (existingUser) {
         const guestInvitation = await invitationsQuery.addInvitation(existingUser.id, newCookingSessionId, "Pending");
+        
+        emailServer.sendInvitation(email, existingUser.first_name, `${hostUser.first_name} ${hostUser.last_name}`, api_recipe_name);
+
         return { email, status: "success" };
 
       } else {
