@@ -62,6 +62,13 @@ const AddToRecipeList = (props) => {
           isClearable
           options={options}
           onChange={addToRecipeList}
+          styles={{
+            control: (baseStyles, state) => ({
+              ...baseStyles,
+              height: '54px',
+              minHeight: '54px'
+            }),
+          }}
         />
       }
       {
