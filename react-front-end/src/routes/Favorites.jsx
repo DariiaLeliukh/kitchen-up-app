@@ -3,6 +3,7 @@ import useAuth from "../hooks/useAuth";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Loading from "../components/Loading";
+import RecipeCardItem from "../components/RecipeCardItem";
 
 const Favorites = () => {
   const { auth } = useAuth();
@@ -29,7 +30,11 @@ const Favorites = () => {
 
   // Conditional render based on whether the recipe is available
   if (detailedFavorites === null) {
-    return <Loading />;
+    return (
+      <div className="container">
+        <Loading />
+      </div>
+    );
   }
 
   const handleDeleteFavorite = async (apiRecipeId) => {
@@ -45,37 +50,36 @@ const Favorites = () => {
   };
 
   return (
-    <div className="container">
-      <div>
-        <h2>Favorites</h2>
-        {error && <p>Error fetching favorites: {error.message}</p>}
-        {detailedFavorites.length > 0 ? (
-          <div>
-            {detailedFavorites.map((favorite) => {
-              return (
-                <div key={favorite.id}>
-                  <Link to={`/recipes/${favorite.apiRecipeId}`}>
-                    <img
-                      src={favorite.recipeImage}
-                      alt={favorite.recipeTitle}
-                      style={{
-                        width: "295px",
-                        height: "253px",
-                        top: "580px",
-                        left: "93px"
-                      }}
-                    />
-                    <p>{favorite.recipeTitle}</p>
-                  </Link>
-                  <button onClick={() => handleDeleteFavorite(favorite.apiRecipeId)}>Delete</button>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <p>You haven&apos;t selected any recipe as a Favorite.  <Link to={`/`}>Here</Link> are some suggestions for you!</p>
-        )}
+    <div className="container favorites-page">
+      <div className="row">
+        <div className="col-12">
+          <h1>Favorites</h1>
+        </div>
       </div>
+
+      {error && (
+        <div className="row">
+          <div className="col-12">
+            <p>Error fetching favorites: {error.message}</p>
+          </div>
+        </div>
+      )}
+      {detailedFavorites.length > 0 ? (
+        <div className="row">
+          {detailedFavorites.map((favorite) => {
+            return (
+              <>
+                <RecipeCardItem key={favorite.apiRecipeId} id={favorite.apiRecipeId} imageUrl={favorite.recipeImage} title={favorite.recipeTitle} />
+
+                {/* <button onClick={() => handleDeleteFavorite(favorite.apiRecipeId)}>Delete</button> */}
+              </>
+            );
+          })}
+        </div>
+      ) : (
+        <p>You haven&apos;t selected any recipe as a Favorite.  <Link to={`/`}>Here</Link> are some suggestions for you!</p>
+      )}
+
     </div>
   );
 };
