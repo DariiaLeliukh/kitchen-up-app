@@ -4,6 +4,7 @@ const RecipeInstructionListItem = ({
   number,
   description,
   usersInStep,
+  isCurrentStep,
   onClickHandler,
 }) => {
   const profileImageStyle = {
@@ -42,7 +43,8 @@ const RecipeInstructionListItem = ({
           )}
         </div>
       )}
-      <div>
+      {/*TODO: Switch this conditional render by testing isCurrentStep and assigning the proper css class*/}
+      <div style={isCurrentStep ? { fontWeight: "bold" } : {}}>
         <p>{`STEP ${number}: ${description}`}</p>
       </div>
     </li>
