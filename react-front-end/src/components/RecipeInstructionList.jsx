@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import RecipeInstructionListItem from "./RecipeInstructionListItem";
 import "../styles/css/forms.css";
 import "../styles/css/styles.css";
 
 const RecipeInstructionList = ({ instructions, positions, onClickHandler }) => {
+  const [userStep, setUserStep] = useState(positions ? 1 : 0);
+
+  const defineNewStep = (step) => {
+    setUserStep(step);
+    onClickHandler(step);
+  };
+
   return (
     <div className="container">
       <div>
@@ -16,7 +23,8 @@ const RecipeInstructionList = ({ instructions, positions, onClickHandler }) => {
                   number={instruction.number}
                   description={instruction.step}
                   usersInStep={positions ? positions[instruction.number] : null}
-                  onClickHandler={onClickHandler}
+                  onClickHandler={onClickHandler ? defineNewStep : null}
+                  isCurrentStep={instruction.number === userStep}
                 />
               ))}
             </div>

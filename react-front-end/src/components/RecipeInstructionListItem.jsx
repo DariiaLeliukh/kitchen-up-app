@@ -5,12 +5,13 @@ const RecipeInstructionListItem = ({
   number,
   description,
   usersInStep,
+  isCurrentStep,
   onClickHandler,
 }) => {
 
 
   return (
-    <div className="session-step"
+    <div className={`session-step ${isCurrentStep && ' active'}`}
       onClick={onClickHandler && (() => onClickHandler(number))}
     >
 
@@ -19,7 +20,7 @@ const RecipeInstructionListItem = ({
           <p>{`STEP ${number}`}</p>
         </div>
         {usersInStep && (
-          <div className="col-6 col-md-8">
+          <div className="col-6 col-md-8 row">
             {usersInStep.map((profilePicture, index) =>
               profilePicture.length !== 3 ? (
                 //An URL is set as the user's profile picture

@@ -39,6 +39,13 @@ Set the following environment variables accordingly:
 While in back-end folder, reset database
 `yarn db:reset`
 
+### Set the Twilio SendGrid API key
+
+`Kitchen up` uses the SendGrid API to send invitations to cooking sessions by e-mail. In order to use the API, you need to:
+
+- Register for an [SendGrid account](https://signup.sendgrid.com/)
+- Configure the `SENDGRID_API_KEY` environment variable in the `.env` file with your [SendGrid api key](https://app.sendgrid.com/guide/integrate/langs/nodejs).
+
 ### Set the spoonacular API key
 
 `Kitchen up` uses the spoonacular API to fetch recipes and ingredients information. In order to use the API, you need to:

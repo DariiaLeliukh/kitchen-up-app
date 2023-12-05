@@ -80,8 +80,9 @@ const Register = () => {
       const userAccessToken = response?.data?.result?.access_token || null;
       const userEmail = response?.data?.result?.email || null;
       const userId = response?.data?.result?.id || null;
-
-      setAuth({ userEmail, userAccessToken, userId });
+      const profilePictureUrl = response?.data?.result?.profile_picture_url || `${response?.data?.result?.first_name[0]} ${response?.data?.result?.last_name[0]}`;
+      
+      setAuth({ userEmail, userAccessToken, userId, profilePictureUrl });
       setEmail('');
       setPassword('');
 
