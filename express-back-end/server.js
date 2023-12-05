@@ -6,11 +6,10 @@ const PORT = 8080;
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const usersQuery = require("./database/queries/users");
-const recipeListQuery = require("./database/queries/recipe_lists");
-const groceryListQuery = require("./database/queries/grocery_list_items");
 const recipeApiUrl = require("./routes/helper/api-routes");
 const axios = require("axios");
 const socketConfig = require("./sockets");
+
 
 app.use(express.static(__dirname + "/public"));
 app.use(express.json());
