@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/css/session-steps.css";
 
 const RecipeInstructionListItem = ({
   number,
@@ -6,46 +7,41 @@ const RecipeInstructionListItem = ({
   usersInStep,
   onClickHandler,
 }) => {
-  const profileImageStyle = {
-    width: "40px", // Set your desired width
-    height: "40px", // Set your desired height
-    borderRadius: "50%", // Make it round
-    objectFit: "cover", // Maintain aspect ratio while covering the container
-    border: "1px solid #fff", // Optional: Add a border
-    display: "flex",
-    justifyContent: "center", // Center horizontally
-    alignItems: "center", // Center vertically
-  };
+
 
   return (
-    <li
-      style={{ display: "flex", flexDirection: "row" }}
+    <div className="session-step"
       onClick={onClickHandler && (() => onClickHandler(number))}
     >
-      {usersInStep && (
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          {usersInStep.map((profilePicture, index) =>
-            profilePicture.length !== 3 ? (
-              //An URL is set as the user's profile picture
-              <img
-                key={index}
-                style={profileImageStyle}
-                src={profilePicture}
-                alt={`User's profile picture`}
-              />
-            ) : (
-              //The user's initials are set as their profile picture
-              <div key={index} style={profileImageStyle}>
-                {profilePicture}
-              </div>
-            )
-          )}
+
+      <div className="step-number row">
+        <div className="col-6 col-md-4">
+          <p>{`STEP ${number}`}</p>
         </div>
-      )}
-      <div>
-        <p>{`STEP ${number}: ${description}`}</p>
+        {usersInStep && (
+          <div className="col-6 col-md-8">
+            {usersInStep.map((profilePicture, index) =>
+              profilePicture.length !== 3 ? (
+                //An URL is set as the user's profile picture
+                <img
+                  key={index}
+                  src={profilePicture}
+                  alt={`User's profile picture`}
+                />
+              ) : (
+                //The user's initials are set as their profile picture
+                <div className="img-replacement" key={index} >
+                  {profilePicture}
+                </div>
+              )
+            )}
+          </div>
+        )}
       </div>
-    </li>
+      <div className="step-action">
+        <p>{`${description}`}</p>
+      </div>
+    </div >
   );
 };
 
