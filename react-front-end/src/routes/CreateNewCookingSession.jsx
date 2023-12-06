@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import "react-multi-email/dist/style.css";
 import Select from "react-select";
 import axios from "axios";
+import Loading from "../components/Loading";
 
 const CreateNewCookingSession = () => {
   const { auth } = useAuth();
   const { userId } = auth;
-
   const [guests, setGuests] = useState([]);
+  const [friends, setFriends] = useState(null);
   const [focused, setFocused] = useState(false);
   const [failedEmails, setFailedEmails] = useState([]);
   const [successEmails, setSuccessEmails] = useState([]);
@@ -19,19 +20,25 @@ const CreateNewCookingSession = () => {
   let { state } = useLocation();
   const { recipeId, recipeTitle } = state;
 
-  const possibleGuests = [
-    { name: "Rauber Nascimento", email: "raubersn@gmail.com" },
-    { name: "Dariia Leliukh", email: "dariia@kitchenup.com" },
-    { name: "Frankie Tennisco", email: "frankie@kitchenup.com" },
-    { name: "Marina Ivanova", email: "marina@kitchenup.com" },
-  ];
+  // Fetch the user's friend list using the
+  useEffect(() => {
+    axios
+      .get(`/api/users/${userId}/friends`)
+      .then((response) => {
+        setFriends(response.data);
+      })
+      .catch((error) =>
+        console.error("Error fetching the friends list:", error)
+      );
+  }, []);
+
   const handleChange = (selectedUsers) => {
     setGuests(selectedUsers);
   };
 
   const createNewSession = async (e) => {
     e.preventDefault();
-    
+
     try {
       await axios
         .post("/api/cooking-sessions/", {
@@ -60,11 +67,16 @@ const CreateNewCookingSession = () => {
     }
   };
 
+  // Conditional render based on whether the cookingSession is available
+  if (friends === null) {
+    return <Loading />;
+  }
+
   return (
     <div className="container new-cooking-session">
       {success ? (
         <>
-          <h1>The invitations has been sent.</h1>
+          <h1>The invitations have been sent.</h1>
           {successEmails.length > 0 && (
             <div className="successEmails">
               <p>Emails were sent successfully to:</p>
@@ -106,11 +118,10 @@ const CreateNewCookingSession = () => {
                 autoFocus={true}
                 onFocus={() => setFocused(true)}
                 onBlur={() => setFocused(false)}
-                
                 closeMenuOnSelect={false}
                 value={guests}
                 onChange={handleChange}
-                options={possibleGuests}
+                options={friends}
                 isMulti
                 isClearable
                 placeholder="Search for guests by name..."
