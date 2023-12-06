@@ -4,17 +4,25 @@ import useAuth from "../hooks/useAuth";
 import Select from "react-select";
 import axios from "axios";
 import Loading from "../components/Loading";
+import DateTimePicker from 'react-datetime-picker';
+
+import 'react-datetime-picker/dist/DateTimePicker.css';
+import 'react-calendar/dist/Calendar.css';
+import 'react-clock/dist/Clock.css';
+import '../styles/css/date-time-picker.css';
 
 const CreateNewCookingSession = () => {
   const { auth } = useAuth();
   const { userId } = auth;
   const [guests, setGuests] = useState([]);
-  const [friends, setFriends] = useState(null);
+  const [friends, setFriends] = useState([]);
   const [focused, setFocused] = useState(false);
   const [failedEmails, setFailedEmails] = useState([]);
   const [successEmails, setSuccessEmails] = useState([]);
   const [success, setSuccess] = useState(false);
   const [newCookingSessionId, setNewCookingSessionId] = useState();
+  // date-time for cooking session
+  const [dateTime, changeDateTime] = useState(new Date());
 
   let { state } = useLocation();
   const { recipeId, recipeTitle } = state;
@@ -45,6 +53,7 @@ const CreateNewCookingSession = () => {
           host_id: userId,
           api_recipe_id: recipeId,
           api_recipe_name: recipeTitle,
+          time_date: dateTime
         })
         .then((response) => {
           console.log(response.data);
@@ -66,74 +75,94 @@ const CreateNewCookingSession = () => {
     }
   };
 
-  // Conditional render based on whether the cookingSession is available
-  if (friends === null) {
-    return <Loading />;
-  }
-
   return (
-    <div className="container new-cooking-session">
-      {success ? (
-        <>
-          <h1>The invitations have been sent.</h1>
-          {successEmails.length > 0 && (
-            <div className="successEmails">
-              <p>Emails were sent successfully to:</p>
-              <p>{successEmails.join(", ")}</p>
-            </div>
-          )}
+    <div className="container ">
+      < div className="new-cooking-session" >
+        {
+          success ? (
+            <>
+              <h1>The invitations have been sent.</h1>
+              {
+                successEmails.length > 0 && (
+                  <div className="successEmails">
+                    <p>Emails were sent successfully to:</p>
+                    <p>{successEmails.join(", ")}</p>
+                  </div>
+                )
+              }
 
-          {failedEmails.length > 0 ? (
-            <div className="failedEmails">
-              <p>
-                These users do not have valid e-mails. Invite could not be
-                sent to:
-              </p>
-              <p>{failedEmails.join(", ")}</p>
-            </div>
+              {
+                failedEmails.length > 0 ? (
+                  <div className="failedEmails">
+                    <p>
+                      These users do not have valid e-mails. Invite could not be
+                      sent to:
+                    </p>
+                    <p>{failedEmails.join(", ")}</p>
+                  </div>
+                ) : (
+                  <></>
+                )
+              }
+
+              {
+                successEmails.length > 0 && (
+                  // need to correct URL to the one with parameters (?)
+                  <Link
+                    to={`/cooking-sessions/${newCookingSessionId}`}
+                    className="button mt-2"
+                  >
+                    Cooking Session Info
+                  </Link>
+                )
+              }
+            </>
           ) : (
-            <></>
-          )}
+            <div className="row">
+              <div className="col-12">
+                <h1>Create a cooking session with your friends!</h1>
+                <p>
+                  Recipe: <Link to={`/recipes/${recipeId}`}>{recipeTitle}</Link>
+                </p>
 
-          {successEmails.length > 0 && (
-            // need to correct URL to the one with parameters (?)
-            <Link
-              to={`/cooking-sessions/${newCookingSessionId}`}
-              className="button mt-2"
-            >
-              Cooking Session Info
-            </Link>
+                {
+                  friends.length <= 0 ? (
+                    <Loading />
+                  ) : (
+                    <>
+                      <form>
+                        <p>Who is coming:</p>
+                        <Select
+                          autoFocus={true}
+                          onFocus={() => setFocused(true)}
+                          onBlur={() => setFocused(false)}
+                          closeMenuOnSelect={false}
+                          value={guests}
+                          onChange={handleChange}
+                          options={friends}
+                          isMulti
+                          isClearable
+                          placeholder="Search for guests by name..."
+                          getOptionLabel={(option) => option.name}
+                          getOptionValue={(option) => option.email}
+                        />
+                        <p>When:</p>
+                        <DateTimePicker
+                          onChange={changeDateTime}
+                          value={dateTime}
+                        />
+                        <button onClick={createNewSession}>Create Cooking Session</button>
+                      </form>
+                    </>
+                  )
+                }
+
+              </div>
+            </div>
           )}
-        </>
-      ) : (
-        <div className="row">
-          <div className="col-12">
-            <h1>Create a cooking session with your friends!</h1>
-            <p>
-              Recipe: <Link to={`/recipes/${recipeId}`}>{recipeTitle}</Link>
-            </p>
-              <form>
-                <p>Who is coming:
-              <Select
-                autoFocus={true}
-                onFocus={() => setFocused(true)}
-                onBlur={() => setFocused(false)}
-                closeMenuOnSelect={false}
-                value={guests}
-                onChange={handleChange}
-                options={friends}
-                isMulti
-                isClearable
-                placeholder="Search for guests by name..."
-                getOptionLabel={(option) => option.name}
-                getOptionValue={(option) => option.email}
-                  /></p>
-                {/*<p>When:</p>*/}
-              <button onClick={createNewSession}>Create Cooking Session</button>
-            </form>
-          </div>
-        </div>
-      )}
+      </div >
+
+
     </div>
   );
 };

@@ -41,14 +41,17 @@
     font-size: 24px;
     font-style: normal;
     font-weight: 400;
-    line-height: 24px;
+    line-height: 32px;
     /* 100% */
-    margin-bottom: 18px; }
+    margin-bottom: 15px;
+    text-transform: none; }
   .single-session-card a {
     width: auto;
     display: inline-block;
     margin-top: 20px;
     padding: 10px 25px; }
+  .single-session-card .button {
+    min-width: auto; }
 
 .cooking-session-page .single-session-card {
   background: none;

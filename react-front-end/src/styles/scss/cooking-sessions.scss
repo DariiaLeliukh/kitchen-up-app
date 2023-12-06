@@ -47,9 +47,10 @@
     font-size: 24px;
     font-style: normal;
     font-weight: 400;
-    line-height: 24px;
+    line-height: 32px;
     /* 100% */
-    margin-bottom: 18px;
+    margin-bottom: 15px;
+    text-transform: none;
   }
 
   a {
@@ -57,6 +58,10 @@
     display: inline-block;
     margin-top: 20px;
     padding: 10px 25px;
+  }
+
+  .button {
+    min-width: auto;
   }
 }
 

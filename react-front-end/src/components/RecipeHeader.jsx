@@ -39,12 +39,16 @@ const RecipeHeader = ({ recipeId, title, imageUrl, ingredients, showButtons }) =
 
   return (
     <>
-
       <div className="recipe-info">
         <div className="container">
           <div className="row">
             <div className="col-12 col-md-6">
-              <img className="recipe-img" src={imageUrl} alt={title} />
+              {imageUrl && (
+                <img src={imageUrl} className="recipe-img" alt={title} />
+              )}
+              {!imageUrl && (
+                <img src="/src/assets/recipe-demo-card.jpg" className="recipe-img" alt="..." />
+              )}
             </div>
             <div className="col-12 col-md-6">
               <h1>{title}</h1>

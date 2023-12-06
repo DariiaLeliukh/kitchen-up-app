@@ -20,6 +20,7 @@
     "dompurify": "^3.0.6",
     "http-proxy-middleware": "^2.0.6",
     "react": "^18.2.0",
+    "react-datetime-picker": "^5.5.3",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.19.0",
     "react-select": "^5.8.0",
