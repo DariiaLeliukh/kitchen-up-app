@@ -53,10 +53,19 @@ const getUserByToken = (token) => {
     });
 };
 
+const getUsersFriends = (id) => {
+  return db
+    .query("SELECT * FROM users WHERE id != $1;", [id])
+    .then((data) => {
+      return data.rows || null; // Return user data or null if not found
+    });
+};
+
 module.exports = {
   getUsers,
   createUser,
   getUserByEmail,
   updateUserToken,
   getUserByToken,
+  getUsersFriends,
 };

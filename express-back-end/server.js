@@ -27,6 +27,7 @@ const recipesRouter = require("./routes/recipes");
 const favoritesRouter = require("./routes/favorites");
 const recipeListsRouter = require("./routes/recipe-lists");
 const groceryListRouter = require("./routes/grocery-list");
+const usersRouter = require("./routes/users");
 // Mount all resource routes
 // Note: Feel free to add routes below with your own
 // Note: Endpoints that return data (eg. JSON) usually start with `/api`
@@ -37,6 +38,7 @@ app.use("/recipes", recipesRouter);
 app.use("/favorites", favoritesRouter);
 app.use("/recipe-lists", recipeListsRouter);
 app.use("/grocery-list", groceryListRouter);
+app.use("/users", usersRouter);
 
 async function findUserByJWTcookie(access_token) {
   const foundUser = await usersQuery.getUserByToken(access_token);
@@ -80,12 +82,6 @@ app.get("/", (req, res) => {
   axios.get(url).then((apiData) => {
     // Send the JSON response back to the client
     res.json(apiData.data);
-  });
-});
-
-app.get("/users", (req, res) => {
-  usersQuery.getUsers().then((users) => {
-    res.json({ data: users });
   });
 });
 
