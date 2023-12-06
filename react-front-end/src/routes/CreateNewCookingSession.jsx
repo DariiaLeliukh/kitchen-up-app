@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import "react-multi-email/dist/style.css";
 import Select from "react-select";
 import axios from "axios";
 import Loading from "../components/Loading";
@@ -109,7 +108,7 @@ const CreateNewCookingSession = () => {
       ) : (
         <div className="row">
           <div className="col-12">
-            <h1>Create a cooking session with your friend!</h1>
+            <h1>Create a cooking session with your friends!</h1>
             <p>
               Recipe: <Link to={`/recipes/${recipeId}`}>{recipeTitle}</Link>
             </p>
@@ -129,8 +128,8 @@ const CreateNewCookingSession = () => {
                 getOptionLabel={(option) => option.name}
                 getOptionValue={(option) => option.email}
                   /></p>
-                <p>When:</p>
-              <button onClick={createNewSession}>Submit</button>
+                {/*<p>When:</p>*/}
+              <button onClick={createNewSession}>Create Cooking Session</button>
             </form>
           </div>
         </div>
