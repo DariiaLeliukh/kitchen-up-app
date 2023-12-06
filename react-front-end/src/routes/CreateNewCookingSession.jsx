@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import { ReactMultiEmail } from "react-multi-email";
 import "react-multi-email/dist/style.css";
 import Select from "react-select";
 import axios from "axios";
