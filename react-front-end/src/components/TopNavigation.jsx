@@ -38,11 +38,8 @@ const TopNavigation = () => {
             {auth.userEmail &&
               <>
                 <div className="nav-item dropdown">
-                  <div className="align-items-center d-flex top-nav-bar__avatar">
-                    <FontAwesomeIcon icon={faUser} />
-                  </div>
-                  <a className="nav-link dropdown-toggle dropup" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {auth.firstName}
+                  <a className="nav-link dropdown-toggle dropup top-nav-bar__picture" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src={auth.profilePictureUrl}/>
                   </a>
                   <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     <Link
