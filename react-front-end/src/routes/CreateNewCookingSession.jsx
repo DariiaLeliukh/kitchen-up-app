@@ -54,8 +54,8 @@ const CreateNewCookingSession = () => {
           let failedUserEmails = [];
           let sucessUserEmails = [];
           response.data.dataMessage.forEach((el) => {
-            if (el.status === "fail") failedUserEmails.push(el.email);
-            else sucessUserEmails.push(el.email);
+            if (el.status === "fail") failedUserEmails.push(el.name);
+            else sucessUserEmails.push(el.name);
           });
 
           setSuccess(true);
@@ -87,8 +87,8 @@ const CreateNewCookingSession = () => {
           {failedEmails.length > 0 ? (
             <div className="failedEmails">
               <p>
-                These users were not found in database. Invite could not be
-                sent:
+                These users do not have valid e-mails. Invite could not be
+                sent to:
               </p>
               <p>{failedEmails.join(", ")}</p>
             </div>

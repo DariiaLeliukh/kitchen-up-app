@@ -81,10 +81,10 @@ router.post("/", async (req, res) => {
         
         emailServer.sendInvitation(email, existingUser.first_name, `${hostUser.first_name} ${hostUser.last_name}`, api_recipe_name);
 
-        return { email, status: "success" };
+        return { name: `${existingUser.first_name} ${existingUser.last_name}`, status: "success" };
 
       } else {
-        return { email, status: "fail" };
+        return { name: `${existingUser.first_name} ${existingUser.last_name}`, status: "fail" };
       }
     });
 
