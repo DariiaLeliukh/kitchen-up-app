@@ -12,7 +12,7 @@ const SearchBar = ({ onSearch, placeholder }) => {
     onSearch(search);
 
     // Clear the search bar
-    // setSearch("");
+    setSearch("");
   };
 
   return (
