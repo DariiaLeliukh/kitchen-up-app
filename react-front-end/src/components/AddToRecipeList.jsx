@@ -62,6 +62,7 @@ const AddToRecipeList = (props) => {
           isClearable
           options={options}
           onChange={addToRecipeList}
+          placeholder="Add To Recipe List"
           styles={{
             control: (baseStyles, state) => ({
               ...baseStyles,
