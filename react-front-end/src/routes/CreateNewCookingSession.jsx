@@ -113,7 +113,8 @@ const CreateNewCookingSession = () => {
             <p>
               Recipe: <Link to={`/recipes/${recipeId}`}>{recipeTitle}</Link>
             </p>
-            <form>
+              <form>
+                <p>Who is coming:
               <Select
                 autoFocus={true}
                 onFocus={() => setFocused(true)}
@@ -127,7 +128,8 @@ const CreateNewCookingSession = () => {
                 placeholder="Search for guests by name..."
                 getOptionLabel={(option) => option.name}
                 getOptionValue={(option) => option.email}
-              />
+                  /></p>
+                <p>When:</p>
               <button onClick={createNewSession}>Submit</button>
             </form>
           </div>

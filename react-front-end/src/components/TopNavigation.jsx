@@ -42,7 +42,7 @@ const TopNavigation = () => {
                     <FontAwesomeIcon icon={faUser} />
                   </div>
                   <a className="nav-link dropdown-toggle dropup" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {auth.userEmail.split("@")[0]}
+                    {auth.firstName}
                   </a>
                   <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     <Link
