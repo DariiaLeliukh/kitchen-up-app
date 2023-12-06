@@ -32,9 +32,10 @@ const App = () => {
             const userAccessToken = response?.data?.result?.access_token || null;
             const userEmail = response?.data?.result?.email || null;
             const userId = response?.data?.result?.id || null;
+            const firstName = response?.data?.result?.first_name || null;
             const profilePictureUrl = response?.data?.result?.profile_picture_url || `${response?.data?.result?.first_name[0]} ${response?.data?.result?.last_name[0]}`;
-
-            setAuth({ userEmail, userAccessToken, userId, profilePictureUrl });
+            
+            setAuth({ userEmail, userAccessToken, userId, profilePictureUrl, firstName });
           });
       } catch (error) {
         // If verify didn't work then user is not logged in

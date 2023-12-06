@@ -1,132 +1,140 @@
-import { useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
-import { ReactMultiEmail } from 'react-multi-email';
-import 'react-multi-email/dist/style.css';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import { useLocation, Link } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import Select from "react-select";
+import axios from "axios";
+import Loading from "../components/Loading";
 
 const CreateNewCookingSession = () => {
   const { auth } = useAuth();
   const { userId } = auth;
-
-  const [emails, setEmails] = useState([]);
+  const [guests, setGuests] = useState([]);
+  const [friends, setFriends] = useState(null);
   const [focused, setFocused] = useState(false);
   const [failedEmails, setFailedEmails] = useState([]);
   const [successEmails, setSuccessEmails] = useState([]);
   const [success, setSuccess] = useState(false);
   const [newCookingSessionId, setNewCookingSessionId] = useState();
 
-
   let { state } = useLocation();
   const { recipeId, recipeTitle } = state;
 
+  // Fetch the user's friend list using the
+  useEffect(() => {
+    axios
+      .get(`/api/users/${userId}/friends`)
+      .then((response) => {
+        setFriends(response.data);
+      })
+      .catch((error) =>
+        console.error("Error fetching the friends list:", error)
+      );
+  }, []);
+
+  const handleChange = (selectedUsers) => {
+    setGuests(selectedUsers);
+  };
+
   const createNewSession = async (e) => {
-    console.log('Clicked to submit new session');
     e.preventDefault();
 
     try {
-      await axios.post("/api/cooking-sessions/", {
-        emails,
-        host_id: userId,
-        api_recipe_id: recipeId,
-        api_recipe_name: recipeTitle
-      }).then((response) => {
-        console.log(response.data);
-        setNewCookingSessionId(response.data.newCookingSessionId);
+      await axios
+        .post("/api/cooking-sessions/", {
+          emails: guests.map((user) => user.email),
+          host_id: userId,
+          api_recipe_id: recipeId,
+          api_recipe_name: recipeTitle,
+        })
+        .then((response) => {
+          console.log(response.data);
+          setNewCookingSessionId(response.data.newCookingSessionId);
 
-        let failedUserEmails = [];
-        let sucessUserEmails = [];
-        response.data.dataMessage.forEach((el) => {
-          if (el.status === "fail") failedUserEmails.push(el.email);
-          else sucessUserEmails.push(el.email);
+          let failedUserEmails = [];
+          let sucessUserEmails = [];
+          response.data.dataMessage.forEach((el) => {
+            if (el.status === "fail") failedUserEmails.push(el.name);
+            else sucessUserEmails.push(el.name);
+          });
+
+          setSuccess(true);
+          setFailedEmails(failedUserEmails);
+          setSuccessEmails(sucessUserEmails);
         });
-
-        setSuccess(true);
-        setFailedEmails(failedUserEmails);
-        setSuccessEmails(sucessUserEmails);
-      });
     } catch (error) {
       console.log(error);
-
     }
   };
 
+  // Conditional render based on whether the cookingSession is available
+  if (friends === null) {
+    return <Loading />;
+  }
 
   return (
-    <div className='container new-cooking-session'>
+    <div className="container new-cooking-session">
       {success ? (
-
         <>
-          <h1>The invitations has been sent.</h1>
-          {
-            successEmails.length > 0 && (
-              <div className='successEmails'>
-                <p>Emails were sent successfully to:</p>
-                <p>{successEmails.join(", ")}</p>
-              </div>
-            )
-          }
+          <h1>The invitations have been sent.</h1>
+          {successEmails.length > 0 && (
+            <div className="successEmails">
+              <p>Emails were sent successfully to:</p>
+              <p>{successEmails.join(", ")}</p>
+            </div>
+          )}
 
           {failedEmails.length > 0 ? (
-            <div className='failedEmails'>
-              <p>These users were not found in database. Invite could not be sent:</p>
+            <div className="failedEmails">
+              <p>
+                These users do not have valid e-mails. Invite could not be
+                sent to:
+              </p>
               <p>{failedEmails.join(", ")}</p>
             </div>
-          ) : (<></>)}
+          ) : (
+            <></>
+          )}
 
-          {successEmails.length > 0 &&
+          {successEmails.length > 0 && (
             // need to correct URL to the one with parameters (?)
-            <Link to={`/cooking-sessions/${newCookingSessionId}`} className='button mt-2'>Cooking Session Info</Link>}
+            <Link
+              to={`/cooking-sessions/${newCookingSessionId}`}
+              className="button mt-2"
+            >
+              Cooking Session Info
+            </Link>
+          )}
         </>
-      ) :
-        (
-          <div className="row">
-            <div className="col-12">
-              <h1>Create a cooking session with your friend!</h1>
-              <p>
-                Recipe: <Link to={`/recipes/${recipeId}`}>
-                  {recipeTitle}</Link>
-              </p>
+      ) : (
+        <div className="row">
+          <div className="col-12">
+            <h1>Create a cooking session with your friends!</h1>
+            <p>
+              Recipe: <Link to={`/recipes/${recipeId}`}>{recipeTitle}</Link>
+            </p>
               <form>
-
-
-
-                <ReactMultiEmail
-                  placeholder='Input your email'
-                  emails={emails}
-                  onChange={(_emails) => {
-                    setEmails(_emails);
-                  }}
-                  autoFocus={true}
-                  onFocus={() => setFocused(true)}
-                  onBlur={() => setFocused(false)}
-                  getLabel={(email, index, removeEmail) => {
-                    return (
-                      <div data-tag key={index}>
-                        <div data-tag-item>{email}</div>
-                        <span data-tag-handle onClick={() => removeEmail(index)}>
-                          ×
-                        </span>
-                      </div>
-                    );
-                  }}
-                />
-                <small
-                  id="emailHelp"
-                  className="form-text text-muted mb-2">
-                  We will never share your email with anyone else.
-                </small>
-                <button onClick={createNewSession}>Submit</button>
-              </form>
-            </div>
-
+                <p>Who is coming:
+              <Select
+                autoFocus={true}
+                onFocus={() => setFocused(true)}
+                onBlur={() => setFocused(false)}
+                closeMenuOnSelect={false}
+                value={guests}
+                onChange={handleChange}
+                options={friends}
+                isMulti
+                isClearable
+                placeholder="Search for guests by name..."
+                getOptionLabel={(option) => option.name}
+                getOptionValue={(option) => option.email}
+                  /></p>
+                {/*<p>When:</p>*/}
+              <button onClick={createNewSession}>Create Cooking Session</button>
+            </form>
           </div>
-
-        )
-      }
-
-    </div >
-
+        </div>
+      )}
+    </div>
   );
 };
 
