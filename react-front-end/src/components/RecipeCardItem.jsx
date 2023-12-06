@@ -5,7 +5,10 @@ const RecipeCardItem = (props) => {
   const { id, imageUrl, title } = props;
 
   return (
-    <Link to={`/recipes/${id}`} className='recipe-card col-12 col-md-6 col-lg-4 col-xl-3 mb-4'>
+    <Link
+      to={`/recipes/${id}`}
+      className='recipe-card col-12 col-md-6 col-lg-4 col-xl-3 mb-4'
+    >
       <div className="card h-100">
         {imageUrl && (
           <img src={imageUrl} className="card-img-top" alt="..." />
