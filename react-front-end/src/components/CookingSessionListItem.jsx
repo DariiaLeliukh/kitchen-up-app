@@ -8,7 +8,7 @@ const CookingSessionListItem = ({ cookingSession, showInfoButton, styleClasses }
     <div className="single-session-card h-100">
       <div className="">
         <p className="hosted-by">
-          {cookingSession.is_host ? "Hosting" : cookingSession.host_name}
+          Hosted by {cookingSession.host_name}
         </p>
         <strong>Recipe: {cookingSession.api_recipe_name}</strong>
         <br />

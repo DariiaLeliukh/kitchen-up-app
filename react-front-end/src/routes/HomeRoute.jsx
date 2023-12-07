@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Search from "./Search";
 import RecipeCardItem from "../components/RecipeCardItem";
+import Loading from "../components/Loading";
 
 const HomeRoute = () => {
   const [randomRecipes, setRandomRecipes] = useState([]);
@@ -34,6 +35,9 @@ const HomeRoute = () => {
   return (
     <div className="home-route container">
       <Search removeDefaultRecipes={removeDefaultRecipes} />
+      {randomRecipes.length <= 0 && (
+        <Loading />
+      )}
       {randomRecipes &&
         <div className="row random-recipes">
           {randomRecipes.map((recipe) => (

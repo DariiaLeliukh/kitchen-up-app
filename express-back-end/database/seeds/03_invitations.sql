@@ -16,7 +16,4 @@ INSERT INTO invitations (guest_id, cooking_session_id, status) VALUES
 (4, 4, 'Accepted'),
 (1, 4, 'Declined'),
 (2, 4, 'Pending'),
-(3, 4, 'Accepted'),
-
-(1, 5, 'Accepted'),
-(2, 5, 'Accepted');
+(3, 4, 'Accepted');

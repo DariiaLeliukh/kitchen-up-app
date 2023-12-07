@@ -8,14 +8,15 @@ const getCookingSessionsByGuestId = (guestId) => {
                   FROM cooking_sessions
                   JOIN users ON cooking_sessions.host_id = users.id
                   JOIN invitations ON cooking_sessions.id = invitations.cooking_session_id
-                  WHERE invitations.guest_id = $1`, [guestId]).then((data) => {
+                  WHERE invitations.guest_id = $1
+                  ORDER BY session_datetime`, [guestId]).then((data) => {
     return data.rows;
   });
 };
 
-const addCookingSession = (host_id, api_recipe_id, api_recipe_name) => {
+const addCookingSession = (host_id, api_recipe_id, api_recipe_name, time_date) => {
   return db.query(`INSERT INTO cooking_sessions (host_id, api_recipe_id, api_recipe_name, session_datetime) VALUES
-  ($1, $2, $3, NOW()- interval '1 hour') RETURNING *;`, [host_id, api_recipe_id, api_recipe_name])
+  ($1, $2, $3, $4) RETURNING *;`, [host_id, api_recipe_id, api_recipe_name, time_date])
     .then((data) => {
       return data.rows[0];
     });

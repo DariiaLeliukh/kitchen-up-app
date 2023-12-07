@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", (req, res) => {
   const cookingSessionId = req.params.id;
-      
+
   //get the cooking session info
   sessionsQuery.getCookingSession(cookingSessionId).then((cookingSession) => {
     //get the recipe details
@@ -38,37 +38,38 @@ router.get("/:id", (req, res) => {
         ...cookingSession[0],
         is_host: (userId === cookingSession[0].host_id),
         api_recipe_summary: recipe.data.summary
-      });      
+      });
     });
   })
-  .catch(error => {
-    console.error('At least one connection was rejected:', error);
-  });
+    .catch(error => {
+      console.error('At least one connection was rejected:', error);
+    });
 });
 
 router.get("/:id/invitations", async (req, res) => {
   const cookingSessionId = req.params.id;
-  
+
   //get the cooking session's invitations
   invitationsQuery.getInvitationsByCookingSession(cookingSessionId).then((invitations) => {
     //send the response
-    res.json(invitations);      
+    res.json(invitations);
   })
-  .catch(error => {
-    console.error('Error when retrieving invitations:', error);
-  });
+    .catch(error => {
+      console.error('Error when retrieving invitations:', error);
+    });
 });
 
 router.post("/", async (req, res) => {
 
-  const { emails, host_id, api_recipe_id, api_recipe_name } = req.body;
+  const { emails, host_id, api_recipe_id, api_recipe_name, time_date } = req.body;
+
   const emailServer = require('../routes/helper/send-email');
 
   const access_token = req.cookies.jwt;
   const hostUser = await usersQuery.getUserByToken(access_token);
 
   try {
-    const newCookingSession = await sessionsQuery.addCookingSession(host_id, api_recipe_id, api_recipe_name);
+    const newCookingSession = await sessionsQuery.addCookingSession(host_id, api_recipe_id, api_recipe_name, time_date);
 
     const newCookingSessionId = newCookingSession.id;
     await invitationsQuery.addInvitation(host_id, newCookingSessionId, "Accepted");
@@ -78,7 +79,7 @@ router.post("/", async (req, res) => {
 
       if (existingUser) {
         const guestInvitation = await invitationsQuery.addInvitation(existingUser.id, newCookingSessionId, "Pending");
-        
+
         emailServer.sendInvitation(email, existingUser.first_name, `${hostUser.first_name} ${hostUser.last_name}`, api_recipe_name);
 
         return { name: `${existingUser.first_name} ${existingUser.last_name}`, status: "success" };
