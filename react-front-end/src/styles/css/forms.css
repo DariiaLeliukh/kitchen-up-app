@@ -26,7 +26,8 @@
       font-style: normal;
       font-weight: 600;
       line-height: normal;
-      margin-bottom: 10px; }
+      margin-bottom: 10px;
+      font-family: Roboto !important; }
 
 .instructions {
   font-size: 0.75rem;

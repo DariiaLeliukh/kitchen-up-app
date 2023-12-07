@@ -105,17 +105,15 @@ const CreateNewCookingSession = () => {
                 )
               }
 
-              {
-                successEmails.length > 0 && (
-                  // need to correct URL to the one with parameters (?)
-                  <Link
-                    to={`/cooking-sessions/${newCookingSessionId}`}
-                    className="button mt-2"
-                  >
-                    Cooking Session Info
-                  </Link>
-                )
-              }
+              {successEmails.length > 0 && (
+                // need to correct URL to the one with parameters (?)
+                <Link
+                  to={`/cooking-sessions/${newCookingSessionId}`}
+                  className="button mt-2"
+                >
+                  Cooking Session Info
+                </Link>
+              )}
             </>
           ) : (
             <div className="row">
@@ -124,45 +122,35 @@ const CreateNewCookingSession = () => {
                 <p>
                   Recipe: <Link to={`/recipes/${recipeId}`}>{recipeTitle}</Link>
                 </p>
-
-                {
-                  friends.length <= 0 ? (
-                    <Loading />
-                  ) : (
-                    <>
-                      <form>
-                        <p>Who is coming:</p>
-                        <Select
-                          autoFocus={true}
-                          onFocus={() => setFocused(true)}
-                          onBlur={() => setFocused(false)}
-                          closeMenuOnSelect={false}
-                          value={guests}
-                          onChange={handleChange}
-                          options={friends}
-                          isMulti
-                          isClearable
-                          placeholder="Search for guests by name..."
-                          getOptionLabel={(option) => option.name}
-                          getOptionValue={(option) => option.email}
-                        />
-                        <p>When:</p>
-                        <DateTimePicker
-                          onChange={changeDateTime}
-                          value={dateTime}
-                        />
-                        <button onClick={createNewSession}>Create Cooking Session</button>
-                      </form>
-                    </>
-                  )
-                }
-
+                <form>
+                  <p className="mb-3">Who is coming:</p>
+                  <Select
+                    className="mb-3"
+                    autoFocus={true}
+                    onFocus={() => setFocused(true)}
+                    onBlur={() => setFocused(false)}
+                    closeMenuOnSelect={false}
+                    value={guests}
+                    onChange={handleChange}
+                    options={friends}
+                    isMulti
+                    isClearable
+                    placeholder="Search for guests by name..."
+                    getOptionLabel={(option) => option.name}
+                    getOptionValue={(option) => option.email}
+                  />
+                  <p>When:</p>
+                  <DateTimePicker
+                    onChange={changeDateTime}
+                    value={dateTime}
+                  />
+                  <button onClick={createNewSession}>Create Cooking Session</button>
+                </form>
               </div>
             </div>
-          )}
-      </div >
-
-
+          )
+        }
+      </div>
     </div>
   );
 };

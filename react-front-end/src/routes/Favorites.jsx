@@ -69,7 +69,7 @@ const Favorites = () => {
           {detailedFavorites.map((favorite) => {
             return (
               <>
-                <RecipeCardItem key={favorite.apiRecipeId} id={favorite.apiRecipeId} imageUrl={favorite.recipeImage} title={favorite.recipeTitle} />
+                <RecipeCardItem id={favorite.apiRecipeId} imageUrl={favorite.recipeImage} title={favorite.recipeTitle} />
 
                 {/* <button onClick={() => handleDeleteFavorite(favorite.apiRecipeId)}>Delete</button> */}
               </>
