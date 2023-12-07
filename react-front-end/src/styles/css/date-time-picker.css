@@ -1,14 +1,17 @@
-.react-datetime-picker button {
-  min-width: auto;
-  color: #000; }
-
-.react-datetime-picker .react-calendar__tile--active {
-  background: #084F20;
-  color: #fff; }
-  .react-datetime-picker .react-calendar__tile--active:hover {
-    background: #E7B401;
+.react-datetime-picker {
+  height: 38px; }
+  .react-datetime-picker .react-datetime-picker__wrapper {
+    border-radius: 5px;
+    border-color: #cccccc; }
+  .react-datetime-picker button {
+    min-width: auto;
     color: #000; }
-
-.react-datetime-picker .react-datetime-picker__button:enabled:hover .react-datetime-picker__button__icon,
-.react-datetime-picker .react-datetime-picker__button:enabled:focus .react-datetime-picker__button__icon {
-  stroke: #000; }
+  .react-datetime-picker .react-calendar__tile--active {
+    background: #084F20;
+    color: #fff; }
+    .react-datetime-picker .react-calendar__tile--active:hover {
+      background: #E7B401;
+      color: #000; }
+  .react-datetime-picker .react-datetime-picker__button:enabled:hover .react-datetime-picker__button__icon,
+  .react-datetime-picker .react-datetime-picker__button:enabled:focus .react-datetime-picker__button__icon {
+    stroke: #000; }

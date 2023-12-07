@@ -21,6 +21,8 @@ const CreateNewCookingSession = () => {
   const [successEmails, setSuccessEmails] = useState([]);
   const [success, setSuccess] = useState(false);
   const [newCookingSessionId, setNewCookingSessionId] = useState();
+  const [errorMessage, setErrorMessage] = useState('');
+
   // date-time for cooking session
   const [dateTime, changeDateTime] = useState(new Date());
 
@@ -40,39 +42,45 @@ const CreateNewCookingSession = () => {
   }, []);
 
   const handleChange = (selectedUsers) => {
+    setErrorMessage("");
     setGuests(selectedUsers);
   };
 
   const createNewSession = async (e) => {
     e.preventDefault();
 
-    try {
-      await axios
-        .post("/api/cooking-sessions/", {
-          emails: guests.map((user) => user.email),
-          host_id: userId,
-          api_recipe_id: recipeId,
-          api_recipe_name: recipeTitle,
-          time_date: dateTime
-        })
-        .then((response) => {
-          console.log(response.data);
-          setNewCookingSessionId(response.data.newCookingSessionId);
+    if (guests.length === 0) {
+      setErrorMessage("The guest list is empty");
+    } else {
+      try {
+        await axios
+          .post("/api/cooking-sessions/", {
+            emails: guests.map((user) => user.email),
+            host_id: userId,
+            api_recipe_id: recipeId,
+            api_recipe_name: recipeTitle,
+            time_date: dateTime
+          })
+          .then((response) => {
+            setNewCookingSessionId(response.data.newCookingSessionId);
 
-          let failedUserEmails = [];
-          let sucessUserEmails = [];
-          response.data.dataMessage.forEach((el) => {
-            if (el.status === "fail") failedUserEmails.push(el.name);
-            else sucessUserEmails.push(el.name);
+            let failedUserEmails = [];
+            let sucessUserEmails = [];
+            response.data.dataMessage.forEach((el) => {
+              if (el.status === "fail") failedUserEmails.push(el.name);
+              else sucessUserEmails.push(el.name);
+            });
+
+            setSuccess(true);
+            setFailedEmails(failedUserEmails);
+            setSuccessEmails(sucessUserEmails);
           });
-
-          setSuccess(true);
-          setFailedEmails(failedUserEmails);
-          setSuccessEmails(sucessUserEmails);
-        });
-    } catch (error) {
-      console.log(error);
+      } catch (error) {
+        console.log(error);
+      }
     }
+
+
   };
 
   return (
@@ -122,30 +130,47 @@ const CreateNewCookingSession = () => {
                 <p>
                   Recipe: <Link to={`/recipes/${recipeId}`}>{recipeTitle}</Link>
                 </p>
-                <form>
-                  <p className="mb-3">Who is coming:</p>
-                  <Select
-                    className="mb-3"
-                    autoFocus={true}
-                    onFocus={() => setFocused(true)}
-                    onBlur={() => setFocused(false)}
-                    closeMenuOnSelect={false}
-                    value={guests}
-                    onChange={handleChange}
-                    options={friends}
-                    isMulti
-                    isClearable
-                    placeholder="Search for guests by name..."
-                    getOptionLabel={(option) => option.name}
-                    getOptionValue={(option) => option.email}
-                  />
-                  <p>When:</p>
-                  <DateTimePicker
-                    onChange={changeDateTime}
-                    value={dateTime}
-                  />
-                  <button onClick={createNewSession}>Create Cooking Session</button>
-                </form>
+                {
+                  friends.length <= 0 ? (
+                    <Loading />
+                  ) : (
+                    <>
+                      <div className="row">
+                        <div className="col-6">
+                          <p className="mb-3">Who is coming:</p>
+                          <Select
+                            className="mb-3"
+                            autoFocus={true}
+                            onFocus={() => setFocused(true)}
+                            onBlur={() => setFocused(false)}
+                            closeMenuOnSelect={false}
+                            value={guests}
+                            onChange={handleChange}
+                            options={friends}
+                            isMulti
+                            isClearable
+                            placeholder="Search for guests by name..."
+                            getOptionLabel={(option) => option.name}
+                            getOptionValue={(option) => option.email}
+                          />
+                        </div>
+                        <div className="col-6">
+                          <p>When:</p>
+                          <DateTimePicker
+                            onChange={changeDateTime}
+                            value={dateTime}
+                            disableClock={true}
+                          />
+                        </div>
+                      </div>
+                      {errorMessage && (
+                        <p className="text-danger">{errorMessage}</p>
+                      )}
+                      <button onClick={createNewSession}>Create Cooking Session</button>
+                    </>
+
+                  )
+                }
               </div>
             </div>
           )

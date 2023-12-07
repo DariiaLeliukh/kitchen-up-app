@@ -1,4 +1,11 @@
 .react-datetime-picker {
+  height: 38px;
+
+  .react-datetime-picker__wrapper {
+    border-radius: 5px;
+    border-color: hsl(0, 0%, 80%);
+  }
+
   button {
     min-width: auto;
     color: #000;

@@ -7,12 +7,11 @@ const createFavorites = (user_id, api_recipe_id) => {
       [user_id, api_recipe_id]
     )
     .then((data) => {
-      // console.log("Inserted data:", data.rows);
       return data.rows;
     })
     .catch((error) => {
       console.error("Error inserting into favorites:", error);
-      throw error; 
+      throw error;
     });
 };
 
@@ -28,17 +27,17 @@ const getFavoriteIdsByUserId = (user_id) => {
 
 const deleteFavorite = async (user_id, api_recipe_id) => {
   return db
-  .query(
-    "DELETE FROM favorites WHERE user_id = $1 AND api_recipe_id = $2;",
-    [user_id, api_recipe_id]
-  )
-  .then((data) => {
-    return data.rows;
-  })
-  .catch((error) => {
-    console.error("Error deleting from favorites:", error);
-    throw error;
-  });
+    .query(
+      "DELETE FROM favorites WHERE user_id = $1 AND api_recipe_id = $2;",
+      [user_id, api_recipe_id]
+    )
+    .then((data) => {
+      return data.rows;
+    })
+    .catch((error) => {
+      console.error("Error deleting from favorites:", error);
+      throw error;
+    });
 };
 
 module.exports = { createFavorites, getFavoriteIdsByUserId, deleteFavorite };
