@@ -38,7 +38,7 @@ const Register = () => {
 
 
   useEffect(() => {
-    if (auth) {
+    if (auth.userId) {
       navigate(from, { replace: true });
     }
     userRef.current.focus();
@@ -82,7 +82,7 @@ const Register = () => {
       const userId = response?.data?.result?.id || null;
       const firstName = response?.data?.result?.first_name || null;
       const profilePictureUrl = response?.data?.result?.profile_picture_url || `${response?.data?.result?.first_name[0]} ${response?.data?.result?.last_name[0]}`;
-      
+
       setAuth({ userEmail, userAccessToken, userId, profilePictureUrl, firstName });
       setEmail('');
       setPassword('');

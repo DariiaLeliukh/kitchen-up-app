@@ -38,7 +38,20 @@ const TopNavigation = () => {
               <>
                 <div className="nav-item dropdown">
                   <a className="nav-link dropdown-toggle dropup top-nav-bar__picture" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src={auth.profilePictureUrl}/>
+                    {
+                      auth.profilePictureUrl.length !== 3 ? (
+                        //An URL is set as the user's profile picture
+                        <img
+                          src={auth.profilePictureUrl}
+                          alt={`User's profile picture`}
+                        />
+                      ) : (
+                        //The user's initials are set as their profile picture
+                        <div className="img-replacement" >
+                          {auth.profilePictureUrl}
+                        </div>
+                      )
+                    }
                   </a>
                   <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     <Link

@@ -75,3 +75,19 @@
 .top-nav-bar__avatar {
   margin-right: 15px;
 }
+
+.top-nav-bar__picture img,
+.img-replacement {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #fff;
+
+}
+
+.img-replacement {
+  display: inline;
+  justify-content: center; // Center horizontally
+  align-items: center; // Center vertically
+}
